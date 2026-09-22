@@ -258,9 +258,11 @@ parameter values, ever.
 
 The smallest proposition that would repair a single q=17 leaf is an upper bound
 `ω(N) ≤ 20` on that branch. No upper bound on `ω(N)` for odd perfect numbers is
-known in any form, and by Proposition C such a bound would immediately close
-the branch outright, with no tail inequality needed. The "smallest repair" is
-the theorem itself.
+known in any form — including in Nielsen 2015, the one source the paper itself
+cites for "upper-bound methods", which bounds `N` in terms of `ω(N)` and yields
+a *lower* bound `ω(N) ≥ 10` (see §13). And by Proposition C such a bound would
+immediately close the branch outright, with no tail inequality needed. The
+"smallest repair" is the theorem itself.
 
 What survives, and is worth keeping:
 - Lemmas 3.1, 3.2 (valuation balance, cyclotomic input condition) — sound.
@@ -307,7 +309,7 @@ What survives, and is worth keeping:
 | 5 files drift from published hashes; all five verifiers print the advertised output | **computationally verified** |
 | `Φ₅/5` forced-prime lemma is sound | **proved** + spot-checked |
 | Lemmas 3.1, 3.2, 4.2, 6.2–6.4 sound | **strongly supported** (re-derived; not line-by-line exhaustive) |
-| No upper bound on `ω(N)` exists in the literature | **strongly supported** (standard; being checked independently) |
+| No upper bound on `ω(N)` exists in the literature | **confirmed for the one source the paper cites** (Nielsen 2015 bounds `N` in terms of `k` and yields `k ≥ 10`, not an upper bound on `k`); **strongly supported** in general |
 
 ## 10. Failure modes of *this* audit
 
@@ -415,15 +417,32 @@ agrees on the one point that matters for the repair question:
 
 1. **No upper bound on `ω(N)` for an odd perfect number is known in any form.**
    The literature carries only lower bounds on `ω(N)` and upper bounds on the
-   *magnitude* of `N`. This is exactly the quantity obligation (ii) requires.
-   Remark 7.5's disclaimer is therefore describing the absence of any argument,
-   not a substitute for one. **Still to confirm:** Nielsen,
+   *magnitude* of `N`. This is exactly the quantity obligation (ii) requires,
+   so Remark 7.5's disclaimer describes the absence of any argument rather than
+   a substitute for one.
+
+   **Resolved.** The one candidate source — Nielsen,
    *Odd perfect numbers, diophantine equations, and upper bounds*,
-   Math. Comp. **84** (2015), 2549–2567 — cited by the paper as developing
-   "upper-bound methods". I expect these to bound `N` in terms of `ω(N)`
-   (`N < 2^(4^k)`), not `ω(N)` itself; if it did bound `ω(N)` above, the
-   "no repair possible" conclusion of §7 would need revisiting. This is the
-   single most load-bearing external item still unverified.
+   Math. Comp. **84** (2015), 2549–2567, which the paper cites for
+   "upper-bound methods" — was checked directly. It establishes **no** upper
+   bound on `ω(N)`. Its Theorem 1.6 and Corollary 1.7 bound the *magnitude* of
+   `N` in terms of `k = ω(N)`, and it uses those bounds in the opposite
+   direction to obtain a **lower** bound on `k`: Theorem 3.8, "There are no odd
+   perfect numbers with less than 10 distinct prime factors."
+
+   This is worth stating plainly, because Nielsen's logical shape is the exact
+   reverse of what the tail-count obligation needs. Nielsen bounds `N` above in
+   terms of `k` and thereby pushes `k` **up**. Obligation (ii) needs `k` pushed
+   **down**. Nothing in the cited literature does that, and Proposition A
+   explains why nothing can without already settling the branch: the §7
+   conclusion that the certificate system is *unrepairable* rather than merely
+   unproved therefore has its external premise checked against the one source
+   the paper itself advanced for it.
+
+   Scope of this check: it disposes of the specific work the paper cites, not
+   of every paper ever written. But since the direction of the needed bound is
+   the open direction of the whole problem, and Nielsen 2015 is the standard
+   reference for OPN upper-bound machinery, the residual risk is small.
 
 2. Corollary 4.3's citation chain checks out as to content: Nielsen
    (*Math. Comp.* **76**, 2007) for `ω ≥ 9` and `ω ≥ 12` when `3 ∤ N`;

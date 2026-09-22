@@ -261,9 +261,34 @@ For `|T| = 5` over the pool below 200 this lifts the unconditional share from
 | **interval narrowing** | **4764 (98.3%)** |
 
 leaving 81 sets, all of them containing `{7, 13, 19}` — the sets where `Sm(T)`
-is rich at the bottom. Over the whole of §3 at `k = 2` with the pool below 120
-the unconditional share is 83.4% and nothing survives; the same sweep at pool
-400 is `s3k2/15` with argument `400`.
+is rich at the bottom.
+
+Run over the whole of §3 at `k = 2` with the pool below 400, it replaces the
+table of §5½ with this one:
+
+| `τ` | `α` | sp in `T` | nt in `T` | `\|W\|` | sets | unconditional | needs test 3 | alive |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 0 | no | 1 | 2 | 1 | 0 | 1 | 0 |
+| 2 | 0 | no | 2 | 1 | 36 | 31 | 5 | 0 |
+| 1 | 0 | yes | 0 | 2 | 1 | 0 | 1 | 0 |
+| 2 | 0 | yes | 1 | 1 | 36 | 32 | 4 | 0 |
+| 3 | 0 | yes | 2 | 0 | 630 | 621 | 9 | 0 |
+| 1 | 1 | no | 0 | 3 | 1 | 0 | 1 | 0 |
+| 2 | 1 | no | 1 | 2 | 36 | 0 | 36 | 0 |
+| 3 | 1 | no | 2 | 1 | 630 | 461 | 169 | 0 |
+| 2 | 1 | yes | 0 | 2 | 36 | 1 | 35 | 0 |
+| 3 | 1 | yes | 1 | 1 | 630 | 565 | 65 | 0 |
+| 4 | 1 | yes | 2 | 0 | 7140 | 7134 | 6 | 0 |
+| 3 | 2 | yes | 0 | 2 | 630 | 115 | 515 | 0 |
+| 4 | 2 | yes | 1 | 1 | 7140 | 6046 | 1094 | 0 |
+| 5 | 2 | yes | 2 | 0 | 58905 | 58653 | 252 | 0 |
+| **all** | | | | | **75852** | **73659 (97.11%)** | 2193 | **0** |
+
+So `|T| = 5`, the sub-case that looked hopeless from the `k = 1` argument,
+ends up being the *easiest*: 58653 of 58905 sets die with no unproved input, and
+only 252 need the conditional step. What remains conditional is concentrated in
+the small-`τ`, large-`|W|` profiles, where the unknown big components `≡ 2 (mod 3)`
+carry most of the abundancy and `T` is too thin for `Sm(T)` to bite.
 
 
 ---

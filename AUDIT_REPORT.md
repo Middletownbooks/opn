@@ -42,6 +42,13 @@ no repair of the certificate format can fix this. This is a stronger result
 than the adversarial audit reached, and it confirms that audit's central
 criticism.
 
+The audit has no remaining external dependencies. Proposition A and the
+`k₀(q)` table are self-contained; the verifier behaviour was tested directly;
+the published arXiv version was checked against the repository sources (§11);
+and the one external claim the repair question turned on — whether any known
+result bounds `ω(N)` above — was checked against the source the paper itself
+cites for it (§13). It does not.
+
 ---
 
 ## 1. Proposition A (the no-go), and what it kills

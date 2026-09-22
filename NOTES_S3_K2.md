@@ -686,3 +686,71 @@ finiteness statement as §5c, but at `10⁴⁸` to `10⁴⁰⁰` instead of `10�
 below 600), because with no ordinary prime in `T` the closure condition has
 nothing to act on; those rows need the `max(T)` cutoff of §8 to be exhaustive.
 `|W| = 3` (§11b) is free of both.
+
+### 11f. The `|W| ≥ 1` table, complete  (`s3k2/27`, `s3k2/28`)
+
+The `τ = 4` row stalled in `s3k2/27`, which enumerated `T` by running over all
+`(τ−1)`-subsets of the pool — about `10⁹` of them. `s3k2/28` enumerates forward
+from the ordinary pair instead: `T ⊇ {13, a₁, a₂} ∪ F(a₁) ∪ F(a₂)`, which must
+already have at most four elements. 276 ordinary pairs survive that, giving 322
+candidate `T`, and none reaches `|Sm(T)| ≥ 4` (the best reach 3).
+
+| `α` | sp in `T` | nt in `T` | `τ` | `|W|` | `|U|` needed | admissible `T` | survive |
+|---|---|---|---|---|---|---|---|
+| 0 | no | 1 | 1 | 2 | 6 | 1 | 0 |
+| 0 | no | 2 | 2 | 1 | 6 | 49 | 0 |
+| 0 | yes | 0 | 1 | 2 | 6 | 1 | 0 |
+| 0 | yes | 1 | 2 | 1 | 6 | 49 | 0 |
+| 1 | no | 0 | 1 | 3 | 5 | **0** (§11b) | 0 |
+| 1 | no | 1 | 2 | 2 | 5 | 1 | 0 |
+| 1 | no | 2 | 3 | 1 | 5 | 1141 | 0 |
+| 1 | yes | 0 | 2 | 2 | 5 | 1 | 0 |
+| 1 | yes | 1 | 3 | 1 | 5 | 1141 | 0 |
+| 2 | yes | 0 | 3 | 2 | 4 | 1 | 0 |
+| 2 | yes | 1 | 4 | 1 | 4 | 322 | 0 |
+
+All eleven eliminated.
+
+---
+
+## 12. Section 3 at `k = 2`: all fourteen profiles  (`s3k2/29`)
+
+The two `|W| = 0` profiles other than the one closed in §§8–10 yield to the same
+counting move:
+
+| profile | `|U|` needed | `T` enumerated by | tested | largest `|Sm(T)|` | survive |
+|---|---|---|---|---|---|
+| `α = 1`, `τ = 4`, `|W| = 0` | 5 | closure, forward from the ordinary `a` | 14 189 | 4 (`T = {7,13,19,31}`) | 0 |
+| `α = 0`, `τ = 3`, `|W| = 0` | 6 | pool (no ordinary prime to close on) | 6 441 | 2 | 0 |
+
+So **every one of the fourteen role profiles of §3 at `k = 2` is eliminated**, by
+two complementary methods:
+
+* `α = 2`, `|W| = 0`, `τ = 5` — the hard one — by the recursion of §8, interval
+  narrowing, and the closure filter of §9, **with no pool restriction**, leaving
+  five named Thue–Mahler statements (§10b);
+* the other thirteen by **closure plus a count**, which needs no abundancy input
+  at all.
+
+The two methods are complementary in exactly the way the structure demands: the
+abundancy test wants `|W| = 0` (nothing unknown carries the slack) and large `T`;
+the counting test wants small `T` (so `Sm(T)` is searchable to `10³⁰`–`10⁴⁰⁰`)
+and tolerates any `|W|`. Between them they cover the range of `τ`.
+
+### 12a. Everything still assumed, in one place
+
+1. **`ω(N) ≥ 10`** (Nielsen 2015) — a theorem, used by every counting argument.
+2. **`Sm(T)` complete** beyond the search bound: `10²⁴` at `|T| = 5`, `10³⁰` at
+   `|T| = 4`, `10⁴⁸` at `|T| = 3`, `10¹⁶⁰` at `|T| = 2`, `10⁴⁰⁰` at `|T| = 1`.
+   This is Thue–Mahler finiteness for `X²+XY+Y²`, not an unbounded hypothesis.
+3. **Pool restrictions**, now confined to the profiles where closure has nothing
+   to act on or the ordinary prime is bounded by hand: `α = 0` rows draw `T` from
+   primes below 600 (`|W| ≥ 1`) or 1500 (`|W| = 0`); `α ≥ 1` rows bound the
+   ordinary primes by 20 000. The `α = 2`, `|W| = 0` branch has **no** pool
+   restriction, and §11b has none either.
+4. Case B of §9a searched `(t*²+t*+1)/3` `S`-smooth to `3·10²⁸`.
+
+### 12b. What is untouched
+
+`3` **notable** at `k = 2` — the analogue of Ochem–Zelinsky's §4, where at `k = 1`
+they needed `q ≥ 23 000 000 000` and heavy computation. Nothing here bears on it.

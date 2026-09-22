@@ -211,6 +211,80 @@ are disjoint mod 12, so the constraint is vacuous exactly where it was wanted.
 
 ---
 
+## 5c. The higher-reciprocity avenue is CLOSED — and cheaply
+
+Last checkpoint flagged biquadratic reciprocity as the open avenue. Before
+hunting for Burde's law, the right question is whether the obstruction it would
+have to supply can exist **at all**.
+
+The quadratic case works because the forcing is absolute: for `p ≡ s ≡ 3 (mod 4)`,
+`(p/s)(s/p) = −1` leaves no freedom. For the quartic analogue take
+`p ≡ s ≡ 5 (mod 8)`, where `v₂(p−1) = v₂(s−1) = 2` and the production condition
+is exactly "quartic residue". That condition is not only necessary but
+**realisable**: if `ord_s(p) = d` is odd, taking `n_p = d` (so `e_p = d−1`, even)
+gives `s | σ(p^{e_p})`. So mutual production occurs for some admissible
+exponents precisely when both power-residue conditions hold.
+
+| class | mutual-production pairs found |
+|---|---|
+| both `≡ 3 (mod 4)` (control) | **0** — as reciprocity requires |
+| both `≡ 5 (mod 8)` (quartic) | **38** below 600 |
+| both `≡ 1 (mod 8)` (octic) | **8** below 900 |
+
+**Explicit witness, fully verified:** `p = 5`, `s = 101`, both `≡ 5 (mod 8)`.
+`ord₁₀₁(5) = 25` is odd, so with `e_p = 24` we get `101 | σ(5²⁴)` (checked:
+remainder 0). `ord₅(101) = 1`, so with `e_s = 4` we get `5 | σ(101⁴)` (checked).
+Both directions occur.
+
+> **Conclusion: no reciprocity law can give an analogue of NO2CYCLE beyond the
+> quadratic case, because the configuration such a law would have to forbid
+> actually occurs.** The avenue is closed, and closed without needing Burde's
+> law at all.
+
+*Why the quadratic case is special.* The Legendre symbol takes two values and
+`(p/s)(s/p) = −1` pins them. The quartic character takes four, and the rational
+quartic reciprocity laws relate quartic symbols to representations
+`p = a² + b²` — they constrain **which** pairs are mutual without forbidding
+mutuality.
+
+## 5d. A forcing tool that does survive at q = 3
+
+> **Theorem (Zsigmondy support bound).** Let `N` be odd perfect and `p | N`
+> non-Euler, `n_p = e_p + 1`. Then **`ω(N) ≥ d(n_p)`**.
+
+*Proof.* `σ(p^{e_p}) = ∏_{d | n_p, d>1} Φ_d(p)`. Since `e_p` is even, `n_p` is
+odd, so every `d > 1` dividing `n_p` is odd and `≥ 3` — outside the Zsigmondy
+exceptions (`n = 1, 2` for base `p ≥ 3`; `n = 6` only for base 2). So each
+`Φ_d(p)` has a primitive prime divisor `r_d` with `ord_{r_d}(p) = d`. Distinct
+`d` give distinct `r_d`; each is odd, divides `σ(p^{e_p}) | 2N` hence `N`, and
+differs from `p`. With `p` itself that is `d(n_p)` distinct primes. ∎
+
+Standard in method, but it needs **neither lower primes nor abundancy**, so
+unlike the `q = 5…17` machinery it is fully available at `q = 3`, where it
+reads `ω(N) ≥ d(e_3 + 1)`. Verified: primitive divisors computed for
+`(p, n_p) = (3,9), (3,15), (5,9), (7,9), (11,15)` — all distinct and `≡ 1 mod d`.
+
+**Honest limitation.** It bites only when `e_3 + 1` is composite with many
+divisors; if `e_3 + 1` is prime it gives `ω(N) ≥ 2`, which is nothing. So it
+constrains the *divisor structure* of `e_3 + 1` given a bound on `ω`, rather
+than bounding `e_3`. With no upper bound on `ω(N)` it closes nothing alone.
+
+## 5e. Roadmap: where q = 3 actually stands
+
+One structural point reverses an earlier conclusion of mine. I showed that
+**restrained ⟹ `3 | N` ⟹ `q = 3`**, and used it to argue the restrained
+hypothesis is *vacuous* in the branches `q ≥ 5`. The other side of that coin:
+
+> **The `q = 3` branch contains the entire restrained case, and Ochem–Zelinsky
+> have already pushed it to `e_3 ≥ 23,000,000,000`.**
+
+So the `k`-restrained ladder — exactly `k` even exponents above 2, with `k = 1`
+being their theorem — is **non-vacuous at `q = 3`**, unlike everywhere else.
+`k = 2` is the natural next rung and the live continuation of their programme.
+That is a much better-defined target than attacking `q = 3` in full generality.
+
+---
+
 ## 6. Status and the obstruction
 
 | result | status |
@@ -226,6 +300,8 @@ are disjoint mod 12, so the constraint is vacuous exactly where it was wanted.
 | tournament theorem | **proved**; 335/336 literature pairs confirm |
 | QR integrity check on factor-tree data | **works** — 882 claims, caught both corrupt ones |
 | NO2CYCLE applied to `q = 3` | **vacuous there** — classes disjoint mod 12 |
+| higher-reciprocity obstruction | **shown impossible** — explicit witness `(5, 101)` |
+| Zsigmondy support bound `ω(N) ≥ d(n_p)` | **proved** + verified; survives at `q = 3` |
 | any closure of `q = 3` | **not obtained** |
 
 **The obstruction, precisely.** At `q = 5…17` two quantitative instruments did

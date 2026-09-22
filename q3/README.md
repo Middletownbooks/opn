@@ -8,3 +8,5 @@ Standard library only. Findings in `../NOTES_Q3.md`.
 | `02_three_adic_balance.py` | exact component `v₃` formulas; the 3-adic balance identity for `3 \| N`; the `11 mod 12` parity constraint; why the abundancy floor is vacuous at `q = 3` |
 | `03_sharp.py` | the sharp power-residue form of the production condition; the tournament theorem; prediction test against 336 literature pairs |
 | `04_qr_integrity.py` | the power-residue condition as an integrity check on factor-tree data: 882 claims in `3p2.txt`, both corrupt ones caught |
+| `05_quartic_test.py` | tests whether a higher-reciprocity obstruction can exist: control gives 0 pairs, quartic gives 38, octic gives 8 — the avenue is closed |
+| `06_witness_and_zsigmondy.py` | fully verified mutual-production witness `(5, 101)`; the Zsigmondy support bound `ω(N) ≥ d(n_p)` with primitive divisors computed |

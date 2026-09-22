@@ -526,3 +526,40 @@ Case B's enumeration searched `(t*²+t*+1)/3` `S`-smooth up to `3·10²⁸`, i.e
 `t* ≲ 10¹⁴`. Absence of solutions above that is the same Thue–Mahler statement
 as the `Sm(T)` completeness of §5c, and is not proved here. It is a *finiteness*
 question, not an unbounded one.
+
+---
+
+## 10. The level-5 pass: the branch closes  (`s3k2/23`, `s3k2/24`)
+
+Testing every one of the 485 064 five-sets the recursion of §9b cannot discard:
+
+| outcome | count |
+|---|---|
+| dead: no role assignment passes closure | 481 385 |
+| dead: interval narrowing (unconditional) | 3 674 |
+| **eliminated with no unproved input** | **485 059 (100.00%)** |
+| dead: `ω ≥ 10` + `Sm(T)` complete (conditional) | 5 |
+| **still alive** | **0** |
+
+So on the branch `α = 2`, `|W| = 0` — 3 ordinary, `3² ‖ N`, and the special and
+both notables all `≡ 1 (mod 3)` — §3 at `k = 2` closes **with no pool
+restriction**. The recursion of §8 supplies the infinite tail and the closure
+filter of §9 supplies the finite core; five explicit 5-sets are all that need
+the conditional step, and `s3k2/24` names them.
+
+The closure filter does the bulk of the work at this level (481 385 of 485 064),
+which is the expected shape: at `|S| = 5` there is no slack left, so `F(t) ⊆ T`
+must hold exactly for both ordinary primes.
+
+### 10a. What this does and does not settle
+
+* **Settled, unconditionally except for five named sets:** one of the fourteen
+  role profiles of §3 at `k = 2`, for *all* `T`, not just `T` inside a pool.
+* **Not settled:** the other thirteen profiles (`α < 2`, or some big component
+  `≡ 2 (mod 3)`), which were swept only over the pool below 400. Each needs its
+  own recursion. The large-`|W|` ones are where this method is weakest: the
+  unknown components `≡ 2 (mod 3)` carry most of the abundancy and `T` is too
+  thin for the smoothness constraint to bite.
+* **Two Thue–Mahler tails**, both finiteness statements: `Sm(T)` complete beyond
+  `x ≤ 10¹²` (§5c), and case B's `(t*²+t*+1)/3` `S`-smooth beyond `t* ≲ 10¹⁴`
+  (§9c).

@@ -1,0 +1,29 @@
+
+Ochem-Zelinsky Question 10: do there exist primes x, y, p, r and integers
+a > b > 0 with  x^2+x+1 = p^a r  and  y^2+y+1 = p^b r ?
+They note: "If the answer to 10 is no, then we could substantially tighten
+Lemma 8."  So this is the lever they themselves name.
+
+REFORMULATION.  If x^2+x+1 = p^a r and y^2+y+1 = p^b r with the same p and r,
+then dividing gives
+        x^2 + x + 1 = p^{a-b} (y^2 + y + 1),
+so the question is a collision in the map  x |--> (p, r)  over primes x whose
+x^2+x+1 has exactly two distinct prime factors, one of them to the first power.
+(Two distinct x with the SAME (p,r) automatically have a != b, since equal
+exponents would force x = y.)
+
+SEARCH.  For every prime x up to the bound, factor x^2+x+1 and keep those of
+shape p^a * r with p, r distinct primes and a >= 1.  Then look for two x's
+sharing (p, r).
+
+primes x examined                    : 78496
+of shape p^a * r (two prime factors) : 35658
+colliding (p,r) signatures           : 0
+
+No collision among primes x < 1000000.
+
+This is DATA on an open question, not a theorem.  A null search establishes
+no impossibility; recorded here only as a computational bound, which is what
+Question 10 currently lacks.  Their own near-examples both have composite x:
+30^2+30+1 = 7^2*19 with 11^2+11+1 = 7*19, and 9353^2+9353+1 = 409^2*523 with
+462^2+462+1 = 409*523.

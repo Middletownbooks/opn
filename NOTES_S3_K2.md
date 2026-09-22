@@ -343,3 +343,94 @@ not open-ended.
 2. Strengthening the `|T| ≤ 4` upper test enough for the `max(T)` cutoff of §5¾
    to fire at `B = 10⁸`; then the pool restriction disappears.
 3. `3` notable at `k = 2`.
+
+---
+
+## 8. Making the cutoff recursive  (`s3k2/16`–`19`)
+
+The pool restriction of §5½–5⅔ is the largest caveat, and §5¾ showed the cutoff
+reduces `|T| = 5` with `max(T) ≥ B` to a finite check at size 4. The natural
+move is to apply the same cutoff at every level. Work in the branch `α = 2`,
+`|W| = 0`, so `|T| = 5` with role multiset `(o,o,s,n,n)`; a subset `S ⊆ T`
+carries a sub-multiset of those roles, and
+
+    margin(S) = LO(S)/HI(S)   (after interval narrowing),
+    B(S) = min { B : corr(B,S) ≤ margin(S) }.
+
+Since `corr(B,S) → 1`, any `S` with `margin(S) > 1` has a **finite** `B(S)`, and
+every `T` with `T \ {max T} = S` and `max(T) ≥ B(S)` dies. So building upward by
+the largest element,
+
+    live_{L+1} = { S ∪ {t} : S ∈ live_L, max(S) < t < B(S) }.
+
+`min(T)` is 7 or 13 (the two smallest primes `≡ 1 mod 3`, and `13 ∈ T` always),
+so the recursion has exactly two seeds.
+
+### 8a. Level 4 is already tiny
+
+At the `B = 10⁸` margin, only **7 of the 7140** 4-subsets below 400 fail to
+clear (`s3k2/16`). Run from the bottom (`s3k2/17`) the recursion terminated with
+a single exceptional seed, `{13, 31}`, at `margin = 0.997482` — a quarter of a
+percent short.
+
+### 8b. The forced-prime filter  (`s3k2/18`)
+
+The binding role assignment for `{13,31}` was *13 special with `e = 1`*, giving
+`(14/13)·(993/961) = 1.1127705`. But `σ(p^e) = (1+p)(1+p²+⋯+p^{e−1})` for odd
+`e`, so **every odd prime factor of `p+1` divides `N`** — routine, and the same
+opening move as Ochem–Zelinsky's Lemma 6. Here `σ(13) = 14 = 2·7` forces
+`7 | N`, contradicting `min(T) = 13`. More sharply, `13 ≡ −1 (mod 7)` and `e` is
+odd, so `7 | σ(13^e)` for **every** admissible `e`:
+
+> On the branch `7 ∤ N`, the prime 13 cannot be the special prime at all.
+
+Generally, an exponent `k` is inadmissible for `t^k` with `t ∈ T` whenever
+`σ(t^k)` has a prime factor `≡ 1 (mod 3)` below `min(T)` — that factor would be
+a `T`-prime smaller than the smallest one. Detecting it costs only trial
+division by a handful of small primes, never a factorisation of `σ(t^k)`.
+
+This raises `LO₀({13,31})` from `1.1127832` to `1.1188974`, past the threshold
+`1.1166324` at which `5` (whose `σ(25) = 31`) drops out of `Sm*`. `H` then
+collapses to ≈ 1, `LO` jumps to ≈ `18/13`, and the exception closes.
+
+### 8c. The recursion with the filter  (`s3k2/19`)
+
+| level | sets to consider |
+|---|---|
+| 1 | 2 — the seeds `{7}`, `{13}` |
+| 2 | 6 |
+| 3 | 91 |
+| 4 | 4324 |
+| 5 | 1 015 872 |
+
+with thresholds `B({7}) = 139.5`, `B({13}) = 63.4`, `B({7,13}) = 727.4`,
+`B({13,19}) = 138.5`, `B({13,31}) = 105.9`. Six exceptional 4-sets remain, all
+containing `{7,13}`, with margins just below 1:
+
+| `S` | margin |
+|---|---|
+| `{7,13,19,31}` | 0.997627 |
+| `{7,13,31,79}` | 0.996091 |
+| `{7,13,31,307}` | 0.991151 |
+| `{7,13,67,79}` | 0.991183 |
+| `{7,13,67,307}` | 0.991181 |
+| `{7,13,79,307}` | 0.991183 |
+
+### 8d. Honest status of §8
+
+The structure works — the cutoff **is** recursive, and the tree is small through
+level 4. Two things are not finished:
+
+1. **The level-5 enumeration is truncated.** Some level-4 thresholds exceed the
+   script's prime bound `10⁷`, so the 1 015 872 figure is a lower bound on that
+   family, not the family. The sets are individually cheap to test (~20 ms), so
+   this is compute, not mathematics — but it has not been run.
+2. **Six exceptional 4-sets have no cutoff.** Each spawns a one-parameter family
+   `S ∪ {t*}` that the unconditional test cannot kill for large `t*`, because
+   `margin(S) < 1` persists in the limit. All six are within 0.9% of closing, and
+   the `{13,31}` precedent shows where the margin can come from: a sharper
+   admissible-exponent filter, or the forced primes of `σ(t²)` for the ordinary
+   `T`-primes (e.g. `31` ordinary forces `331 ∈ T` via `σ(31²) = 3·331`).
+
+So §8 is a method that demonstrably works, carried far enough to show the pool
+restriction is removable in principle, and stopped short of removing it.

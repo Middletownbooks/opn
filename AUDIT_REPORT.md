@@ -114,9 +114,11 @@ Exact values (`audit/03`, exact rational arithmetic):
 |---|---|---|---|---|---|---|---|---|
 | `k₀(q)` | 3 | 7 | 15 | **27** | **41** | **62** | 85 | 115 |
 
-The method is classical (Norton-type); `k₀(11) = 27` reproduces exactly the
-literature bound the paper itself cites in Corollary 4.3 for `3,5,7 ∤ N`, which
-is good evidence the reconstruction is faithful.
+The method is classical — it **is** Norton's. `k₀(7) = 15` and `k₀(11) = 27`
+reproduce exactly the published bounds for `3,5 ∤ N` and `3,5,7 ∤ N`, the latter
+being the one the paper itself cites in Corollary 4.3. This is a reconstruction
+of a known result, not a new one, and is used here only as an audit instrument;
+the decisive argument of §1 is Proposition A, which needs no `ω` bound.
 
 Now compare with what the certificates assert. A record with envelope tuple of
 size `t` and `M = 18` asserts `ω(N) ≤ t + 18`:

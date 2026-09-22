@@ -242,10 +242,16 @@ branch the special prime is `33457`. The path re-derives exactly:
 3. Both are `≡ 1 (mod 3)`, so each forces a further copy of 3.
 4. Four copies against a budget of two: **`XS 3`.**
 
-So the cut is sound, but by `XS 3` rather than `F 19`; `659` remains ruled out
-and `3p2.txt`'s conclusion is unaffected. One marker would need changing — if
-the file really reads as the transcription does, which is still the first thing
-to check, since my input is an OCR'd paste.
+So the cut is sound by `XS 3`, `659` remains ruled out, and `3p2.txt`'s
+conclusion is unaffected.
+
+**Resolved: it was the transcription.** The authors' own `tree.txt` entry for
+`59083²` was checked directly and **does not list 19** — matching my computed
+`3 · 18433 · 63127`. So the `F 19` in the paste is OCR damage, not something in
+their files, and there is **no defect in Ochem–Zelinsky's data**. The `XS 3`
+derivation above stands as an independent confirmation that the branch closes,
+but it repairs nothing. All three `3p2.txt` failures are now attributed to the
+transcription.
 
 ---
 
@@ -261,9 +267,9 @@ to check, since my input is an OCR'd paste.
 | Tightening `o₂ ≤ o₁ + 2` | **attempted, failed** — capacity is unbounded |
 | Question 10 with `p = 3` | **excluded** |
 | Question 10 in general | **open**; no collision for `x < 10⁶` |
-| `3p2.txt` factorisations | **382/385 verify**; 2 OCR slips, 1 real mismatch |
+| `3p2.txt` factorisations | **382/385 verify**; all 3 failures are OCR in the transcript |
 | `3p2.txt` cut markers | **239/241 verify** against freshly computed targets |
-| the one broken cut (`59083`) | **repaired** — closes by `XS 3`; conclusion unaffected |
+| the `59083` line | **not a defect** — the authors' `tree.txt` lists no 19 either |
 | `loopless.cpp` as released | **64-bit overflow past `r = 2^32`**; likely a different build was run |
 
 Honest summary: Lemma A and Corollary B are real structural additions, and the

@@ -636,9 +636,18 @@ is now confirmed to be known** — it is Zelinsky's (12) with `f₃ = 0` (§8). 
 against the literature; I cannot search it from this container. None of them
 should be called new until checked.
 
-Still outstanding, in priority order: (1) Kishore 1981 / Norton 1961, for the
-best known lower bound on `ω(N)` in terms of the least prime factor — the
-novelty check on my `k₀(q)` table; (2) Ochem–Rao, *On the number of prime
+**Resolved — `k₀(q)` is Norton's, not new.** The cited literature bounds are
+`ω ≥ 15` when `3,5 ∤ N` and `ω ≥ 27` when `3,5,7 ∤ N` (Norton). Those hypotheses
+are exactly `q ≥ 7` and `q ≥ 11`, and `k₀(7) = 15`, `k₀(11) = 27` reproduce them
+**exactly** (`inversion/10`). So the computation is Norton's method and the
+values at `q ≥ 13` are the same computation continued. I should not have called
+the table new; it is a reconstruction. (At `q = 5`, `k₀(5) = 7` is weaker than
+Nielsen's 12, as expected — Nielsen's bound is not an abundancy count.) Nothing
+in the audit depends on this: the table was only an instrument against
+`M = 18`, and the decisive argument there is Proposition A, which needs no
+`ω` bound at all.
+
+Still outstanding, in priority order: (1) — (2) Ochem–Rao, *On the number of prime
 factors of an odd perfect number*, Math. Comp. **83** (2014), 2435–2439, for
 their full inequality system, which is what an extended LP would build on;
 (3) anything pairing "Fermat prime" with "odd perfect number", to check

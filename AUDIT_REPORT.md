@@ -16,9 +16,9 @@ reproduce every number are in `audit/`.
 is unproved".
 
 The five branch closures all terminate in applications of the paper's
-Tail Envelope Lemma (Lemma 7.4). That lemma is a *correct implication*. Its
+Tail Envelope Lemma (Lemma 7.3). That lemma is a *correct implication*. Its
 hypotheses are supplied by `tail_count_certificate(B, M)` records with
-`B = 59`, `M = 18`, whose stated obligations (Definition 7.5) are:
+`B = 59`, `M = 18`, whose stated obligations (Definition 7.4) are:
 
 > (i) every unresolved support prime not already represented in the envelope
 > tuple is at least `B`; (ii) at most `M` such further support-prime slots
@@ -61,7 +61,7 @@ slot over-estimates its prime's factor, and each of the `≤ M` tail primes
 contributes at most `B/(B−1)`; hence `H(S) ≤ H(K_env)(B/(B−1))^M`. ∎
 
 **Corollary B.** The tail-envelope inequality `H(K_env)(B/(B−1))^M < 2` is
-never satisfiable by data satisfying (i) and (ii). Lemma 7.4 is therefore valid
+never satisfiable by data satisfying (i) and (ii). Lemma 7.3 is therefore valid
 but vacuous: it can only ever fire on records whose semantic obligations fail.
 
 This is not an abstract worry. I enumerated **every** tail record the five
@@ -85,7 +85,7 @@ requires. Representative rows:
 | `q5e2_pure_c2_…`     | (5,1249) | 59 | 18 | 1.7017 | 28 | −10 |
 
 (The `q = 7` forced rows use the repeated-slot envelope tuples of
-Definition 7.3, e.g. `(7,29,29)`, which are hardcoded in
+Definition 7.2, e.g. `(7,29,29)`, which are hardcoded in
 `cert_verifier_q7_strict.py` rather than carried in the bundle.)
 
 All five branches are affected, `q = 5` included.
@@ -108,7 +108,7 @@ Exact values (`audit/03`, exact rational arithmetic):
 | `k₀(q)` | 3 | 7 | 15 | **27** | **41** | **62** | 85 | 115 |
 
 The method is classical (Norton-type); `k₀(11) = 27` reproduces exactly the
-literature bound the paper itself cites in Corollary 4.4 for `3,5,7 ∤ N`, which
+literature bound the paper itself cites in Corollary 4.3 for `3,5,7 ∤ N`, which
 is good evidence the reconstruction is faithful.
 
 Now compare with what the certificates assert. A record with envelope tuple of
@@ -140,20 +140,20 @@ is, given `k₀(17) = 62`, *equivalent to* "there is no odd perfect number with
 | Valuation balance `e_q = Σ v_q(σ(p^{e_p}))` | Lemma 3.1, proved | — | n/a | yes, re-derived | none |
 | Cyclotomic input condition | Lemma 3.2, proved | — | n/a | yes | none |
 | Lower-prime avoidance for `ℓ < q` | Lemma 4.2, proved | `lower_prime_avoidance: [3,5,7,11,13]` | **string-literal equality only** | yes (trivial from minimality) | none |
-| Allowed first-input orders (N₁,E₁,E₂) | Lemma 6.3, proved | leaf labels | label presence only | yes | none |
+| Allowed first-input orders (N₁,E₁,E₂) | Lemma 5.3, proved | leaf labels | label presence only | yes | none |
 | Coverage split completeness | Prop. 6.4 | `coverage_reference: "cor:q17-first-input-coverage"` | literal string compare | — | **label does not exist in either `.tex`** |
-| `103` = least prime `>17`, `≡1 mod 17` | Table 7 | `endpoint_certificate` | primality + congruence of the *listed* candidates | yes, and the claim is **true** | list is incomplete (omits 18); completeness never checked |
-| `577` = first prime in `2·17^b−1` | Table 7 | `endpoint_certificate` | `b=1` composite, `577` prime | yes, true | only `b ≤ 2` screened; no argument that `b=1` is the only smaller case needed |
-| forced prime `≥ 103` / `≥ 19` | Lemma 5.3 | `forced_prime_lower_bound` | hardcoded `== 103` / `== 19` | plausible, order argument sound | order-2 case rests on "least odd prime >17 is 19" only |
+| `103` = least prime `>17`, `≡1 mod 17` | Table 6 | `endpoint_certificate` | primality + congruence of the *listed* candidates | yes, and the claim is **true** | list is incomplete (omits 18); completeness never checked |
+| `577` = first prime in `2·17^b−1` | Table 6 | `endpoint_certificate` | `b=1` composite, `577` prime | yes, true | only `b ≤ 2` screened; no argument that `b=1` is the only smaller case needed |
+| forced prime `≥ 103` / `≥ 19` | Lemma 6.2 | `forced_prime_lower_bound` | hardcoded `== 103` / `== 19` | plausible, order argument sound | order-2 case rests on "least odd prime >17 is 19" only |
 | **(i) all remaining support primes `≥ B = 59`** | **nothing** | `B: 59` | `assert B == 59` | **no** | **total — refuted by Prop. A** |
 | **(ii) at most `M = 18` remaining slots** | Def. 7.5 *states the obligation*; nothing discharges it | `M: 18` | `assert M == 18` | **no** | **total — contradicts Cor. 4.4 and Prop. C** |
-| tail inequality `< 2` | Lemma 7.4, proved | `endpoint_check` (a string) | recomputed from `B, M, K_base`; **the string is never parsed** | yes, arithmetic correct | arithmetic is fine and irrelevant |
+| tail inequality `< 2` | Lemma 7.3, proved | `endpoint_check` (a string) | recomputed from `B, M, K_base`; **the string is never parsed** | yes, arithmetic correct | arithmetic is fine and irrelevant |
 | branch closure | Prop. 7.7 | `conclusion:` `"…exhausted_in_current_formal_certificate_system"` | literal string compare | — | inherits the (i)/(ii) gap |
 
 The paper's own audit table (Table 5) is candid about the shape of this: for
 "tail-count data" it says the paper "**states the mathematical obligation**
-carried by `B` and `M`" and that Lemma 7.4 "proves the resulting
-contradiction". No row claims any lemma *discharges* the obligation. Remark 7.6
+carried by `B` and `M`" and that Lemma 7.3 "proves the resulting
+contradiction". No row claims any lemma *discharges* the obligation. Remark 7.5
 goes further and volunteers that `B=59, M=18` "is not inferred from a hidden
 global upper bound on `ω(N)`; it is a finite certificate obligation". Proposition A
 shows there is no such thing: the obligation is not finite, it is the theorem.
@@ -241,7 +241,7 @@ The `q = 7, 11, 13, 17` bundles contain no such fields at all (`audit/06`).
   `q11_branch_closure_verifier.py`, `q13_branch_closure_verifier.py`,
   `q5_master_bundle.jsonl`.
 - All five advertised verifier commands nevertheless run clean on the checked-out
-  files under Python 3.11.15 and print the Table 6 terminal outputs
+  files under Python 3.11.15 and print the Table 7 terminal outputs
   (`q=5/7/11/13/17 branch inventory exhausted`; 1228/41/10/10/7 records).
 
 So: *the verifiers accepted the checked-out certificates*. The frozen release
@@ -264,12 +264,12 @@ the theorem itself.
 
 What survives, and is worth keeping:
 - Lemmas 3.1, 3.2 (valuation balance, cyclotomic input condition) — sound.
-- Lemma 4.2 lower-prime avoidance and Corollary 4.4 — sound.
-- Lemmas 6.2, 6.3 and Proposition 6.4, the first-input coverage split — sound,
+- Lemma 4.2 lower-prime avoidance and Corollary 4.3 — sound.
+- Lemmas 5.2, 5.3 and Proposition 5.4, the first-input coverage split — sound,
   and the `q=17` split into `{N₁, E₁, E₂}` is correct: `17−1 = 2^4` has odd
   divisor 1 only, and `v₂(ord) ≤ 1` leaves `E₁, E₂`.
 - The `Φ₅/5` forced-prime machinery — sound, and reusable.
-- Lemma 7.4 itself is correctly proved; it is simply unusable.
+- Lemma 7.3 itself is correctly proved; it is simply unusable.
 
 ---
 
@@ -300,7 +300,7 @@ What survives, and is worth keeping:
 |---|---|
 | Proposition A, and hence that no valid tail-envelope certificate can satisfy the acceptance test | **proved** |
 | Proposition C and the `k₀(q)` table | **proved** (exact rational arithmetic) |
-| `M = 18` contradicts the paper's own Corollary 4.4 for `q ∈ {11,13,17}` | **proved** |
+| `M = 18` contradicts the paper's own Corollary 4.3 for `q ∈ {11,13,17}` | **proved** |
 | Obligation (ii) for `q=17` is equivalent to the branch being empty | **proved** |
 | Verifiers hardcode `B==59, M==18`; `endpoint_check` never parsed; `coverage_note` free text; incomplete candidate list accepted while the corrected one is rejected | **computationally verified** (`audit/05`) |
 | `cor:q17-first-input-coverage` absent from both `.tex` files | **computationally verified** |
@@ -311,14 +311,17 @@ What survives, and is worth keeping:
 
 ## 10. Failure modes of *this* audit
 
-The one way §1 could be wrong is if `M` does not mean what Definition 7.5 says.
+**Update: the primary failure mode below is now closed** — see §11, which
+checks the published arXiv version's Lemma 7.3 and Definition 7.4 verbatim.
+
+The one way §1 could be wrong is if `M` does not mean what Definition 7.4 says.
 If `M` bounded only the support primes *contributing to the q-adic valuation*
 rather than all remaining support primes, Proposition A would not apply. Three
-things rule that reading out: Definition 7.5 says "support-prime slots" without
-qualification; the proof of Lemma 7.4 writes `H(S) ≤ H(K_env)(B/(B−1))^M` over
-the **entire** support `S`; and Definition 7.3 glosses envelope entries as
+things rule that reading out: Definition 7.4 says "support-prime slots" without
+qualification; the proof of Lemma 7.3 writes `H(S) ≤ H(K_env)(B/(B−1))^M` over
+the **entire** support `S`; and Definition 7.2 glosses envelope entries as
 "independent worst-case support-prime slots". Under any reading that makes
-Lemma 7.4's proof valid, Proposition A applies.
+Lemma 7.3's proof valid, Proposition A applies.
 
 Secondarily, `k₀(q)` in Proposition C would be wrong if `σ(N)/N < Π p/(p−1)`
 failed — it cannot, the inequality is term-wise and strict for every finite
@@ -327,40 +330,111 @@ useful external check.
 
 ---
 
-## 11. Literature cross-check
+## 11. Cross-check against the published arXiv version
 
-A parallel literature scan (delegated; treated as a lead, not as evidence) and
-my own reading agree on the points that matter:
+The audit above was carried out against the repository `.tex` sources. I have
+since checked it against a full transcription of the published paper
+(arXiv:2607.04365). **The published version matches the repository sources on
+every load-bearing point**, verbatim where it matters:
+
+- **Lemma 7.3 (Tail envelope)** — identical statement and identical proof,
+  including the step `H(S) ≤ H(K_env)(B/(B−1))^M` taken over the **entire**
+  support `S`. This closes the one failure mode flagged in §10: Proposition A
+  applies to the published lemma.
+- **Definition 7.4** — identical, including "(ii) at most `M` such further
+  support-prime slots remain", "It is release data", and "The proof does not
+  require `M = 18` to be optimal."
+- **Remark 7.5** — identical, including "the frequently occurring `B = 59`,
+  `M = 18` strict-frontier budget is not inferred from a hidden global upper
+  bound on `ω(N)`; it is a finite certificate obligation."
+- **Table 5** — identical, including the row stating only that Definition 7.4
+  *states the obligation* carried by `B` and `M`.
+- **Proposition 13.1** adds one sentence not in my earlier reading:
+  "All endpoints use `B = 59` and `M = 18`." It is an assertion; the
+  proposition's proof establishes the cyclotomic/LTE content and the endpoint
+  kernels, and says nothing about `B` or `M`.
+
+So there is **no derivation of `B` or `M` anywhere in the published paper
+either**. The gap is not an artifact of reading the repository snapshot.
+
+Theorem numbering in this report follows the published version:
+Lemma 3.1/3.2 (valuation balance, cyclotomic input), Lemma 4.2 and
+Corollary 4.3 (lower-prime avoidance, support floors), Lemmas 5.2/5.3 and
+Proposition 5.4 (input witness, allowed orders, coverage split), Lemma 6.2
+(forced-prime alternative), Definition 7.2, Lemma 7.3, Definition 7.4,
+Remark 7.5, Criterion 7.6, Proposition 7.7, Proposition 13.1 and
+Theorem 13.2 (q=17), Theorem 14.1 (final closure). Table 6 is the q=17
+endpoint checks and Table 7 the reproducibility table — note the repository
+`README.md` misattributes the latter to "Table 6".
+
+---
+
+## 12. The paper's own introduction refutes its certificates
+
+This is the sharpest form of the finding, and it needs no external source at
+all. The published introduction reads:
+
+> "Writing `p₁ < p₂ < ⋯ < p_k` for the distinct prime divisors of a
+> hypothetical odd perfect number, so that `p₁` is the smallest prime divisor
+> and `k = ω(N)`, Grün proved the general least-prime bound
+> `p₁ < (2/3)k + 2` [Grü52]. … These results are important global constraints,
+> but they do not by themselves reduce the least-prime-divisor problem to the
+> cases `q = 3, 5, 7`, **since Grün's upper bound increases with `ω(N)`**."
+
+Reference: Otto Grün, *Über ungerade vollkommene Zahlen*,
+*Mathematische Zeitschrift* **55** (1952), 353–354.
+
+Rearranged, Grün's bound is `ω(N) > (3/2)(p₁ − 2)`. For `p₁ = 17` that is
+`ω(N) ≥ 23`. The q=17 tail records assert `ω(N) ≤ 20`.
+
+So the author states, in the introduction, the exact inequality that refutes
+the tail-count parameters used in Sections 10–13 — and even remarks on the
+direction of its dependence on `ω(N)`. Together with Corollary 4.3
+(`ω(N) ≥ 27` for `q ∈ {11,13,17}`), the paper contains two independent
+refutations of its own `M = 18` before it ever introduces the certificate.
+
+Three independent routes now refute `M = 18` at `q = 17`:
+
+| route | gives | source | status |
+|---|---|---|---|
+| Proposition A (this audit) | no valid `(B,M)` satisfies the acceptance test | elementary | proved here |
+| Proposition C, `k₀(17)` | `ω(N) ≥ 62` | elementary, exact arithmetic | proved here |
+| Corollary 4.3 | `ω(N) ≥ 27` | the paper itself, citing Nielsen/Deza | internal to the paper |
+| Grün 1952 | `ω(N) ≥ 23` | the paper's own introduction | internal to the paper |
+
+Each exceeds the asserted 20. The first is decisive for all five branches; the
+last two are decisive for `q ∈ {11,13,17}` and `q = 17` respectively, and both
+are quotable from the paper without appeal to any outside reference.
+
+---
+
+## 13. Literature cross-check
+
+A parallel literature scan (delegated; treated as a lead, not as evidence)
+agrees on the one point that matters for the repair question:
 
 1. **No upper bound on `ω(N)` for an odd perfect number is known in any form.**
-   The literature contains only lower bounds on `ω(N)` and upper bounds on the
-   *magnitude* of `N`. This is exactly the quantity obligation (ii) requires,
-   and it confirms that Remark 7.6's disclaimer ("not inferred from a hidden
-   global upper bound on `ω(N)`") is describing the absence of any argument at
-   all, not a substitute for one.
+   The literature carries only lower bounds on `ω(N)` and upper bounds on the
+   *magnitude* of `N`. This is exactly the quantity obligation (ii) requires.
+   Remark 7.5's disclaimer is therefore describing the absence of any argument,
+   not a substitute for one. **Still to confirm:** Nielsen,
+   *Odd perfect numbers, diophantine equations, and upper bounds*,
+   Math. Comp. **84** (2015), 2549–2567 — cited by the paper as developing
+   "upper-bound methods". I expect these to bound `N` in terms of `ω(N)`
+   (`N < 2^(4^k)`), not `ω(N)` itself; if it did bound `ω(N)` above, the
+   "no repair possible" conclusion of §7 would need revisiting. This is the
+   single most load-bearing external item still unverified.
 
-2. **A third, purely classical refutation of `M = 18`.**
-   Grün (1952): the smallest prime `p₁` of an odd perfect `N` satisfies
-   `p₁ < (2/3)ω(N) + 2`, i.e. `ω(N) > (3/2)(p₁ − 2)`. For `p₁ = 17` this gives
-   `ω(N) ≥ 23 > 20`. So the q=17 tail-count assertion is refuted by a
-   seventy-year-old published theorem, independently of Proposition A and of
-   Proposition C. (Grün is weaker than Proposition C — 23 against 62 — but it
-   is externally citable and suffices for `q = 17`.)
+2. Corollary 4.3's citation chain checks out as to content: Nielsen
+   (*Math. Comp.* **76**, 2007) for `ω ≥ 9` and `ω ≥ 12` when `3 ∤ N`;
+   Norton-type results for `ω ≥ 15` when `3·5 ∤ N` and `ω ≥ 27` when
+   `3·5·7 ∤ N`. My `k₀(11) = 27` reproduces the last exactly, which is good
+   evidence the reconstruction is faithful. The paper's *use* of these bounds
+   is legitimate; the problem is that it never compares them against its own
+   tail-count records.
 
-3. Corollary 4.4's citation chain checks out as to content: Nielsen
-   (*Math. Comp.* 76, 2007) for `ω ≥ 9` and `ω ≥ 12` when `3 ∤ N`; Norton-type
-   results for `ω ≥ 15` when `3·5 ∤ N` and `ω ≥ 27` when `3·5·7 ∤ N`. The
-   paper's use of these bounds is legitimate. The problem is that it never
-   compares them against its own tail-count records — had it done so, the
-   contradiction for `q ∈ {11,13,17}` would have been visible immediately.
-
-4. **Status of the preprint.** arXiv is blocked from this container, so I could
-   **not** independently verify `arXiv:2607.04365`. What I verified directly:
-   the repository exists, the tag `C-small-2026-07` and `HEAD` are both
-   `4f59cde9…`, dated 2026-07-05. The delegated scan reports that the
-   identifier resolves and that it found **no** citations, reviews or responses
-   to the paper. Treat the arXiv record and the absence of responses as
-   unverified by me.
-
-So the gap identified here has apparently not been noted publicly, and the
-result stands as an uncontested claim in the literature.
+3. The scan found no citations, reviews or responses to the preprint. arxiv.org
+   is blocked from this container, so I could not verify that independently;
+   what I verified directly is the repository, the tag `C-small-2026-07`, and
+   the commit date 2026-07-05, plus the full paper transcription supplied to
+   this session. Treat the absence of public response as unverified.

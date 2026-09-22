@@ -148,7 +148,7 @@ Thue–Mahler input and no completeness assumption enter test 2.**
 
 ### 5c. The counting test  (test 3, conditional)
 
-`ω(N) = 1 + |T| + |U| = 6 + |U|`, and `ω(N) ≥ 10` (Nielsen 2007), so `|U| ≥ 4`.
+`ω(N) = 1 + |T| + |U| = 6 + |U|`, and `ω(N) ≥ 10` (Nielsen 2015), so `|U| ≥ 4`.
 With `U ⊆ Sm(T)` and `PROD_U ≤ R(T)`, the **four largest** members of `Sm(T)`
 must already fit inside `R(T)`. This test assumes `Sm(T)` has no member beyond
 the search bound. `Sm(T)` *is* finite — `x²+x+1 = T`-smooth is a Thue–Mahler
@@ -157,49 +157,164 @@ test 3 is tallied separately and its verdicts are **conditional**.
 
 ### 5d. Results  (`s3k2/09`, `s3k2/10`)
 
-Over all `5`-subsets `T` of the primes `≡ 1 (mod 3)` below 200 containing 13
-(4845 sets), with `Y = 10²⁴`:
+Over all `5`-subsets `T` of the primes `≡ 1 (mod 3)` below a bound containing 13,
+with `Y = 10²⁴`:
 
-| test | assumes | eliminated |
+| pool | sets | test 1 | test 2 | unconditional | needs test 3 | alive |
+|---|---|---|---|---|---|---|
+| `< 200` | 4845 | 6 | 3708 | **3714 (76.7%)** | 1131 | **0** |
+| `< 400` | 58905 | 6 | 51672 | **51678 (87.7%)** | 7227 | **0** |
+
+The sets that need test 3 are overwhelmingly those containing `{7, 13, 19, 31}`,
+because `Sm(T)` is then rich at the bottom (`5 → 31`, `11 → 7·19`,
+`191 → 7·13·31`, `653 → 7·13·19`). For those, test 1 gives `R(T) ≈ 1.003`, so
+`U` can contain at most one of the known members of `Sm(T)`, and `ω(N) ≥ 10`
+then demands at least three solutions of `x²+x+1 = T`-smooth with `x > 10¹²`.
+
+---
+
+## 5½. The other sub-cases of §3, and the full sweep  (`s3k2/12`)
+
+`|T| = 5` is only the top rung. Writing `β` for the number of big components
+(`p^e`, `n₁^{q₁}`, `n₂^{q₂}`) that are `≡ 1 (mod 3)` and `W` for the ones that are
+`≡ 2 (mod 3)`, we have `τ = |T| = α + β` and `|W| = 3 − β`, and the prime
+divisors of `N` are exactly `{3} ∪ T ∪ W ∪ U`. The identity generalises to
+
+    PROD_T · PROD_W · PROD_U = 18/13.
+
+The 3-budget gives one extra constraint. A notable `w ≡ 2 (mod 3)` with even
+exponent contributes `v₃(σ(w^q)) = 0`, but the special `p ≡ 2 (mod 3)` has
+`e+1` even and `3 | p+1`, so by LTE it contributes `v₃(p+1) + v₃(e+1) ≥ 1`.
+Hence
+
+> `α + [the special lies in W] ≤ 2`,
+
+which kills the profiles with `α = 2` and the special `≡ 2 (mod 3)` outright.
+The special prime is `≡ 1 (mod 12)` when it lies in `T` and `≡ 5 (mod 12)` when
+it lies in `W`.
+
+`W` is handled without truncation: each of its `|W|` slots is either an explicit
+prime `≡ 2 (mod 3)` below `WB = 500`, or an unknown prime `≥ WB`, which
+contributes `1` to the lower bound and at most `WB/(WB−1) = 1.002004` to the
+upper bound. Small `w` is killed by test 1 (a notable `5` forces
+`PROD_W ≥ 1.2496`, leaving only `1.108` for `PROD_T · PROD_U`); large `w` is
+killed by test 2, because its upper-bound slack tends to 1. A `(T, W)`
+configuration survives only if no test fires, and a set `T` survives only if
+some configuration survives.
+
+Test 3 generalises cleanly: `ω(N) = 1 + τ + |W| + |U| = 4 + α + |U| ≥ 10`, so
+**`|U| ≥ 6 − α ≥ 4` in every sub-case**, and `U ⊆ Sm(T) \ W`.
+
+### Results of the full sweep  (`s3k2/12`, pool `< 400`, `WB = 500`)
+
+| `τ` | `α` | special in `T` | notables in `T` | `\|W\|` | sets | unconditional | needs test 3 | alive |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 0 | no | 1 | 2 | 1 | 0 | 1 | 0 |
+| 2 | 0 | no | 2 | 1 | 36 | 30 | 6 | 0 |
+| 1 | 0 | yes | 0 | 2 | 1 | 0 | 1 | 0 |
+| 2 | 0 | yes | 1 | 1 | 36 | 30 | 6 | 0 |
+| 3 | 0 | yes | 2 | 0 | 630 | 594 | 36 | 0 |
+| 1 | 1 | no | 0 | 3 | 1 | 0 | 1 | 0 |
+| 2 | 1 | no | 1 | 2 | 36 | 0 | 36 | 0 |
+| 3 | 1 | no | 2 | 1 | 630 | 428 | 202 | 0 |
+| 2 | 1 | yes | 0 | 2 | 36 | 1 | 35 | 0 |
+| 3 | 1 | yes | 1 | 1 | 630 | 489 | 141 | 0 |
+| 4 | 1 | yes | 2 | 0 | 7140 | 6509 | 631 | 0 |
+| 3 | 2 | yes | 0 | 2 | 630 | 85 | 545 | 0 |
+| 4 | 2 | yes | 1 | 1 | 7140 | 5036 | 2104 | 0 |
+| 5 | 2 | yes | 2 | 0 | 58905 | 51678 | 7227 | 0 |
+| **all** | | | | | **75852** | **64880 (85.5%)** | 10972 | **0** |
+
+The profiles with `α = 2` and the special `≡ 2 (mod 3)` never appear: the
+budget inequality rules them out before any computation.
+
+---
+
+## 5⅔. Interval narrowing: 98% unconditional  (`s3k2/14`, `s3k2/15`)
+
+The crude upper bound `g(T) = ∏ t/(t−1)` throws away two things. First, an
+ordinary component has exponent *exactly* 2, so it is capped at `1+1/t+1/t²`,
+well below `t/(t−1)`; write
+
+    g*(T) = max over role assignments of ∏_{ordinary}(1+1/t+1/t²) · ∏_{special,notable} t/(t−1).
+
+Second, and more importantly, the two bounds feed each other. Put
+`P = PROD_T · PROD_W`, so `P · PROD_U = 18/13` with `LO ≤ P < HI`. Given a lower
+bound `LO`, we get `PROD_U ≤ R = (18/13)/LO`, so **every** `x ∈ U` must satisfy
+`1 + 1/x + 1/x² ≤ R` *on its own*: the small members of `Sm(T)` are excluded
+from `U` outright. That shrinks `H`, which raises `LO`, and one iterates:
+
+    R ← (18/13)/LO ;   Sm*(T) ← { x ∈ Sm(T)\W : 1+1/x+1/x² ≤ R } ;
+    H ← ∏_{Sm*(T)} (1+1/x+1/x²) · exp(tail) ;   LO ← max(LO, (18/13)/H).
+
+`LO` is non-decreasing, so this converges. **`LO ≥ HI` kills `T` outright**, and
+this criterion subsumes the earlier `g·h ≤ 18/13`. It stays unconditional:
+dropping members of `Sm(T)` only shrinks `H` and raises `LO`, i.e. only makes
+the test claim more, so the unknown part of `Sm(T)` is bounded in the *upward*
+direction by the Euler-product tail, and `H` is rounded up before use.
+
+For `|T| = 5` over the pool below 200 this lifts the unconditional share from
+
+| test | unconditional kills of 4845 |
+|---|---|
+| crude two-sided (`g·h ≤ 18/13`) | 3714 (76.7%) |
+| **interval narrowing** | **4764 (98.3%)** |
+
+leaving 81 sets, all of them containing `{7, 13, 19}` — the sets where `Sm(T)`
+is rich at the bottom. Over the whole of §3 at `k = 2` with the pool below 120
+the unconditional share is 83.4% and nothing survives; the same sweep at pool
+400 is `s3k2/15` with argument `400`.
+
+
+---
+
+## 5¾. A cutoff for `max(T)`  (`s3k2/13`)
+
+The sweeps are finite only because the pool is. Here is the reduction that would
+make them exhaustive. Let `T = T' ∪ {t*}` with `t* ≥ B` and `T'` inside the pool.
+Then `g(T) ≤ g(T') · B/(B−1)`, and every `x ∈ Sm(T) \ Sm(T')` has
+`x²+x+1 = t*^c · M'` with `c ≥ 1` and `M'` `T'`-smooth, so by the same Euler
+product as the tail lemma,
+
+    Σ_{x ∈ Sm(T)\Sm(T')} 1/x  ≤  (1 + 1/(√B − 1)) · (u/(1−u)) · ∏_{t∈T'} (1 − t^{−1/2})^{−1},
+    u = B^{−1/2}.
+
+| `B` | `Σ` bound (for `T' = {7,13,19,31}`) | total correction to `g·h` |
 |---|---|---|
-| 1 — `minPROD_T > 18/13` | nothing | 6 |
-| 2 — `g·h ≤ 18/13` | nothing | 3708 |
-| | | **3714 (76.7%) unconditionally** |
-| 3 — `ω ≥ 10` + `Sm(T)` complete | see 5c | 1131 |
-| | | **0 survive** |
+| `10³` | 1.19e−1 | 1.128459 |
+| `10⁶` | 3.53e−3 | 1.003569 |
+| `10⁸` | 3.52e−4 | 1.000356 |
+| `10¹²` | 3.52e−6 | 1.000004 |
 
-The 1131 sets that need test 3 are overwhelmingly those containing
-`{7, 13, 19, 31}`, because `Sm(T)` is then rich at the bottom
-(`5 → 31`, `11 → 7·19`, `191 → 7·13·31`, `653 → 7·13·19`). For those, test 1
-gives `R(T) ≈ 1.003`, so `U` can contain at most one of the known members of
-`Sm(T)`, and `ω(N) ≥ 10` then demands at least three solutions of
-`x²+x+1 = T`-smooth with `x > 10¹²`.
-
-A wider sweep (pool below 400, 58905 sets) is in `s3k2/` as the same script with
-argument `400`.
+So a finite check on the `4`-subsets below `B = 10⁸` that clears `18/13` by a
+factor `1.0004` would kill every `|T| = 5` set with `max(T) ≥ 10⁸` at a stroke.
+**That check does not currently pass**: the `|T| = 4` sweep clears tests 1–2 for
+91.2% of the 4-subsets below 400, not all of them. So this is the missing
+ingredient, not a completed step — but it shows the gap is finite and explicit,
+not open-ended.
 
 ---
 
 ## 6. Status
 
-* **Unconditional, new:** the two-sided fixed-support test for `|T| = 5`, with
-  the rigorous tail lemma, and its 76.7% elimination rate over the pool below
-  200. The identity `PROD_T · PROD_U = 18/13` and the role minima are exact.
-* **Conditional:** total elimination of `|T| = 5` over that pool, modulo
-  completeness of the Thue–Mahler solution sets `Sm(T)` (searched to `x ≤ 10¹²`)
-  and `ω(N) ≥ 10`.
-* **Not done:** `|T| ≤ 4` at `k = 2`. That is the shape their §3 closes at
-  `k = 1`, but with two notables the role assignment changes and the opening
-  tree (§3 above) supplies nothing about the second one. Also not done: `T` with
-  a prime above the sweep's pool bound — the test is finite in `T` only because
-  the pool is, and a cutoff argument for `max(T)` large is missing.
+* **Unconditional and new:** the two-sided fixed-support test — the exact
+  identity `PROD_T · PROD_W · PROD_U = 18/13`, the role minima, the `p ≡ 1 mod 12`
+  / `p ≡ 5 mod 12` split, the budget inequality `α + [special ∈ W] ≤ 2`, and the
+  tail lemma that makes `h(T)` a genuine upper bound with no Thue–Mahler input.
+  This eliminates the large majority of every sub-case with no unproved premise.
+* **Conditional:** total elimination of §3 at `k = 2` over the stated pools,
+  modulo (i) `ω(N) ≥ 10` (Nielsen 2015, a theorem, cited) and (ii) completeness
+  of the Thue–Mahler solution sets `Sm(T)`, searched only to `x ≤ 10¹²`.
+* **Not done:** `T` containing a prime above the pool bound. §5¾ reduces that
+  infinite family to an explicit finite check, but the check does not yet pass.
+* **Not done:** the `k = 2` analogue of their §4, i.e. `3` notable. §2 (`3 ∤ N`)
+  was closed separately; §3 is this file; `3` notable is untouched.
 
 ## 7. What would finish it
 
-1. A Thue–Mahler solve (PARI/Magma) of `x²+x+1 = ∏_{t∈T} t^{c_t}` for the 1131
-   sets, which would make the `|T| = 5` elimination unconditional.
-2. A cutoff on `max(T)`: show that `g(T)·h(T) ≤ 18/13` whenever `T` contains a
-   prime above some explicit bound. Heuristically clear — a large `t` adds
-   almost nothing to `g` and can only add `x` with `t | x²+x+1` to `Sm(T)` — but
-   it needs a proof.
-3. The `|T| ≤ 4` sub-cases.
+1. A Thue–Mahler solve (PARI/Magma) of `x²+x+1 = ∏_{t∈T} t^{c_t}` for the sets
+   that reach test 3. That alone makes the whole sweep unconditional apart from
+   the cited `ω(N) ≥ 10`.
+2. Strengthening the `|T| ≤ 4` upper test enough for the `max(T)` cutoff of §5¾
+   to fire at `B = 10⁸`; then the pool restriction disappears.
+3. `3` notable at `k = 2`.

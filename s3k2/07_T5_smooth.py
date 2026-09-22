@@ -14,7 +14,7 @@ search below is complete up to B and I flag the largest solution found.
 
 Combined with:
   * PROD_T * PROD_U = 18/13 and the role minima  ->  PROD_U <= R(T);
-  * omega(N) >= 10 (Nielsen 2007) and omega(N) = 1 + |T| + |U|  ->  |U| >= 4;
+  * omega(N) >= 10 (Nielsen 2015) and omega(N) = 1 + |T| + |U|  ->  |U| >= 4;
 T dies unless the four smallest members of Sm(T) already satisfy
         prod (1 + 1/x + 1/x^2)  <=  R(T).
 """

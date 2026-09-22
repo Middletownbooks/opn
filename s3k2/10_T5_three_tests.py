@@ -4,7 +4,7 @@
 
   TEST 1 (unconditional)   min PROD_T > 18/13.
   TEST 2 (unconditional)   g(T) * h(T) <= 18/13, with the rigorous tail bound.
-  TEST 3 (conditional)     omega(N) >= 10 (Nielsen 2007) gives |U| >= 4; U is
+  TEST 3 (conditional)     omega(N) >= 10 (Nielsen 2015) gives |U| >= 4; U is
                            contained in Sm(T) and PROD_U <= R(T) = (18/13)/min
                            PROD_T, so the four LARGEST members of Sm(T) must
                            already fit inside R(T).  This one assumes Sm(T) has

@@ -215,15 +215,37 @@ factorisation of `σ(X²) = X²+X+1`; each `X^e => 2 f₁ …` asserts one of `X
 | `953^2 => 811 5023` | `181 · 5023` | `181` misread as `811` — OCR; and `181` *is* ruled out earlier in the file, so the marker `F 811` should read `F 181` and the logic is unaffected |
 | `59083^2 => 3 19 6604392133` | `3 · 18433 · 63127` | **does not resolve to a transcription slip** |
 
-The third is worth one check against the real file. `59083` itself is correct —
-the preceding line `16729^2 => 3 1579 59083` verifies exactly. But the true
-factorisation contains no `19`, so the branch cut `F 19` at that line is not
-justified by it, and that branch of the `659` elimination would need another
-reason. A plausible one exists: `18433 ≡ 63127 ≡ 1 (mod 3)`, so if either is
-ordinary it produces a third copy of 3 and the branch closes by `XS 3` instead.
-I have **not** verified that the remaining cases (one of them special, the
-other notable) also close, and I am not claiming the file is wrong — my input
-is an OCR'd paste, and that is much the likelier cause.
+**A second, independent pass over the markers** (`restrained/07`) confirms the
+discrepancy is isolated. Of the 241 lines carrying an `F t` or `XS t` marker,
+**239 have the marker prime genuinely dividing the line's target**, tested
+against a freshly computed target rather than the file's own factorisation. The
+only two failures are the `953` line (the `811`/`181` slip above, where the cut
+is valid with `181`) and the `59083` line.
+
+### The `59083` cut, repaired
+
+I was able to close that branch (`restrained/08`), so the file's **conclusion
+stands** even though the stated reason does not.
+
+Setting: §3, so 3 is ordinary, `3² ‖ N` and `e₃ = 2` exactly; the opening tree
+of §3 puts the notable prime in `S = {7,13,19,31,61,97,127,331}`; on this
+branch the special prime is `33457`. The path re-derives exactly:
+`σ(659²) = 13·33457`, `33457+1 = 2·16729`, `σ(16729²) = 3·1579·59083`,
+`σ(59083²) = 3·18433·63127`.
+
+1. `659 ≡ 2 (mod 3)` contributes no 3; `16729` and `59083` are each `≡ 1 mod 3`
+   and contribute one each. **Two copies of 3 are forced, and `e₃ = 2`, so the
+   budget is exactly exhausted.**
+2. `18433` and `63127` both divide `N`. Neither lies in `S`, so neither is
+   notable; the special prime here is `33457`, so neither is special.
+   **Both are therefore ordinary.**
+3. Both are `≡ 1 (mod 3)`, so each forces a further copy of 3.
+4. Four copies against a budget of two: **`XS 3`.**
+
+So the cut is sound, but by `XS 3` rather than `F 19`; `659` remains ruled out
+and `3p2.txt`'s conclusion is unaffected. One marker would need changing — if
+the file really reads as the transcription does, which is still the first thing
+to check, since my input is an OCR'd paste.
 
 ---
 
@@ -239,7 +261,9 @@ is an OCR'd paste, and that is much the likelier cause.
 | Tightening `o₂ ≤ o₁ + 2` | **attempted, failed** — capacity is unbounded |
 | Question 10 with `p = 3` | **excluded** |
 | Question 10 in general | **open**; no collision for `x < 10⁶` |
-| `3p2.txt` factorisations | **382/385 verify**; 2 OCR slips, 1 line to check |
+| `3p2.txt` factorisations | **382/385 verify**; 2 OCR slips, 1 real mismatch |
+| `3p2.txt` cut markers | **239/241 verify** against freshly computed targets |
+| the one broken cut (`59083`) | **repaired** — closes by `XS 3`; conclusion unaffected |
 | `loopless.cpp` as released | **64-bit overflow past `r = 2^32`**; likely a different build was run |
 
 Honest summary: Lemma A and Corollary B are real structural additions, and the

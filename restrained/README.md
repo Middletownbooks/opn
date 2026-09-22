@@ -15,3 +15,5 @@ Standard library only. Findings in `../NOTES_RESTRAINED.md`.
 
 `3p2.txt` here is the transcription supplied to this session, not a copy of the
 authors' file; it is kept only so `06` is reproducible.
+| `07_verify_3p2_markers.py` | second pass over `3p2.txt`: checks every `F t` / `XS t` marker prime actually divides the line's target (239/241) |
+| `08_repair_59083_branch.py` | closes the one broken cut by `XS 3` instead of `F 19`, so the file's conclusion stands |

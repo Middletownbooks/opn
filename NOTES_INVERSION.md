@@ -246,7 +246,10 @@ equally accept an omission that *did* matter.
 | Lemma OC | **proved** |
 | Negative Result 1 | **proved** + verified |
 | Proposition D | **proved** + verified |
-| Proposition E (Fermat forcing) | **proved**; LTE step spot-checked |
+| Proposition E (Fermat forcing) | **proved**; but applies to ≤ 5 primes (§9e) |
+| Theorem 1' (all prime divisors) | **proved** — minimality never used (§9e) |
+| "restrained" usable in branches q ≥ 5 | **no** — vacuous there (§9d) |
+| `k`-restrained forces `k ≥ 5` when `3 ∤ N` | **attempted and NOT proved** (§9d) |
 | `L(q)` table, `A(d,ℓ)` densities | **computed**, exact |
 | Zelinsky's Theorem 1, both cases | **independently verified** (§8) |
 | Ochem–Zelinsky 2026 §2 abundancy bound | **independently verified** (§9b) |
@@ -525,6 +528,101 @@ then `Forb(307) = {3}`, so `e_307 ≥ 4`.
 
 **So the transfer needs an upper bound on exponents** — the same missing
 ingredient as everywhere else here. That is the obstruction, stated exactly.
+
+---
+
+## 9d. Why "restrained" is not available to me — and Theorem 1'
+
+### The restrained hypothesis is *vacuous* in every branch I care about
+
+Ochem–Zelinsky's Theorem 1 is conditional: *if* `N` is restrained then `n = 3`
+and `q ≥ 23,000,000,000`. Their route there is the point:
+
+- **§2** assumes `N` restrained and `3 ∤ N`, and shows **no such `N` exists**
+  (the `A₁A₂A₃A_∞ < 2` computation I reproduced in §9b).
+- **§3** assumes `N` restrained and `3² ‖ N`, and shows no such `N` exists.
+- **§4** concludes 3 must be the notable prime.
+
+So **restrained ⟹ 3 | N ⟹ min S = 3**, and therefore:
+
+> **Corollary.** No restrained odd perfect number has smallest prime factor
+> `≥ 5`. The restrained sub-case of every branch `q ∈ {5,7,11,13,17}` — indeed
+> of every `q ≥ 5` — is already closed unconditionally, by their §2 alone.
+
+That is why I cannot simply adopt it. In a minimal-prime branch with `q ≥ 5`
+the hypothesis "restrained" is already known to be unsatisfiable, so anything I
+proved under it would be **vacuously true**. I need a hypothesis that bounds
+exponents *and* is non-vacuous when `3 ∤ N`.
+
+### The right generalisation: the `k`-restrained ladder
+
+Call `N` **`k`-restrained** if exactly `k` of its even exponents exceed 2
+(McDaniel gives `k ≥ 1`; restrained is `k = 1`). This is the natural ladder:
+it is non-vacuous for `k ≥ 2` when `3 ∤ N`, and the factor tree keeps **finite
+branching at ordinary nodes** for any fixed `k`, since all but `k` components
+have `e_p = 2`.
+
+Corollary 2e bites here directly: when `3 ∤ N`, every `p ∈ S` with `p ≡ 1 mod 3`
+has `e_p ≠ 2`, hence is non-ordinary, so
+
+  `k ≥ #{p ∈ S : p ≡ 1 mod 3} − 1`   (the `−1` for the Euler prime, which is
+  `≡ 1 mod 3` by Corollary 2d).
+
+**An attempt that did not work, recorded so it is not repeated.** I tried to
+turn this into "`k`-restrained with `3 ∤ N` forces `k ≥ 5`", via: every ordinary
+`p ≡ 2 mod 3` has all prime factors of `σ(p²)` congruent to `1 mod 3`, so the
+map *ordinary prime ↦ largest prime factor of `σ(p²)`* would be injective into
+`A = {p ∈ S : p ≡ 1 mod 3}`, giving `ω(N) ≤ 2|A| + …` and contradicting
+`ω(N) ≥ 12`. **The injectivity step does not transfer.** Zelinsky's Lemma 4
+establishes it only for components whose `σ(p²)` has at most two prime factors
+(his `S₁`, `S₂`); for `S₃` the size argument `σ(a²)/q > √(σ(a²))` fails. The
+weaker valid replacement — each `a ∈ A` absorbs at most `e_a` such
+contributions — gives no bound, because the `e_a` are unbounded. So the
+`k ≥ 5` claim is **not proved** and should not be quoted.
+
+---
+
+## 9e. Theorem 1' — the classification holds at every prime divisor
+
+Working on Proposition E showed that Theorem 1 was understated.
+
+> **Theorem 1'.** Let `N` be odd perfect and let `r` be **any** prime with
+> `r | N`. Write `r − 1 = 2^a·μ(r)` with `μ(r)` odd. Then some `p ∈ S`,
+> `p ≠ r`, is an `r`-input witness, and `ord_r(p) | μ(r)` if `p` is non-Euler,
+> `ord_r(π) | 2μ(r)` if `p = π`.
+
+The proof is the one already given, and **it never uses `q = min S`** — only
+`r | N` (for `e_r ≥ 1`), `e_p` even for non-Euler `p`, and `α + 1 ≡ 2 mod 4`.
+The earlier Theorem 1 is the case `r = q`.
+
+Define the **production width** `w(r) = d(μ(r))`, the number of odd divisors of
+`r − 1`. Then `r` admits `w(r)` non-Euler input orders and `2w(r)` Euler ones —
+`3w(r)` input types.
+
+**Proposition E is exactly the case `w(r) = 1`**, i.e. `r − 1` a power of 2,
+i.e. `r` a Fermat prime; the sole non-Euler order is 1, forcing `p ≡ 1 mod r`
+and `r | n_p`, hence `e_p ≥ r − 1`.
+
+### The ceiling on Proposition E, stated plainly
+
+`w(r) = 1` iff `r` is a Fermat prime. Only 3, 5, 17, 257, 65537 are known, and
+none others exist below `2^{2^32}`. **So Proposition E has content for at most
+five primes** — in a branch `q = min S`, only the Fermat primes `≥ q`, which
+for `q = 17` means `{17, 257, 65537}`. It is a sharp statement about a very
+thin set, not a general tool. I would rather say that than let it look bigger
+than it is.
+
+What survives the ceiling is Theorem 1' and the invariant `w(r)`. Width over
+primes `r < 10000`:
+
+| `w(r)` | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | >8 |
+|---|---|---|---|---|---|---|---|---|---|
+| primes | 4 | 253 | 13 | 458 | 3 | 122 | 2 | 241 | 132 |
+| share | 0.33% | 20.6% | 1.1% | 37.3% | 0.2% | 9.9% | 0.2% | 19.6% | — |
+
+Low width is common — over 20% of primes have `w(r) = 2`, where production
+needs `ord ∈ {1, ℓ}` for a single odd prime `ℓ`. So the *mechanism* behind
+Proposition E is broadly applicable even though Proposition E itself is not.
 
 ---
 

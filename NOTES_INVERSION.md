@@ -78,8 +78,14 @@ over `ℓ < 30`, `p < 60`, `e ≤ 39`, zero mismatches (`inversion/02`).
 *Proof.* `π ≡ −1` gives `ord_ℓ(π) = 2`, and `2 | n_π` since `n_π ≡ 2 mod 4`,
 so `π` is an `ℓ`-input, contradicting avoidance. ∎
 
-This generalises the paper's Proposition 9.2, which proves only the case
-`q = 5`, `ℓ = 3`. It is a real restriction on the Euler prime:
+**Correction (added after reading Ochem–Zelinsky 2026).** This has a one-line
+proof needing no cyclotomic machinery at all: `α` is odd, so
+`(π+1) | σ(π^α)`; if `ℓ | π+1` then `ℓ | σ(π^α) | σ(N) = 2N`, so `ℓ | N`,
+contradicting `ℓ < q = min S`. That argument is standard — it is the first
+move in Ochem–Zelinsky's Lemma 6 — so **Corollary 2a should be regarded as
+known in substance**, not as a new result. It generalises the *statement* of
+the paper's Proposition 9.2 (proved there only for `q = 5`, `ℓ = 3`), but the
+technique is routine. It remains a real restriction on the Euler prime:
 
 | q | ℓ < q | surviving fraction of residues |
 |---|---|---|
@@ -109,6 +115,20 @@ so the `r`-adic balance forces some `p ∈ S` with `ord_r(p) | n_p`. Writing
 `d = ord_r(p)`, the production order divides both `r−1` and `n_p`, so Lemma OC
 constrains the witness. Production is a covering problem constrained by
 avoidance — a forcing constraint, not an envelope.
+
+**A propagation tool from the literature.** Ochem–Zelinsky 2026 (Lemma 5)
+supply exactly the rule this framework was missing:
+
+> Let `x, s, t` be distinct primes with `x ∤ t−1` and `s ∤ t−1`. If
+> `ord_s(t) | ord_x(t)`, then for every `v ≥ 1`, `x | σ(t^v)` implies
+> `s | σ(t^v)`.
+
+That is a *co-production* rule: producing `x` from `t` forces producing `s`
+from the same component. It turns the production graph from a covering problem
+into one with implications along it, which is what makes their factor trees
+terminate. Their Lemma 4 — `ord_s(n)` even implies `s ∤ σ(n^q)` for even `q` —
+is the same even-order observation that underlies Theorem 1 here, confirming
+that mechanism is standard.
 
 ---
 
@@ -229,6 +249,8 @@ equally accept an omission that *did* matter.
 | Proposition E (Fermat forcing) | **proved**; LTE step spot-checked |
 | `L(q)` table, `A(d,ℓ)` densities | **computed**, exact |
 | Zelinsky's Theorem 1, both cases | **independently verified** (§8) |
+| Ochem–Zelinsky 2026 §2 abundancy bound | **independently verified** (§9b) |
+| Corollary 2a | **proved**, but now known to be routine (§2 correction) |
 | Corollary 2e (exponent floors) | **proved**; `ℓ=3` case known, `ℓ<q` case new-to-me |
 | Improved `Ω`/`ω` bound in a branch | **not obtained** — needs the counting lemmas of §9 |
 | Any branch closure | **not obtained** — and Proposition D says not by OC alone |
@@ -335,6 +357,57 @@ Clayton–Hansen (2023) the bounds `Ω ≥ (99/37)ω − 187/37` and, for `3 ∤
 `Ω ≥ (46/19)ω − 51/19`. The second has slope ≈ 2.42, weaker than Zelinsky's
 2.67 for the same hypothesis, which is odd for a later paper. I have not been
 able to check Clayton–Hansen and am not relying on either figure.
+
+---
+
+## 9b. Ochem–Zelinsky 2026, and the repair the certificate actually needed
+
+Ochem & Zelinsky, *On odd perfect numbers with exactly one even exponent
+greater than 2*, arXiv:2607.19746v1 (22 Jul 2026), prove that a "restrained"
+odd perfect number (all even exponents 2 except one) must have notable prime
+3 and notable exponent `q ≥ 23,000,000,000`.
+
+**I verified their Section 2 abundancy computation** (`inversion/07`). All four
+constants reproduce to full printed precision:
+
+| constant | recomputed | paper |
+|---|---|---|
+| `A₁ = 91/72` | 1.26388888888888888889 | 1.26388888888888888888 |
+| `A₂` (11 tabulated `m(a,b)`) | 1.32051931736840940811 | 1.32051931736840940811 |
+| `A₃ = (1+10⁻⁹)³` | 1.00000000300000000300 | 1.00000000300000000300 |
+| `A_∞` | 1.01178747704420359447 | 1.01178747704420359446 |
+| product | **1.68866287554177807591** | 1.68866287554178 |
+
+### This is the correct form of the envelope my audit killed
+
+Proposition A says the **finite-slot** envelope `H(K_env)(B/(B−1))^M < 2` is
+never satisfiable by valid data. Ochem–Zelinsky nevertheless bound an abundancy
+from above, successfully. There is no conflict: their envelope has a different
+shape, and the difference is precisely the repair Mantovanelli's certificate
+needed.
+
+They partition the remaining support into **infinitely many classes** — the
+pairs `(a,b)` with `σ(s²) = p^a n^b` — then prove (i) at most one support prime
+lies in each class, and (ii) a lower bound `m(a,b)` on that prime which *grows*
+with `a+b` (their §2.4: `s ≥ 7^{k/2} − 1` for `k = a+b`). The resulting infinite
+product converges, and converges below 2.
+
+What makes it work, point by point against `tail_count_certificate(B,M)`:
+
+| requirement | Ochem–Zelinsky | Mantovanelli |
+|---|---|---|
+| classification of the remaining support | **proved** (the `(a,b)` classes) | none — a bare count `M` |
+| per-class lower bounds | **proved**, and growing | one flat `B = 59`, asserted |
+| bound on `ω(N)` needed? | **no** — infinitely many classes allowed | yes, `ω ≤ 20`, in disguise |
+| convergence | proved | n/a |
+
+So the envelope idea is not inherently broken, and my §7 verdict should be read
+precisely: *the finite-`M` form* is unrepairable, because a finite `M` is an
+upper bound on `ω(N)` in disguise. The move that rescues it is to allow
+infinitely many classes with growing lower bounds — which costs nothing,
+because no bound on `ω(N)` is then required. That is the shape a repaired
+certificate would have to take, and this paper shows the technique is rigorous
+and available when the classification is genuinely proved.
 
 ---
 

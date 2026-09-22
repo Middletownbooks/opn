@@ -271,6 +271,21 @@ a *lower* bound `ω(N) ≥ 10` (see §13). And by Proposition C such a bound wou
 immediately close the branch outright, with no tail inequality needed. The
 "smallest repair" is the theorem itself.
 
+**What the correct version looks like.** The envelope *idea* is not inherently
+broken — only the finite-`M` form is. Ochem & Zelinsky, *On odd perfect numbers
+with exactly one even exponent greater than 2*, arXiv:2607.19746v1 (2026),
+bound an odd perfect number's abundancy from above and succeed, because they
+partition the remaining support into **infinitely many proved classes** with
+per-class lower bounds that grow, giving a convergent product below 2. Crucially
+they need **no** bound on `ω(N)` at all, which is exactly why Proposition A does
+not touch them. I reproduced their constants to full precision
+(`inversion/07_verify_ochem_zelinsky.py`): `A₁·A₂·A₃·A_∞ = 1.68866287554178 < 2`.
+
+A repaired certificate would have to take that shape: a *proved* classification
+of the tail plus growing per-class bounds, never a flat `B` and a bare count
+`M`. A finite `M` is an upper bound on `ω(N)` in disguise, and that is what
+cannot be supplied.
+
 What survives, and is worth keeping:
 - Lemmas 3.1, 3.2 (valuation balance, cyclotomic input condition) — sound.
 - Lemma 4.2 lower-prime avoidance and Corollary 4.3 — sound.

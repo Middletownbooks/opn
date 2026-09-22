@@ -250,6 +250,8 @@ equally accept an omission that *did* matter.
 | `L(q)` table, `A(d,ℓ)` densities | **computed**, exact |
 | Zelinsky's Theorem 1, both cases | **independently verified** (§8) |
 | Ochem–Zelinsky 2026 §2 abundancy bound | **independently verified** (§9b) |
+| Ochem–Zelinsky Table 1 (`s < 200000`) | **reproduced exactly** (§9c) |
+| Proposition D's *conclusion* | **corrected** — closure comes from iteration (§9c) |
 | Corollary 2a | **proved**, but now known to be routine (§2 correction) |
 | Corollary 2e (exponent floors) | **proved**; `ℓ=3` case known, `ℓ<q` case new-to-me |
 | Improved `Ω`/`ω` bound in a branch | **not obtained** — needs the counting lemmas of §9 |
@@ -408,6 +410,121 @@ infinitely many classes with growing lower bounds — which costs nothing,
 because no bound on `ω(N)` is then required. That is the shape a repaired
 certificate would have to take, and this paper shows the technique is rigorous
 and available when the classification is genuinely proved.
+
+---
+
+## 9c. The factor-tree prover — and a correction to Proposition D
+
+Ochem & Zelinsky's released code (`tree.cpp`, `pairs.py`, `all.cpp`) mechanises
+exactly the production/forcing framework of §3. Reading it corrects one of my
+own conclusions.
+
+### Correction to Proposition D
+
+Proposition D showed Lemma OC can never block a *single* production, and I
+concluded the framework "constrains but does not close". **That was too quick.**
+`tree.cpp` closes branches with the same forcing, by *iterating* it and
+terminating on one of three downstream contradictions:
+
+| rule | meaning |
+|---|---|
+| `F t` | a forced prime `t` is one already ruled out (their driver: any prime below the current root) |
+| `XS t` | three or more copies of `t` are forced, but `t` is ordinary (`e_t = 2`) and supplies only two |
+| `a(·) > 2` | the partial product of **exact** component abundancies `σ(p^e)/p^e` over the known components already exceeds 2 |
+
+The correct statement: no single production obligation is contradictory
+(Proposition D stands), but the *transitive closure* of the obligations can be.
+§3 was missing the iteration and these termination rules, not the constraints.
+
+### The two sound abundancy directions
+
+Worth stating plainly, because it sharpens the audit:
+
+1. **Partial lower bound.** `σ(N)/N = ∏ σ(p^{e_p})/p^{e_p}` with every factor
+   `> 1`, so a partial product over *known* components exceeding 2 is a
+   contradiction. Exact, finite, needs no classification. This is `a(·) > 2`.
+2. **Classified upper envelope.** Proved classes, proved growing per-class
+   lower bounds, convergent product `< 2` (§9b).
+
+Mantovanelli's tail envelope is neither — it is an upper bound over a finite
+*assumed* slot count. Direction 1 was available to him for free and requires no
+certificate at all.
+
+### Reproduction of their Table 1
+
+I re-ran their `pairs.py` at limit 200000. **All seven entries of Table 1 with
+`s < 200000` reproduce exactly**, including the `p` and `n` values:
+
+| (a,b) | s | p | n |
+|---|---|---|---|
+| (0,1) | 5 | – | 31 |
+| (1,0) | 59 | 3541 | – |
+| (1,1) | 29 | 13 | 67 |
+| (1,2) | 863 | 15217 | 7 |
+| (2,1) | 1667 | 13 | 16453 |
+| (1,3) | 1733 | 8761 | 7 |
+| (1,4) | 2819 | 61 | 19 |
+
+(Their code is not redistributed here; only the result is recorded.)
+
+### Code-audit observations on `tree.cpp`
+
+In the same spirit as the main audit, what the program does and does not
+establish:
+
+- **The early-abort rule is inductive, not self-contained.**
+  `factorize_with_early_abort` treats "a forced prime `< root`" as a
+  contradiction. That is valid only given "every prime below `root` has already
+  been excluded", which is established *outside* the program (hand arguments
+  for 5 and 7, `3p2.txt` to 1000, `tree.txt` to 3,000,000). The program's
+  output is meaningful only inside that induction. The paper's narrative
+  handles this correctly; the code alone does not show it.
+- **Primality is probabilistic.** `miller_rabin(n, 25)` and
+  `mpz_probab_prime_p(x, 25)`. The factorisations underpinning the proof are
+  therefore probabilistic, not certified — exactly the class of trusted
+  computational input this project tracks. A certified version would need
+  primality certificates.
+- **Cycle handling is conservative, hence safe.** When a forced prime is
+  already on the path the code `continue`s rather than claiming a
+  contradiction, which can only weaken the prover.
+- **Both branches are required.** `prove` returns
+  `ord_contradicted && sp_contradicted` when the special branch is eligible —
+  correct, since `x` could be either.
+- **`x % 12 == 1` encodes Lemma 6.** `x ≡ 1 mod 4` is Euler's condition and
+  `x ≡ 1 mod 3` is their Lemma 6, which is proved only for *restrained* `N`.
+  So the program inherits that hypothesis.
+- **The special branch follows only `(x+1)/2`**, a valid *subset* of the primes
+  forced by `σ(x^e)`; conservative, hence sound.
+- **`G /= 3` when `x ≡ 1 mod 3` is exact**: `v₃(x²+x+1) = 1` there, since
+  `x = 1+3k` gives `3(1+3k+3k²)` with the cofactor `≡ 1 mod 3`.
+- **The released `main()` does not terminate.** `mpz_class r = bound;
+  while (1) { … mpz_nextprime(r, r); }` — the commented-out
+  `//mpz_class r = 1009; while (r <= bound)` shows the intended bounded form.
+  As shipped, the SUMMARY block is unreachable and the run must be killed. Not
+  a soundness defect; each root is still tested correctly.
+
+### Why the tree does not transfer to a general minimal-prime branch
+
+`tree.cpp` branches on exactly two possibilities per prime: ordinary
+(`e_x = 2`, so `σ(x²) = x²+x+1`, one number to factor) and special (the odd
+part of `x+1`, one number). **That bounded branching is precisely what the
+restrained hypothesis buys.**
+
+In a general minimal-prime branch there is no such bound: `e_x` ranges over
+every even number with `n_x` odd and avoiding `Forb(x)`, so `σ(x^{e_x})` is one
+of infinitely many integers and the tree branches infinitely at every node.
+Corollary 2e bounds `e_x` from *below*, which delays the branching but does not
+make it finite.
+
+Verified instance (`inversion/08`): at `q = 17`, every `ord_ℓ(17)` for
+`ℓ ∈ {3,5,7,11,13}` is even (2, 4, 6, 10, 6), so `Forb(17) = ∅` and **no prime
+below 17 can ever divide `σ(17^{e_17})`** — which is exactly why 17 is
+admissible as a least prime, and why `e_17` carries no lower-prime constraint.
+Taking the least exponent `e_17 = 2` gives `σ(17²) = 307`, prime, `≡ 1 mod 17`;
+then `Forb(307) = {3}`, so `e_307 ≥ 4`.
+
+**So the transfer needs an upper bound on exponents** — the same missing
+ingredient as everywhere else here. That is the obstruction, stated exactly.
 
 ---
 

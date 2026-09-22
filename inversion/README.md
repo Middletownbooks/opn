@@ -15,3 +15,4 @@ Standard library only, tested on Python 3.11.15. Findings in
 | `05_verify_zelinsky_lp.py` | independent check of Zelinsky (arXiv:1706.07009v3) Theorem 1, both cases, by reconstructing the stated linear combinations symbolically |
 | `06_exponent_floors_in_branch.py` | Corollary 2e — residue-dependent forced lower bounds on `e_p` in the branch `q = 17` |
 | `07_verify_ochem_zelinsky.py` | independent check of Ochem–Zelinsky (arXiv:2607.19746v1) Section 2: recomputes `A₁, A₂, A₃, A_∞` and their product; discusses why their envelope escapes the audit's Proposition A |
+| `08_factor_tree_transfer.py` | the three contradiction rules behind Ochem–Zelinsky's factor-tree prover, the correction to Proposition D, why `Forb(17) = ∅`, and why the tree does not transfer to a general minimal-prime branch |

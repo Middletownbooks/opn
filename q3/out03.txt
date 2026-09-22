@@ -1,0 +1,73 @@
+==========================================================================
+1.  SHARP PRODUCTION CONDITION (power-residue form of Theorem 1')
+==========================================================================
+A non-Euler t produces r only if ord_r(t) | n_t, which is odd; equivalently
+
+    ord_r(t) | oddpart(r-1)  <=>  t is a 2^a-th power residue mod r,  a = v_2(r-1).
+
+    r = 3 (mod 4)  a = 1   t must be a QUADRATIC residue mod r  (density 1/2)
+    r = 5 (mod 8)  a = 2   t must be a QUARTIC residue mod r    (density 1/4)
+    r = 1 (mod 8)  a >= 3  t must be a 2^a-th power residue     (density 2^-a)
+
+Lemma QR is the a = 1 case, where it is EXACT.  That exactness is what lets
+reciprocity act on it.
+   2656 (t,r) pairs tested, even exponents to 58: 0 violations
+
+==========================================================================
+2.  TOURNAMENT THEOREM
+==========================================================================
+T = {p | N : p = 3 (mod 4)}; since pi = 1 (mod 4) every member is non-Euler.
+For p, s in T reciprocity gives (p/s)(s/p) = -1, so EXACTLY ONE of the two
+symbols is +1.  By the a = 1 case, p can produce s only if (p/s) = 1.  Hence
+the production digraph restricted to T lies inside the TOURNAMENT Lambda_T
+given by p -> s iff (p/s) = 1, and is 2-cycle-free.  The permitted direction of
+every pair is fixed in advance by a Legendre symbol -- no order computation.
+
+==========================================================================
+3.  PREDICTION TEST against Ochem-Zelinsky's 3p2.txt
+==========================================================================
+Each line 'X^2 => ... r ...' asserts X produces r.  When X and r are both
+3 (mod 4) the theorem predicts r canNOT produce X; as X = 3 (mod 4) that is
+exactly (r/X) = -1, tested directly below.
+   pairs (X -> r), both 3 mod 4, found in the file : 336
+   of these, (r/X) = -1 so r cannot produce X      : 335
+   violations                                      : 1  [(59083, 19)]
+
+   sample of the free deductions:
+           7 produces 3        => 3 cannot produce 7    [(7/3)=+1, (3/7)=-1, product=-1]
+           7 produces 19       => 19 cannot produce 7    [(7/19)=+1, (19/7)=-1, product=-1]
+          23 produces 7        => 7 cannot produce 23    [(23/7)=+1, (7/23)=-1, product=-1]
+          23 produces 79       => 79 cannot produce 23    [(23/79)=+1, (79/23)=-1, product=-1]
+          31 produces 3        => 3 cannot produce 31    [(31/3)=+1, (3/31)=-1, product=-1]
+          31 produces 331      => 331 cannot produce 31    [(31/331)=+1, (331/31)=-1, product=-1]
+          43 produces 3        => 3 cannot produce 43    [(43/3)=+1, (3/43)=-1, product=-1]
+          43 produces 631      => 631 cannot produce 43    [(43/631)=+1, (631/43)=-1, product=-1]
+          79 produces 3        => 3 cannot produce 79    [(79/3)=+1, (3/79)=-1, product=-1]
+          79 produces 7        => 7 cannot produce 79    [(79/7)=+1, (7/79)=-1, product=-1]
+
+==========================================================================
+4.  WHAT THIS DOES NOT GIVE, AND WHY
+==========================================================================
+Recorded so they are not repeated:
+
+(a) Longer cycles.  A directed cycle inside T forces every forward symbol to +1
+    and, by reciprocity, every backward symbol to -1 -- perfectly consistent.
+    Cycles of length >= 3 are NOT obstructed; only 2-cycles die.
+
+(b) In-degree starvation.  Each p in T needs in-degree >= 1 in the full
+    digraph.  One might hope a vertex of Lambda_T with in-degree 0 must be
+    produced from outside T, but tournaments need not have such a vertex, and
+    producers may lie outside T anyway: the Euler prime can produce ANY
+    p = 3 (mod 4) unconstrained, since ord_p(pi) | p-1 has v_2 <= 1
+    automatically when v_2(p-1) = 1.
+
+(c) At q = 3 specifically.  3 is in T.  Producers of 3 are = 1 (mod 3), i.e.
+    = 1 or 7 (mod 12); 3 produces only primes = +-1 (mod 12).  Those meet T in
+    the DISJOINT classes 7 and 11 (mod 12), so NO2CYCLE is automatically
+    satisfied at 3 and adds nothing there.  This is the decisive negative for
+    the q = 3 application.
+
+(d) Stronger reciprocity.  For r = 1 (mod 4) the production condition is
+    quartic or higher, so an obstruction would need biquadratic or octic
+    reciprocity.  Rational biquadratic laws exist (Burde, Gauss), so this is a
+    real avenue -- not attempted here.

@@ -125,6 +125,92 @@ its prime factors are `≡ ±1 (mod 12)`, and a product of such primes is
 
 Verified for all even `e ≤ 38`, no failures.
 
+## 5b. NO2CYCLE pushed — sharp form, and where it leads
+
+Worked as though novel. Results, in order of what they are worth.
+
+### The sharp production condition
+
+The right general statement is not about quadratic residues at all:
+
+> A non-Euler `t` produces `r` only if `ord_r(t) | oddpart(r−1)`, equivalently
+> **`t` is a `2^a`-th power residue mod `r`, where `a = v₂(r−1)`.**
+
+| `r` | `a` | condition on `t` | density |
+|---|---|---|---|
+| `≡ 3 (mod 4)` | 1 | quadratic residue | 1/2 |
+| `≡ 5 (mod 8)` | 2 | quartic residue | 1/4 |
+| `≡ 1 (mod 8)` | ≥3 | `2^a`-th power residue | `2^{−a}` |
+
+This is Theorem 1′ in power-residue language. **Lemma QR is the `a = 1` case,
+where it is exact** — and that exactness is precisely what lets reciprocity act
+on it. Verified on 2656 `(t,r)` pairs with even exponents to 58: no violations.
+
+### Tournament theorem
+
+> Let `T = {p | N : p ≡ 3 (mod 4)}`. Every member is non-Euler (`π ≡ 1 mod 4`).
+> For `p, s ∈ T`, reciprocity gives `(p/s)(s/p) = −1`, so **exactly one** symbol
+> is `+1`; by the `a = 1` case, `p` can produce `s` only if `(p/s) = 1`. Hence
+> the production digraph restricted to `T` lies inside the **tournament** `Λ_T`
+> given by `p → s ⟺ (p/s) = 1`, and is 2-cycle-free.
+
+The permitted direction of every pair in `T` is fixed in advance by a Legendre
+symbol — no order computation. Tested against the 336 pairs `X → r` with both
+`≡ 3 mod 4` appearing in Ochem–Zelinsky's `3p2.txt`: **335 confirm the
+prediction**, and the single flag is `(59083, 19)` — the line independently
+established as OCR damage.
+
+### The payoff that is actually real: an integrity check
+
+That last observation generalises into something useful. Checking a production
+claim `X → r` costs **one modular exponentiation** and needs **no
+factorisation** of `σ(X^{e_X})`. So the condition audits factor-tree data
+independently of the routine that generated it.
+
+Run over every asserted `X² → r` in `3p2.txt`:
+
+| | |
+|---|---|
+| production claims checked | **882** |
+| failing the power-residue condition | **2** |
+
+and **both failures are the two bogus factors on the one corrupted line**
+(`59083 → 19` fails a quadratic-residue test; `59083 → 6604392133` fails a
+quartic one). All 880 genuine claims pass.
+
+This matters because searches of this kind rest on large machine-generated
+files. Re-running the same factoriser reproduces transcription damage,
+truncation and off-by-one errors rather than detecting them; an independent
+`O(log r)` test per claim catches them.
+
+### What it does not give — and the decisive negative for `q = 3`
+
+Recorded so they are not repeated:
+
+- **Longer cycles are not obstructed.** A directed cycle inside `T` forces every
+  forward symbol to `+1` and every backward symbol to `−1` — perfectly
+  consistent. Only 2-cycles die.
+- **In-degree starvation fails.** Tournaments need not have an in-degree-0
+  vertex, and producers may lie outside `T` regardless: the Euler prime can
+  produce **any** `p ≡ 3 (mod 4)` unconstrained, since `ord_p(π) | p−1` has
+  `v₂ ≤ 1` automatically when `v₂(p−1) = 1`.
+- **At `q = 3` it adds nothing.** This is the decisive point. `3 ∈ T`.
+  Producers of 3 are `≡ 1 (mod 3)`, i.e. `≡ 1` or `7 (mod 12)`; 3 produces only
+  primes `≡ ±1 (mod 12)`. Within `T` those are the classes `7` and `11 (mod 12)`
+  — **disjoint**. So NO2CYCLE is automatically satisfied at 3 and constrains
+  nothing there.
+- **Stronger reciprocity is the open avenue.** For `r ≡ 1 (mod 4)` the condition
+  is quartic or higher, so an obstruction needs biquadratic or octic
+  reciprocity. Rational biquadratic laws exist (Burde, Gauss). Not attempted —
+  I would not guess at it.
+
+**Verdict on the instruction to work it as novel.** The lemma is real and
+sharp, and it yields a genuinely useful tool. It does **not** advance `q = 3`,
+for the specific reason in the third bullet: the two production classes at 3
+are disjoint mod 12, so the constraint is vacuous exactly where it was wanted.
+
+---
+
 ## 6. Status and the obstruction
 
 | result | status |
@@ -136,6 +222,10 @@ Verified for all even `e ≤ 38`, no failures.
 | exact 3-adic balance | **proved** + verified |
 | parity of `11 mod 12` factors | **proved** + verified |
 | Proposition E at `F = 3` | **applies but is vacuous** |
+| NO2CYCLE sharp form (power residues) | **proved** + verified, 2656 pairs |
+| tournament theorem | **proved**; 335/336 literature pairs confirm |
+| QR integrity check on factor-tree data | **works** — 882 claims, caught both corrupt ones |
+| NO2CYCLE applied to `q = 3` | **vacuous there** — classes disjoint mod 12 |
 | any closure of `q = 3` | **not obtained** |
 
 **The obstruction, precisely.** At `q = 5…17` two quantitative instruments did

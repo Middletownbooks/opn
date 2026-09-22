@@ -38,44 +38,45 @@ So the question is purely quantitative.
 (`A_∞` computed with the all-even classes removed as well as the pure powers —
 the count most favourable to the method. The cruder count gives 1.0713/1.3045.)
 
-## 3. Case (ii): a notable `≡ 2 (mod 3)` — fails outright
+## 3. Case (ii): a notable `≡ 2 (mod 3)` — fails, and the reason is simpler than I first said
 
-Such a notable is `≡ 5 (mod 6)`, so it can be 5, and every factor of `σ(s²)` is
-then only guaranteed `≥ 5`. With `p = 13, n₁ = 7, n₂ = 5`:
+**Correction to my first pass.** I treated case (ii) with *triple* classes and a
+floor `B = 5`. That was wrong-headed. If `n₂ ≡ 2 (mod 3)` then `n₂` can **never**
+divide any `σ(s²)`, since every prime factor of `s²+s+1` other than 3 is
+`≡ 1 (mod 3)`. So `c = 0` for every ordinary prime: **the class structure
+collapses back to the `k = 1` pairs**, and the floor stays at 7 because only `p`
+and `n₁` ever appear. `A₂` and `A_∞` are unchanged from `k = 1`; only `A₁` grows,
+since it must cover a third non-ordinary component and `n₂ ≡ 5 (mod 6)` can be 5.
 
-> `A₁ · A_∞ = 1.579861 × 1.269494 = ` **`2.0056 > 2`**
+| factor | value |
+|---|---|
+| `A₁` (`p=13, n₁=7, n₂=5`) | 1.579861 |
+| `A₂` (k=1 classes, unchanged) | 1.320519 |
+| `A_∞` (k=1 tail, unchanged) | 1.011787 |
+| **bound** | **2.110829 > 2** |
 
-and that is **before a single ordinary prime is counted**. Since the ordinary
-contribution is `≥ 1`, the bound can never fall below 2. **The method cannot
-close case (ii).**
+Same verdict as before, now with `k = 1` data only and no guesswork.
 
-## 4. Case (i): both notables `≡ 1 (mod 3)` — fails once two new classes are named
+## 4. Case (i): both notables `≡ 1 (mod 3)` — fails with **no tail at all**
 
-*First pass was too hasty.* With the crude class count I got 2.0053 > 2 and
-concluded failure; with the refined count (fair to the method) it is
-**1.9926 < 2** — not settled. Two identifiable new classes settle it.
+The 11 tabulated `k = 1` classes have `c = 0`, so they carry over and give
+`A₂ = 1.320519`. Two new classes have *exactly known* minima:
 
-The 11 tabulated `k = 1` classes all have `c = 0`, so they carry over unchanged
-and contribute `A₂ = 1.320519`. Two new classes can be pinned exactly:
+- **`σ(s²)` a single notable prime.** Both `(0,1,0)` and `(0,0,1)` need `s²+s+1`
+  prime and `≡ 1 (mod 6)`; the two smallest ordinary `s` are `5` and `17`. `A₂`
+  already holds the `5/4`, so the second forces **`17/16`**.
+- **`σ(s²) = n₁n₂`,** two distinct primes `≡ 1 (mod 6)`. Smallest is `s = 11`:
+  `133 = 7·19`. Genuinely new — neither factor is `≡ 1 (mod 12)`, so it cannot
+  be the `k=1` class `(1,1)` (smallest 29). Forces **`11/10`**.
 
-- **`σ(s²)` a single notable prime.** Both `(0,1,0)` and `(0,0,1)` need
-  `s²+s+1` prime and `≡ 1 (mod 6)`. The smallest such ordinary `s` are
-  `5, 17, 41, …`. `A₂` already contains `5/4`; the second class forces a
-  further **`17/16`**.
-- **`σ(s²) = n₁ n₂`, two distinct primes `≡ 1 (mod 6)`.** Smallest is
-  `s = 11`: `11²+11+1 = 133 = 7 · 19`. **Genuinely new** — neither 7 nor 19 is
-  `≡ 1 (mod 12)`, so this cannot be the `k = 1` class `(1,1)` (whose smallest
-  is 29). Forces **`11/10`**.
+| factor | running |
+|---|---|
+| `A₁` (`p=13, n₁=7, n₂=19`) | 1.334105 |
+| `A₂` | 1.761711 |
+| `(0,0,1)`, `s=17` | 1.871818 |
+| `(0,1,1)`, `s=11` | **2.059000** |
 
-| factor | value | running |
-|---|---|---|
-| `A₁` (`p=13, n₁=7, n₂=19`) | 1.334105 | 1.334105 |
-| `A₂` (11 carried-over classes) | 1.320519 | 1.761711 |
-| class `(0,0,1)`, `s = 17` | 1.062500 | 1.871818 |
-| class `(0,1,1)`, `s = 11` | 1.100000 | 2.059000 |
-| `A_∞` (B=7, all-even removed) | 1.064538 | **2.191885** |
-
-> **2.1919 > 2**, using only 2 of the 56 new low classes. The true figure is larger.
+> **2.0590 > 2 with `A_∞` set to 1** — the entire tail discarded.
 
 ## 5. Verdict
 
@@ -91,6 +92,22 @@ next rung.
 
 **This is a limit on the method, not on the conjecture.** `k = 2` may well be
 closable — but not by this argument, and not by tuning its constants.
+
+## 5b. Better data on the class minima cannot rescue the method
+
+The bound is a product over classes of `m/(m−1)`, so better data can only *raise*
+some `m` and *lower* that factor. But every ingredient above is already exact or
+discarded in the method's favour:
+
+- the 11 `k = 1` minima are exact;
+- `m = 17` is exact (5 and 17 are provably the two smallest ordinary `s` with
+  `s²+s+1` prime and `≡ 1 mod 6`);
+- `m = 11` is exact (`133 = 7·19`, and no smaller ordinary `s` works);
+- `A_∞` is set to **1** in case (i), and to its `k = 1` value in case (ii).
+
+**So computing better lower bounds on the triple-class minima is pointless for
+rescuing this method.** The failure is driven by exactly-known small solutions,
+not by pessimistic estimates. Margins over 2: case (i) 0.0590, case (ii) 0.1108.
 
 ## 6. What this does to the roadmap
 

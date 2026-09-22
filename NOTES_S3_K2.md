@@ -599,3 +599,90 @@ admit a role assignment on which the balance does not close, so the deletion doe
 not apply to them; the union over admissible assignments is what the table's
 last column shows. The sharpening therefore shrinks the Thue–Mahler problem
 without eliminating it.
+
+---
+
+## 11. The `|W| ≥ 1` profiles: closure plus a count  (`s3k2/26`, `s3k2/27`)
+
+After §10 the open part of §3 at `k = 2` was the thirteen profiles other than
+`α = 2`, `|W| = 0`. My earlier reading — that the large-`|W|` ones are where this
+machinery is thinnest — was only half right. It is true of the *abundancy* test:
+`W`'s unknown components `≡ 2 (mod 3)` carry the slack there. It is the reverse
+for the *smoothness* side, because the budget inequality forces small `T`:
+
+    |W| = 3 ⟹ β = 0 ⟹ τ = α ≤ 1 ;      |W| = 2 ⟹ β = 1 ⟹ τ = α + 1 ≤ 3.
+
+and `Sm(T) = { x prime, x ≡ 2 (mod 3) : x²+x+1 is T-smooth }` is an equation in
+`|T|` primes. The count of `T`-smooth numbers below `Y` grows like `(log Y)^{|T|}`,
+so a small `|T|` buys orders of magnitude in the search exponent.
+
+| | `|W| = 0`, `α = 2` (§10) | `|W| ≥ 1` (here) |
+|---|---|---|
+| `|T|` | 5 | ≤ 4, and ≤ 3 once `|W| ≥ 2` |
+| abundancy test | decisive | weak |
+| `Sm(T)` searched to | `10²⁴` | `10⁴⁸` (`|T|=3`), `10¹⁶⁰` (`|T|=2`), `10⁴⁰⁰` (`|T|=1`) |
+| what finishes it | interval narrowing + closure | **closure + a pure count** |
+
+### 11a. The count
+
+`ω(N) = 1 + τ + |W| + |U| = 4 + α + |U|`, so `ω(N) ≥ 10` (Nielsen 2015) gives
+
+> `|U| ≥ 6 − α ≥ 4`,   and `U ⊆ Sm(T)`.
+
+A profile dies at `T` whenever `|Sm(T)| < 6 − α`. No abundancy input at all.
+`T` itself is pinned by the closure condition of §9: an ordinary `t ∈ T` needs
+`F(t) ⊆ T`, and with `τ ≤ 3` that usually determines `T` outright instead of
+leaving a pool.
+
+### 11b. `|W| = 3` dies in three lines, unconditionally
+
+That profile turned out not to need any computation:
+
+> `|W| = 3` means all three big components are `≡ 2 (mod 3)`, so `β = 0` and
+> `τ = α`. The special `p` is then `≡ 2 (mod 3)`, so `3 | p+1`, `3 ∤ p−1`, and
+> `e+1` is even, whence `3 | σ(p^e)` — one unit of the 3-budget — so `α ≤ 1`.
+> But `13 | N` (from `σ(3²) = 13`) and `13 ≡ 1 (mod 3)`, so `T ≠ ∅` and `α = 1`:
+> `T = {13}` with **13 ordinary**. Then `σ(13²) = 183 = 3 · 61` forces `61 | N`,
+> and `61 ≡ 1 (mod 3)` would have to lie in `T = {13}`. Contradiction. ∎
+
+No `ω` bound, no smoothness, no abundancy, no pool. The script reports it as
+"0 admissible `T`" in the closure column.
+
+### 11c. Single-prime `Sm`  (`s3k2/26`)
+
+For `|T| = 1` the smoothness condition is `x²+x+1 = p^c`, settled exactly by
+testing whether `4p^c − 3` is a square, for every `c ≤ 1200` (for `p = 13` that
+is `p^c` up to about `10¹³³⁵`). Every solution in range comes from `c = 1` —
+`x = 2, 3, 5, 6, 8, 12`, plus `x = 18` at `c = 3` for `p = 7`. Only `x = 5` is
+both prime and `≡ 2 (mod 3)`, so `Sm({31}) = {5}` and every other single-prime
+`Sm(T)` is **empty**; in particular `Sm({13}) = ∅`, its one solution `x = 3`
+being `≡ 0 (mod 3)`.
+
+### 11d. Results so far
+
+| `α` | sp in `T` | nt in `T` | `τ` | `|W|` | `|U|` needed | admissible `T` | survive |
+|---|---|---|---|---|---|---|---|
+| 0 | no | 1 | 1 | 2 | 6 | 1 | 0 |
+| 0 | no | 2 | 2 | 1 | 6 | 49 | 0 |
+| 0 | yes | 0 | 1 | 2 | 6 | 1 | 0 |
+| 0 | yes | 1 | 2 | 1 | 6 | 49 | 0 |
+| 1 | no | 0 | 1 | 3 | 5 | **0** | 0 |
+| 1 | no | 1 | 2 | 2 | 5 | 1 | 0 |
+| 1 | no | 2 | 3 | 1 | 5 | 1141 | 0 |
+| 1 | yes | 0 | 2 | 2 | 5 | 1 | 0 |
+| 1 | yes | 1 | 3 | 1 | 5 | 1141 | 0 |
+| 2 | yes | 0 | 3 | 2 | 4 | *running* | |
+| 2 | yes | 1 | 4 | 1 | 4 | *running* | |
+
+Nine of the eleven `|W| ≥ 1` profiles are eliminated with zero survivors. The
+last two are still computing at the time of writing; this table will be updated
+with their counts rather than assumed.
+
+### 11e. What is still assumed here
+
+Only the completeness of `Sm(T)` beyond the search bound — the same Thue–Mahler
+finiteness statement as §5c, but at `10⁴⁸` to `10⁴⁰⁰` instead of `10²⁴`. For the
+`α = 0` rows there is additionally a pool restriction (`T` drawn from primes
+below 600), because with no ordinary prime in `T` the closure condition has
+nothing to act on; those rows need the `max(T)` cutoff of §8 to be exhaustive.
+`|W| = 3` (§11b) is free of both.

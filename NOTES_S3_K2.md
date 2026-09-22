@@ -434,3 +434,95 @@ level 4. Two things are not finished:
 
 So §8 is a method that demonstrably works, carried far enough to show the pool
 restriction is removable in principle, and stopped short of removing it.
+
+---
+
+## 9. The ordinary-closure filter  (`s3k2/20`–`23`)
+
+The six exceptions of §8c all had `margin` just under 1, so what was needed was
+a constraint of a different kind, not a tighter estimate. The forcing tree
+supplies one, and it becomes a condition on the finite set `T`.
+
+> **Closure condition.** An ordinary component has exponent *exactly* 2, so
+> `σ(t²) = t²+t+1` is completely determined. Every prime factor of it divides
+> `2N`, is odd, and is `3` or `≡ 1 (mod 3)` — and for `t ≡ 1 (mod 3)` exactly one
+> factor 3 occurs. Writing `F(t)` for the prime factors of `t²+t+1` that are
+> `≡ 1 (mod 3)`,
+>
+>     t ∈ T ordinary  ⟹  F(t) ⊆ T.
+
+`|T| = 5`, so this is severe:
+
+| `t` | `F(t)` | `t` | `F(t)` |
+|---|---|---|---|
+| 7 | {19} | 67 | {7, 31} |
+| 13 | {61} | 79 | {7, 43} |
+| 19 | {127} | 97 | {3169} |
+| 31 | {331} | 127 | {5419} |
+| 37 | {7, 67} | 163 | {7, 19, 67} |
+| 61 | {13, 97} | 307 | {43, 733} |
+
+In the recursion, `S` is always the set of the `|S|` **smallest** elements of
+`T` — each level appends a new maximum — so every element of `T \ S` exceeds
+`max(S)`. That sharpens the condition at every level:
+
+* `f ∈ F(t)` with `f < max(S)` and `f ∉ S` → the assignment is impossible;
+* `|⋃F(t) \ S|` must not exceed `5 − |S|`.
+
+### 9a. Effect on the exceptions
+
+| `S` | margin without closure | with closure | verdict |
+|---|---|---|---|
+| `{7,13,19,31}` | 0.997627 | 0.997627 | still no cutoff |
+| `{7,13,31,79}` | 0.996091 | 0.996122 | still no cutoff |
+| `{7,13,31,307}` | 0.991151 | 0.994024 | still no cutoff |
+| `{7,13,67,79}` | 0.991183 | — | **no role assignment at all** |
+| `{7,13,67,307}` | 0.991181 | — | **no role assignment at all** |
+| `{7,13,79,307}` | 0.991183 | — | **no role assignment at all** |
+
+Three die immediately. For the other three the filter acts one level up, where
+it pins the fifth prime down (`s3k2/21`). Splitting on which two elements of `T`
+are ordinary:
+
+* **Case A**, both ordinary primes in `S`: `⋃F` must fit in `T`, so at most one
+  new prime, which *is* `t*`.
+* **Case B**, `t*` ordinary: then `F(t*) ⊆ T`, and since `t* ∤ t*²+t*+1` this says
+  `(t*²+t*+1)/3` is `S`-smooth — enumerated exactly by the same `4M−3`-is-a-square
+  device.
+
+| `S` | admissible fifth primes |
+|---|---|
+| `{7,13,19,31}` | 61, 67, 127, 331 — **four explicit sets** |
+| `{7,13,31,79}` | none |
+| `{7,13,31,307}` | none |
+
+For `{7,13,19,31}`: `{7,13}` ordinary forces `t* = 61`, `{7,19}` forces 127,
+`{7,31}` forces 331, the pairs `{13,19}`, `{13,31}`, `{19,31}` each need two new
+primes and die, and case B gives `t* = 67`. All four resulting sets lie inside
+the pool already swept in §5⅔. **So none of the six exceptions is an infinite
+family after all** — the closure filter converts each into a finite, explicit
+list or nothing.
+
+### 9b. Effect on the recursion  (`s3k2/22`)
+
+Re-running the whole recursion with both filters:
+
+| level | without closure | with closure |
+|---|---|---|
+| 2 | 6 | 6 |
+| 3 | 91 | 91 |
+| 4 | 4324 | 4324 (1378 of them now outright dead) |
+| 5 | 1 015 872 (truncated) | **485 064** |
+| exceptions | 6 | **3**, and §9a finishes those |
+
+The level-5 list is no longer truncated: the largest prime it reaches is
+1 145 371, well inside the script's bound. The closure condition is weak while
+`|S|` is small (there is slack for `5 − |S|` further primes) and becomes decisive
+at `|S| = 4` and `5`, which is exactly where the recursion needed help.
+
+### 9c. Remaining gap in §9
+
+Case B's enumeration searched `(t*²+t*+1)/3` `S`-smooth up to `3·10²⁸`, i.e.
+`t* ≲ 10¹⁴`. Absence of solutions above that is the same Thue–Mahler statement
+as the `Sm(T)` completeness of §5c, and is not proved here. It is a *finiteness*
+question, not an unbounded one.

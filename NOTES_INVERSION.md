@@ -228,6 +228,9 @@ equally accept an omission that *did* matter.
 | Proposition D | **proved** + verified |
 | Proposition E (Fermat forcing) | **proved**; LTE step spot-checked |
 | `L(q)` table, `A(d,ℓ)` densities | **computed**, exact |
+| Zelinsky's Theorem 1, both cases | **independently verified** (§8) |
+| Corollary 2e (exponent floors) | **proved**; `ℓ=3` case known, `ℓ<q` case new-to-me |
+| Improved `Ω`/`ω` bound in a branch | **not obtained** — needs the counting lemmas of §9 |
 | Any branch closure | **not obtained** — and Proposition D says not by OC alone |
 
 **Where it stalls, precisely.** Every constraint in this framework is a
@@ -244,10 +247,111 @@ forcing constraint whose *cost* (`Ω(N) ≥ F−1`) grows super-polynomially in 
 so it interacts with exponent and multiplicity constraints rather than with
 abundancy. That is the direction I would push next.
 
-## 8. Novelty caveat
+## 8. Zelinsky's LP method — verified, and what it says about §2
+
+Zelinsky, *An improvement of an inequality of Ochem and Rao concerning odd
+perfect numbers*, arXiv:1706.07009v3 (2017), proves
+
+> `3 ∤ N  ⟹  Ω(N) ≥ (8/3)ω(N) − 7/3`,  `3 | N  ⟹  Ω(N) ≥ (21/8)ω(N) − 39/8`,
+
+improving Ochem–Rao's `Ω ≥ (18/7)ω − 31/7` (*Math. Comp.* **83** (2014),
+2435–2439; their second bound `Ω ≥ 2ω + 51` is stronger while `ω ≤ 81`).
+
+**I verified both derivations independently** (`inversion/05`). Each is an
+explicit nonnegative rational combination of the paper's numbered relations;
+reconstructing the combinations symbolically reproduces both targets. In fact
+each proves slightly *more* than stated:
+
+| case | stated | what the combination actually gives |
+|---|---|---|
+| `3 ∤ N` | `Ω ≥ (8/3)ω − 7/3` | `Ω ≥ (8/3)ω − 7/3 + (2/9)s₂,₂` |
+| `3 \| N` | `Ω ≥ (21/8)ω − 39/8` | `Ω ≥ (21/8)ω − 39/8 + (1/8)s₃,₂` |
+
+Applied to the `q = 17` branch with my `k₀(17) = 62`: Ochem–Rao's `2ω + 51`
+gives **`Ω(N) ≥ 175`**, and Zelinsky's `3∤N` bound gives `Ω(N) ≥ 163` — the
+former wins here, consistent with Zelinsky's own remark that it does so for
+`ω ≤ 81`.
+
+### The novelty check I asked for, answered against §2
+
+**The `ℓ = 3` case of my Theorem 2 is not new.** Zelinsky's relation (12),
+`s₂,₁ + s₃,₁ ≤ f₃`, together with `f₃ = 0` when `3 ∤ N`, already yields "every
+prime with `e_p = 2` is `≡ 2 (mod 3)`" — which is exactly what Theorem 2 gives
+at `ℓ = 3` for the exponent 2. Ochem–Rao and Zelinsky both use it.
+
+What is *not* in that literature is the extension to **every** odd `ℓ < q`,
+which requires the minimal-prime hypothesis they do not assume. Theorem 2 is
+therefore best presented as: the known `ℓ = 3` constraint, generalised along
+the whole lower-prime range that a minimal-prime branch supplies.
+
+It is also stronger than the `e_p = 2` instance even at `ℓ = 3`: it gives
+`e_p ≢ 2 (mod 3)`, excluding `e_p ∈ {2, 8, 14, 20, …}` for non-Euler
+`p ≡ 1 mod 3`, where the LP's `S`/`T` split only sees `e_p = 2` versus
+`e_p ≥ 4`.
+
+---
+
+## 9. Corollary 2e — residue-dependent exponent floors
+
+This is the form in which §2 feeds an LP.
+
+> **Corollary 2e.** Let `q = min S` and let `p ∈ S` be non-Euler, so
+> `n_p = e_p + 1` is odd and `≥ 3`. Put
+> `Forb(p) = {ℓ < q : p ≡ 1 mod ℓ} ∪ {d : d = ord_ℓ(p)` is an odd prime, some
+> odd `ℓ < q}`. By Theorem 2 no element of `Forb(p)` divides `n_p`, so
+> `n_p ≥ (least prime not in Forb(p))` and `e_p ≥` that `− 1`.
+
+For `q = 17` (`ℓ ∈ {3,5,7,11,13}`, binding odd orders `ℓ=7 → 3`, `ℓ=11 → 5`,
+`ℓ=13 → 3`) the floors over the 543 primes `19 ≤ p < 4000` come out as:
+
+| forced floor | share of primes | cumulative |
+|---|---|---|
+| `e_p ≥ 2` | 27.8% | 27.8% |
+| `e_p ≥ 4` | 34.3% | 62.1% |
+| `e_p ≥ 6` | 33.1% | 95.2% |
+| `e_p ≥ 10` | 4.4% | 99.6% |
+| `e_p ≥ 12` | 0.4% | 100.0% |
+
+**72.2% would be forced to `e_p ≥ 4`** — matching the exact density
+`1 − (1/2)(2/3)(5/6) = 13/18` for `3 ∈ Forb(p)`.
+
+**Caveat, stated because it is the whole difficulty.** These are properties of
+the primes in that range, *not* of `S`, which is not a random set. They measure
+how hard the constraint bites; they prove nothing about `N` on their own. In
+Zelinsky's LP, `s` counts primes with `e_p = 2` and `t` those with `e_p ≥ 4`,
+and Corollary 2e would move most of `s` into `t` — but only given a *counting*
+argument tying residue classes to the support. Supplying that is the analogue
+of Zelinsky's Lemma 4 for `ℓ = 5, 7, 11, 13`, and it is the next task. **It is
+not done here.**
+
+If it can be done, the deliverable is concrete and in the same genre as the
+Ochem–Rao / Zelinsky / Clayton–Hansen line: **an improved `Ω` versus `ω`
+inequality valid in the branch `q = min S`, with the coefficient growing with
+`q`.** That is real progress on the odd perfect number problem — though note it
+is a *forcing* result, so by §7 it still does not close a branch.
+
+A transcription flag: the Mantovanelli introduction attributes to
+Clayton–Hansen (2023) the bounds `Ω ≥ (99/37)ω − 187/37` and, for `3 ∤ N`,
+`Ω ≥ (46/19)ω − 51/19`. The second has slope ≈ 2.42, weaker than Zelinsky's
+2.67 for the same hypothesis, which is odd for a later paper. I have not been
+able to check Clayton–Hansen and am not relying on either figure.
+
+---
+
+## 10. Novelty caveat
 
 Theorem 1, Theorem 2 and Corollary 2a are elementary and may well be known;
 they are stated here because the paper leaves Theorem 1 explicitly open and
-proves Corollary 2a only in the case `q = 5`, `ℓ = 3`. Proposition E I have not
-seen, but I have not been able to search the literature from this container.
-None of these should be called new until checked — see the document requests.
+proves Corollary 2a only in the case `q = 5`, `ℓ = 3`. **Theorem 2 at `ℓ = 3`
+is now confirmed to be known** — it is Zelinsky's (12) with `f₃ = 0` (§8). The
+`ℓ < q` generalisation, Corollary 2e, and Proposition E remain unchecked
+against the literature; I cannot search it from this container. None of them
+should be called new until checked.
+
+Still outstanding, in priority order: (1) Kishore 1981 / Norton 1961, for the
+best known lower bound on `ω(N)` in terms of the least prime factor — the
+novelty check on my `k₀(q)` table; (2) Ochem–Rao, *On the number of prime
+factors of an odd perfect number*, Math. Comp. **83** (2014), 2435–2439, for
+their full inequality system, which is what an extended LP would build on;
+(3) anything pairing "Fermat prime" with "odd perfect number", to check
+Proposition E.

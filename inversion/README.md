@@ -11,3 +11,6 @@ Standard library only, tested on Python 3.11.15. Findings in
 | `04_fermat_prime_forcing.py` | Proposition E — Fermat-prime forcing without the minimal-prime hypothesis; `L(F)`; LTE spot-check |
 
 `03` takes a couple of minutes (it sums `1/p` over primes past 10⁶).
+
+| `05_verify_zelinsky_lp.py` | independent check of Zelinsky (arXiv:1706.07009v3) Theorem 1, both cases, by reconstructing the stated linear combinations symbolically |
+| `06_exponent_floors_in_branch.py` | Corollary 2e — residue-dependent forced lower bounds on `e_p` in the branch `q = 17` |

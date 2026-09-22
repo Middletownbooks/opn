@@ -563,3 +563,39 @@ must hold exactly for both ordinary primes.
 * **Two Thue–Mahler tails**, both finiteness statements: `Sm(T)` complete beyond
   `x ≤ 10¹²` (§5c), and case B's `(t*²+t*+1)/3` `S`-smooth beyond `t* ≲ 10¹⁴`
   (§9c).
+
+### 10b. The five residual sets, named  (`s3k2/24`, `s3k2/25`)
+
+| `T` | `Sm(T)` | admissible for `U` under `R(T)` |
+|---|---|---|
+| `{7, 13, 19, 37, 67}` | 11, 29, 653 | 653 |
+| `{7, 13, 19, 37, 127}` | 11, 107, 653 | 107, 653 |
+| `{7, 13, 19, 43, 127}` | 11, 107, 653 | 107, 653 |
+| `{7, 13, 19, 127, 409}` | 11, 53, 107, 653 | 53, 107, 653 |
+| `{7, 13, 19, 127, 1723}` | 11, 41, 107, 653 | 41, 107, 653 |
+
+All five fail for the same reason: `ω(N) ≥ 10` forces `|U| ≥ 4`, and fewer than
+four members of `Sm(T)` are admissible. So the residual assumption is exactly
+**five explicit Thue–Mahler statements** — that `x²+x+1 = ∏_{t∈T} t^{c_t}` has no
+solution with `x > 10¹²` for these five sets. Nothing else on this branch is
+conditional.
+
+All five contain `{7, 13, 19}`, and the closure condition pins the roles almost
+completely — for `{7,13,19,37,67}` to a single assignment (ordinary `{7,37}`,
+special 13, notables `{19,67}`).
+
+**A valuation sharpening** (`s3k2/25`). An ordinary prime `a` has exponent
+exactly 2, so `2 = e_a = Σ_C v_a(σ(C))`. Two contributions are forced and
+computable: the other ordinary prime `b` contributes `v_a(b²+b+1)`, and the
+special `p` contributes at least one whenever `p ≡ −1 (mod a)` — because `e` is
+odd, so `e+1` is even and `ord_a(p) = 2` divides it. (Same mechanism as
+`7 | σ(13^e)` in §8b.) When those two already account for both units,
+`Σ_{x∈U} v_a(x²+x+1) = 0`, so no member of `U` may be divisible by `a`.
+
+For `{7,13,19,37,67}` this fires: `v₇(σ(37²)) = v₇(1407) = 1` and `13 ≡ −1
+(mod 7)`, so `e₇ = 2` is already spent and `U` may contain no `x` with
+`7 | x²+x+1` — which deletes 11 and 653, leaving only 29. The other four sets
+admit a role assignment on which the balance does not close, so the deletion does
+not apply to them; the union over admissible assignments is what the table's
+last column shows. The sharpening therefore shrinks the Thue–Mahler problem
+without eliminating it.

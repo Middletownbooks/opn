@@ -754,3 +754,104 @@ and tolerates any `|W|`. Between them they cover the range of `τ`.
 
 `3` **notable** at `k = 2` — the analogue of Ochem–Zelinsky's §4, where at `k = 1`
 they needed `q ≥ 23 000 000 000` and heavy computation. Nothing here bears on it.
+
+---
+
+## 13. Removing the pool restrictions  (`s3k2/30`)
+
+§12a listed pool restrictions as one of the four remaining assumptions. The
+closure condition can replace the pool wherever it determines `T` outright.
+
+**The criterion.** Let `A` be the set of ordinary primes of `T`, `|A| = α`.
+Closure gives `F(a) ⊆ T` for each `a ∈ A`, so
+
+    B := A ∪ {13} ∪ ⋃_{a∈A} F(a)   ⊆   T,
+
+and **every element of `B` is determined by `A`** — it is in `A`, or is 13, or is
+a prime factor of some `a²+a+1`. So `T = B` together with `τ − |B|` further
+primes that closure says nothing about. Hence
+
+* `τ = |B|` → `T` is completely determined by `A`, no pool needed;
+* `τ > |B|` → `T` has free slots and the pool restriction stands.
+
+And `A` itself is exactly enumerable whenever closure confines `F(a)` to a
+**fixed** finite set of primes `S`, because then
+
+    (a² + a + 1)/3  is S-smooth        (`v₃(a²+a+1) = 1` for `a ≡ 1 mod 3`)
+
+is solved exactly by running over `S`-smooth `M` and testing whether `4(3M) − 3`
+is a square — the device of §11c, usable to bounds far beyond any pool.
+
+### 13a. `τ = 2`, `α = 1` (profiles with `|W| = 2`, need `|U| ≥ 5`)
+
+`T = {13, t}` with one element ordinary.
+
+* 13 ordinary → `F(13) = {61} ⊆ T` → `t = 61`, so `T = {13, 61}`.
+* `t` ordinary → `F(t) ⊆ {13, t}`, and `t ∤ t²+t+1`, so `(t²+t+1)/3 = 13^c`.
+  **No solutions** for any `c` with `3·13^c ≤ 10³⁰⁰`, i.e. `c ≤ 269`.
+
+So the complete list is `T = {13, 61}`, and `Sm({13,61}) = ∅` (searched to
+`10¹⁶⁰`) against a requirement of 5. **Dead, pool-free.**
+
+### 13b. `τ = 3`, `α = 2` (`|W| = 2`, need `|U| ≥ 4`)
+
+`T = {a₁, a₂, special}` with the special `≡ 1 (mod 12)`.
+
+* **13 ordinary.** Then `61 ∈ T`.
+  * `a₂ = 61`: then `B = {13,61} ∪ F(13) ∪ F(61) = {13, 61, 97}`, exactly three
+    elements, and `97 ≡ 1 (mod 12)` so it can be the special. **`T = {13,61,97}`.**
+  * `a₂ ≠ 61`: `F(a₂) ⊆ {13, 61}`, i.e. `(a₂²+a₂+1)/3` is `{13,61}`-smooth.
+    **No solutions** below `10¹⁵⁰`.
+* **13 not ordinary**, so 13 is the special. Then `F(a₁) ⊆ {13,a₂}` and
+  `F(a₂) ⊆ {13,a₁}`. The uncoupled branch needs a solution of
+  `(a²+a+1)/3 = 13^c`, of which there are none (13a). The coupled branch
+  (`a₂ | a₁²+a₁+1` **and** `a₁ | a₂²+a₂+1`) was searched directly over
+  `a₁ < 2·10⁶`: none.
+
+So the complete list is `T = {13, 61, 97}`, and `Sm({13,61,97}) = ∅` against a
+requirement of 4. **Dead, pool-free.**
+
+I originally dropped the `a₂ = 61` branch, reasoning that `F(61) = {13,97}`
+could not fit — wrong, since `97` is exactly the third slot. Corrected above.
+
+### 13c. Where the pool survives, and why
+
+| profile (`α`, sp in `T`, nt in `T`, `τ`, `|W|`) | pool? | reason |
+|---|---|---|
+| `0, no, 1, 1, 2` | **free** | `T = {13}` is forced, not chosen |
+| `0, yes, 0, 1, 2` | **free** | same |
+| `1, no, 0, 1, 3` | **free** | no admissible `A` at all (§11b) |
+| `1, no, 1, 2, 2` | **free (new)** | §13a |
+| `1, yes, 0, 2, 2` | **free (new)** | §13a |
+| `2, yes, 0, 3, 2` | **free (new)** | §13b |
+| `0, no, 2, 2, 1` | limited | `α = 0`: no ordinary prime for closure to act on |
+| `0, yes, 1, 2, 1` | limited | same |
+| `0, yes, 2, 3, 0` | limited | same |
+| `1, no, 2, 3, 1` | limited | `|B| ≤ 3` leaves `F(a) ⊆ {13, w}` with `w` free |
+| `1, yes, 1, 3, 1` | limited | same |
+| `1, yes, 2, 4, 0` | limited | same, worse |
+| `2, yes, 1, 4, 1` | limited | `|B| = 3 < τ` leaves one free slot |
+
+Together with the `α = 2`, `|W| = 0`, `τ = 5` branch of §§8–10, **seven of the
+fourteen profiles are now free of any pool restriction**, up from one.
+
+The seven that remain limited all fail the criterion for the same structural
+reason: a slot of `T` that closure does not reach. Where `α = 0` there is no
+ordinary prime at all, so closure is vacuous; where `τ` exceeds `|B|` the
+surplus slots hold big components, whose primes nothing forces.
+
+### 13d. What replaced the pool
+
+The pool-free profiles now rest on bounds for **specific Diophantine equations**
+rather than on a range of `T`:
+
+| equation | searched to | solutions |
+|---|---|---|
+| `(t²+t+1)/3 = 13^c` | `c ≤ 269` | none |
+| `(a²+a+1)/3` is `{13,61}`-smooth | `10¹⁵⁰` | none |
+| coupled `a₂ \| a₁²+a₁+1`, `a₁ \| a₂²+a₂+1` | `a₁ < 2·10⁶` | none |
+| `Sm({13,61})`, `Sm({13,61,97})` | `10¹⁶⁰`, `10⁶⁰` | empty |
+
+That is a strictly weaker hypothesis than a pool: the surviving `T` are two
+explicit sets rather than an unbounded family, and each equation is a candidate
+for an exact Thue–Mahler solve.

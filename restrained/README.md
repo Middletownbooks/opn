@@ -10,3 +10,8 @@ Standard library only. Findings in `../NOTES_RESTRAINED.md`.
 | `04_question10_p3_excluded.py` | Question 10 has no solution with `p = 3`; root structure mod `p²` |
 
 `q10_1e6.txt` is the output of the `x < 10⁶` run.
+| `05_loopless_overflow.py` | audit of `loopless.cpp`: `r*r` wraps modulo 2^64 past `r = 2^32`, with a demonstration that the sieve verdict flips |
+| `06_verify_3p2.py` | mechanical verification of all 385 factorisations asserted in `3p2.txt` (382 exact) |
+
+`3p2.txt` here is the transcription supplied to this session, not a copy of the
+authors' file; it is kept only so `06` is reproducible.

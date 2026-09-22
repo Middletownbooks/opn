@@ -146,6 +146,87 @@ composite `x` (`30²+30+1 = 7²·19` against `11²+11+1 = 7·19`, and
 
 ---
 
+## 4b. Audit of `loopless.cpp` — a 64-bit overflow
+
+`loopless.cpp` implements Algorithm 1, the sieve that yields
+`ω(N) > 46×10⁹` and hence, via Lemma 8, `q ≥ 23×10⁹`. It is the load-bearing
+computation of the paper.
+
+Its central test is
+
+```cpp
+bool check_M2(u64 r, const PrimeSet& M2) {
+    u64 val = r * r + r + 1;          // <-- 64-bit arithmetic
+    if (val % 3 == 0) val /= 3;
+    std::vector<u64> factors;
+    get_factors(val, factors);
+    for (u64 p : factors) if (M2.count(p)) return false;
+    return true;
+}
+```
+
+`r` and `val` are `u64`. The file defines `u128` and uses it inside
+`power_mod` and `pollard_rho` for modular multiplication, **but not here**:
+`r * r` is evaluated in 64-bit arithmetic and wraps modulo `2^64`.
+
+**`r² + r + 1` first reaches `2^64` at `r = 2^32 = 4,294,967,296`.** The
+paper's run reports reaching `z = 216,171,986,291` — about 50× past that — so
+the wrap would affect essentially the whole sieve range. `get_factors` also
+takes a `u64`, so even with exact arithmetic it could not hold
+`r²+r+1 ≈ 4.7×10²²` for `r ≈ 2.2×10¹¹`.
+
+Demonstrated on the first four primes above `2^32` (`restrained/05`): the
+computed value differs from the true one in every case, and the sieve's verdict
+**flips for 2 of the 4**:
+
+| r | verdict on true value | verdict on wrapped value |
+|---|---|---|
+| 4294967311 | excluded by [2083, 10837] | excluded by [13, 16729] |
+| 4294967357 | excluded by [7, 584509] | **can be ordinary** |
+| 4294967371 | excluded by [7, 831373] | **can be ordinary** |
+| 4294967377 | excluded by [19, 79273] | excluded by [875011] |
+
+**How to read this.** The most likely explanation by far is that the published
+run used a 128-bit or GMP variant that is not the released file — it already
+defines `u128` and links GMP, so the authors clearly had the machinery. The
+next most likely is that the released file is an earlier draft. I cannot
+distinguish these from the source alone, and **this should be raised with the
+authors rather than asserted as an error in the paper.**
+
+For completeness, the direction of risk *if* the released file were the one
+run: wrongly *including* a prime as ordinary inflates `A` and is conservative;
+wrongly *excluding* one deflates `A` and would make the bound unsound. Both
+occur in principle. In the four-prime sample above both flips were of the
+conservative kind, but four samples settle nothing.
+
+---
+
+## 4c. Verification of `3p2.txt`
+
+`3p2.txt` backs the claim that, with 3 ordinary, every prime `≤ 1000` other
+than `3, 7, 13, 31, 61, 193` is ruled out. Each line `X^2 => f₁ f₂ …` asserts a
+factorisation of `σ(X²) = X²+X+1`; each `X^e => 2 f₁ …` asserts one of `X+1`.
+
+**382 of 385 lines verify exactly** (`restrained/06`). The three failures:
+
+| line as transcribed | true factorisation | reading |
+|---|---|---|
+| `739^2 => 7 26041` | `3 · 7 · 26041` | a dropped leading `3` — OCR |
+| `953^2 => 811 5023` | `181 · 5023` | `181` misread as `811` — OCR; and `181` *is* ruled out earlier in the file, so the marker `F 811` should read `F 181` and the logic is unaffected |
+| `59083^2 => 3 19 6604392133` | `3 · 18433 · 63127` | **does not resolve to a transcription slip** |
+
+The third is worth one check against the real file. `59083` itself is correct —
+the preceding line `16729^2 => 3 1579 59083` verifies exactly. But the true
+factorisation contains no `19`, so the branch cut `F 19` at that line is not
+justified by it, and that branch of the `659` elimination would need another
+reason. A plausible one exists: `18433 ≡ 63127 ≡ 1 (mod 3)`, so if either is
+ordinary it produces a third copy of 3 and the branch closes by `XS 3` instead.
+I have **not** verified that the remaining cases (one of them special, the
+other notable) also close, and I am not claiming the file is wrong — my input
+is an OCR'd paste, and that is much the likelier cause.
+
+---
+
 ## 5. Status
 
 | result | status |
@@ -158,6 +239,8 @@ composite `x` (`30²+30+1 = 7²·19` against `11²+11+1 = 7·19`, and
 | Tightening `o₂ ≤ o₁ + 2` | **attempted, failed** — capacity is unbounded |
 | Question 10 with `p = 3` | **excluded** |
 | Question 10 in general | **open**; no collision for `x < 10⁶` |
+| `3p2.txt` factorisations | **382/385 verify**; 2 OCR slips, 1 line to check |
+| `loopless.cpp` as released | **64-bit overflow past `r = 2^32`**; likely a different build was run |
 
 Honest summary: Lemma A and Corollary B are real structural additions, and the
 exact form of Lemma 8 usefully closes off one route. None of it improves
@@ -167,11 +250,15 @@ counting argument I could construct against `o₂ ≤ o₁ + 2`.
 ## 6. What would help next
 
 - The **PDF** of arXiv:2607.19746, to settle the §4 discrepancy.
-- `loopless.cpp` and `checkfacts.txt` from `lirmm.fr/~ochem/opn/restrained/`.
-  `loopless.cpp` implements Algorithm 1, the sieve that produces the
-  `ω(N) > 46×10⁹` bound — the one place where a better argument directly moves
-  `q`, and the place they themselves flag for improvement. Corollary B is a new
-  sieve condition that could be added to it: an ordinary prime `≡ 5 mod 12`
-  must be doubly produced by the special component.
-- `3p2.txt` and `tree.txt`, the data files backing the "primes up to 1000" and
-  "primes up to 3,000,000" eliminations, to check those are complete.
+- **Confirmation from the authors on the two code/data points above**: which
+  build of `loopless.cpp` produced the reported `z`, and what the real
+  `59083^2` line of `3p2.txt` says.
+- `tree.txt`, the remaining data file (primes up to 3,000,000), which did not
+  transfer. The same mechanical check as `restrained/06` would apply to it.
+- The **PDF** of arXiv:2607.19746, to settle the §4 constant.
+
+**On Corollary B as a sieve condition — negative.** I had hoped to add it to
+Algorithm 1. It does not fit: the sieve's test is whether a candidate `r` *can
+be ordinary*, and Corollary B instead constrains `σ(p^e)` for unknown `p, e`.
+It eliminates no candidate, so it does not move `ω(N)` and hence does not move
+`q`. Recorded so the idea is not retried.

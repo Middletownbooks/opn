@@ -855,3 +855,61 @@ rather than on a range of `T`:
 That is a strictly weaker hypothesis than a pool: the surviving `T` are two
 explicit sets rather than an unbounded family, and each equation is a candidate
 for an exact Thue–Mahler solve.
+
+---
+
+## 14. Replacing search bounds by proofs  (`s3k2/31`–)
+
+§13d rests the pool-free profiles on four search bounds. Some of them do not
+need a Thue–Mahler solver: they have a structure that an elementary argument
+settles exactly. This section records which ones, and how.
+
+### 14a. The coupled branch is empty — proved  (`s3k2/31`)
+
+Setting (§13b, "13 not ordinary"): `T = {13, a₁, a₂}`, 13 special, `a₁ ≠ a₂`
+ordinary, both `≡ 1 (mod 3)`, and the **coupled** condition
+`a₂ | a₁²+a₁+1`, `a₁ | a₂²+a₂+1`. Previously searched over `a₁ < 2·10⁶`.
+
+**Step 1 — Vieta jumping.** (Proved here; it is the standard descent, not cited
+from any source.) Distinct primes are coprime, so the coupled condition gives
+`a₁a₂ | a₁² + a₂² + a₁ + a₂ + 1`, i.e.
+
+    x² + y² + x + y + 1 = k·x·y.
+
+For fixed `k`, a solution with `x < y` has other root `y' = (x²+x+1)/y < y`, so
+the minimal solution has `x = y`, whence `x = 1`, `k = 5`. For `k = 5`, `y = x+1`
+is impossible, so `y ≥ x+2` and `y' ≤ x`: the descent `(x,y) → (y',x)` is strict
+and invertible. Hence **every** solution is a consecutive pair of
+
+    a₀ = a₁ = 1,  a_{n+1} = 5a_n − a_{n−1} − 1 :   1, 1, 3, 13, 61, 291, 1393, 6673, …
+
+with `a_n² + a_n + 1 = a_{n−1}·a_{n+1}`.
+
+**Step 2 — closure.** Let the pair be `(a_n, a_{n+1})`. Since `3 ≢ 1 (mod 3)` and 13
+is the special, `n ≥ 4`. Then:
+
+* `F(a_n) ⊆ {13, a_{n+1}}` forces `a_{n−1} = 3·13ˣ`. (The exponent of `a_{n+1}` is 1,
+  by size; then divide Vieta's product.)
+* `F(a_{n+1}) ⊆ {13, a_n}` forces `a_{n+2} = 3·13ᵘ·a_n^{v−1}` with `v ≥ 1`.
+
+The **ratio lemma** `4.6·a_m < a_{m+1} < 5·a_m` for `m ≥ 3` (induction from
+`61/13 > 4.6`) finishes it:
+
+* `v = 1`: `a_{n+2}/a_{n−1} = 13^{u−x}` lies in `(97.3, 125)`, and no power of 13 does.
+* `v = 2`: `a_{n+2}/a_n = 3·13ᵘ` lies in `(21.2, 25)`, and no `3·13ᵘ` does.
+* `v ≥ 3`: `a_{n+2} ≥ 3a_n² > 25·a_n`.
+
+**The coupled branch is empty.** The proof uses no search bound, no
+Thue–Mahler input, and not even primality of the `aᵢ`.
+
+`s3k2/31` checks each step. (A) A direct search of all pairs with `x ≤ 30 000`
+finds exactly the consecutive pairs of the sequence. (B) It checks Vieta's
+identity and the ratio lemma to `n = 400`. (C) No pair in range satisfies both
+closure conditions. (D) Script 30's old search, re-run to `10⁵`, still finds
+nothing. That is a reproduction check, not an input.
+
+**Effect on §13b.** Two of its three branches rested on search bounds. The
+coupled branch is now proved empty. The uncoupled branch still rests on
+`(t²+t+1)/3 = 13ᶜ` having no solution (searched to `c ≤ 269`), and so does
+§13a; §14b addresses that equation. The row
+`coupled … a₁ < 2·10⁶` of the §13d table is **removed**.

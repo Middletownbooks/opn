@@ -1084,3 +1084,111 @@ admissible completion, as §9a said.
 `{7,13,19,31,127}` and `{7,13,19,31,331}`. Nothing is alive. Closure mode of
 `s3k2/36` on this profile agrees independently: it reaches no exceptions and
 ends with exactly these seven conditional sets.
+
+### 14e. The seven pool-limited profiles, without a pool  (`s3k2/36`–`38`)
+
+§13c left seven profiles drawing `T` from a finite pool. `s3k2/36` runs the
+`max(T)` recursion of §8 on any role profile, using the corrected `k`-prime
+cutoff of §14d, and handles the single `W` slot that every one of these
+profiles has:
+
+* **`W` slot.** The slot is either an explicit prime `w ≡ 2 (mod 3)` below
+  `WB = 500` or a generic `w ≥ 500`, which contributes a factor in
+  `(1, 500/499)`.
+  * A notable `w` contributes a factor in `[σ(w^{q₀})/w^{q₀}, w/(w−1))`.
+  * A special `w ≡ 5 (mod 12)` is split two ways. With `e = 1`, the factor is
+    exactly `(w+1)/w`, and every prime `≡ 1 (mod 3)` dividing `w+1` is forced
+    into `T`. With `e ≥ 5`, the interval is tight.
+* **3-budget.** Role minima admit every exponent with
+  `v₃(k+1) ≤ 2 − α − cost(W)`. This is a relaxation, which is safe because it
+  only lowers the minima.
+* **Last level for `α ≥ 1`.** The last level is driven by closure, split on the
+  role of the last prime `t`:
+  * An ordinary prime in `S` pins `t ∈ F(s) \ S`.
+  * If `t` is ordinary, `(t²+t+1)/3` must be `S`-smooth. When the margin
+    restricted to that role split gives a finite cutoff `B`, enumerating
+    `S`-smooth numbers up to `B²` is **exact**. Only a margin `≤ 1` falls back to
+    a stated search bound ("Case B").
+  * Otherwise the per-split cutoff applies.
+* **Exceptions.** An exception with two or more primes missing goes to the
+  closure DFS of `s3k2/38`, which propagates `F(t) ⊆ T` over partial role
+  assignments. For two ordinary unknowns it also uses the Vieta
+  classification of §14a. Anything unresolved is reported, never dropped.
+
+**Validation.** On the `α = 2, |W| = 0, τ = 5` profile, the plain-cutoff mode of
+`s3k2/36` reproduces script 34's level counts and script 35's final outcome
+exactly: 485 179 sets with no role assignment, 3 676 unconditional, 5
+conditional, 0 alive, and the same 3 exceptions. `s3k2/37` (one-prime exception
+resolver) and `s3k2/38` (DFS) agree on the `τ = 3` profiles. For the two
+`|W| = 0` profiles, the final test run directly on every `T` in the old pool
+below 400 kills them all unconditionally (`7140 = 6469 + 671`,
+`630 = 231 + 399`), consistent with the recursion.
+
+**Results** (final code; each row is `python3 s3k2/36_profile_recursion.py <profile>`,
+and each exception is resolved by `python3 s3k2/38_closure_dfs.py <profile>`):
+
+| profile (`α`, sp, nt, `τ`, `|W|`) | killed early (raw min > 18/13) | unconditional | no role/config | conditional sets | alive | verdict |
+|---|---|---|---|---|---|---|
+| `0,no,2,2,1` | 6 | 551 | 17 | 0 | 0 | **unconditional** |
+| `0,yes,2,3,0` | 0 | 80 | 17 | 0 | 0 | **unconditional** |
+| `1,yes,2,4,0` | 0 | 618 | 9 | 0 | 0 | **unconditional** |
+| `1,no,2,3,1` | 17 | 4 249 | 16 | 0 | 0 | **unconditional** |
+| `0,yes,1,2,1` | 2 | 260 | 341 | 1 | 0 | conditional: 1 named set |
+| `1,yes,1,3,1` | 16 | 4 349 | 52 | 3 | 0 | conditional: 3 named sets + one Case-B search |
+| `2,yes,1,4,1` | 22 | 357 | 310 | 4 | 0 | conditional: 4 named sets + Case-B/Vieta searches |
+
+"Killed early" is the check added after the first run: a set `S` whose **raw**
+role minimum (before narrowing) already exceeds `18/13` is dead for every `T ⊇ S`,
+since role factors only grow and `PROD_U ≥ 1`. The narrowed `LO` is **not** valid
+for supersets, so it is never used this way. Without this check, the recursion
+had reported spurious "exceptions", for example `{13,61,97}` with `W` notable 5,
+whose raw minimum is `1.38962 > 18/13`.
+
+**Named conditional sets** (`Sm` searched to `10⁴⁸` for three primes, `10¹⁶⁰`
+for two, `10²⁴` for four):
+
+| profile | `T` | `W` | `Sm(T)` | admissible | need |
+|---|---|---|---|---|---|
+| `0,yes,1,2,1` | `{7,13}` | notable 11 | ∅ | ∅ | 6 |
+| `1,yes,1,3,1` | `{13,61,151}` | notable 5 | ∅ | ∅ | 5 |
+| `1,yes,1,3,1` | `{13,61,157}` | notable 5 | ∅ | ∅ | 5 |
+| `1,yes,1,3,1` | `{7,13,19}` | notable 23 | 11, 653 | 653 | 5 |
+| `2,yes,1,4,1` | `{13,61,157,8269}` | notable 5 | ∅ | ∅ | 4 |
+| `2,yes,1,4,1` | `{7,13,19,127}` | notable 29 | 11, 107, 653 | 653 | 4 |
+| `2,yes,1,4,1` | `{7,13,19,127}` | notable 41, 47 | 11, 107, 653 | 107, 653 | 4 |
+
+**Case-B and Vieta searches** (no solution found in any):
+
+* `(t²+t+1)/3` `{7,13}`-smooth, to `10³⁰⁰`, in `1,yes,1,3,1` and `2,yes,1,4,1`;
+* `(t²+t+1)/3` `S`-smooth, to `10¹²⁰`, for `S = {13,61,151}`, `{13,61,157}`,
+  `{13,61,28057}` and `{7,13,19}`, in `2,yes,1,4,1`;
+* Vieta pairs to sequence index 1500 (about `10¹⁰²⁰`), in `2,yes,1,4,1`.
+
+**Cost.** `2,yes,1,4,1` takes 37 minutes; 315 329 of its 340 091 level-3 sets
+come from the `W = 5` configuration. The other six profiles take seconds.
+
+
+**What is conditional here.**
+
+1. **Count on the named sets above** (`ω(N) ≥ 10` plus `Sm(T)` complete).
+2. **Case-B and Vieta searches above.** A solution beyond a bound would only
+   create a candidate set, which would still have to pass the full test.
+
+These are the same kind of statement as the named `|T| = 5` sets: Thue–Mahler
+problems of rank 2 or 3, not pool restrictions.
+
+### 14g. Section 3 at `k = 2`: the tally after §14
+
+| status | profiles | what they rest on |
+|---|---|---|
+| **unconditional** (only `ω(N) ≥ 10`) | **10** | nothing else |
+| conditional | `α=2, |W|=0, τ=5` | 7 named sets (§10b + §14f) |
+| conditional | `0,yes,1,2,1` | 1 named set |
+| conditional | `1,yes,1,3,1` | 3 named sets + one Case-B search |
+| conditional | `2,yes,1,4,1` | 4 named sets + Case-B/Vieta searches |
+
+The ten unconditional profiles are the six of §14c and the four of §14e.
+**No profile rests on a pool.** Every residual statement is an equation
+`x²+x+1 = ∏_{t∈T} t^{c_t}` of rank `|T| ≥ 2` with `T` explicit, or the matching
+`(t²+t+1)/3` search. §9c's case-B bound `3·10²⁸` is no longer used: the DFS of
+`s3k2/38` finishes the §9a exceptions exactly.

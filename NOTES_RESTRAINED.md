@@ -146,6 +146,45 @@ composite `x` (`30²+30+1 = 7²·19` against `11²+11+1 = 7·19`, and
 
 ---
 
+### 4a. Question 10 settled exactly for all `p, r < 1000`  (`restrained/09`)
+
+The search above covers every `(p, r)` but only `x ≤ 10⁶`. The other axis is
+now closed exactly. Fix `(p, r)`. Then `x² + x + 1 = r·pᶜ` has **one** free
+exponent, so the Skolem solver of `s3k2/32` (`NOTES_S3_K2.md` §14b) lists **all**
+its solutions, for every `c` and with no bound on `x`.
+
+The case `r = p` is solved as `x² + x + 1 = p^{c+1}`. `r` runs over 3 and the
+primes `≡ 1 (mod 3)`, which are the only possible prime factors of `t²+t+1`.
+
+**Validation.** Both of Ochem–Zelinsky's near-examples are reproduced:
+
+* `(7, 19)`: `30²+30+1 = 7²·19` and `11²+11+1 = 7·19`;
+* `(409, 523)`: `9353²+9353+1 = 409²·523` and `462²+462+1 = 409·523`.
+
+**Result** (`python3 restrained/09_question10_exact.py 1000`, 68 min). Every one
+of the 6480 pairs is settled; none is left unsettled.
+
+| `p, r < 1000` | count |
+|---|---|
+| pairs settled exactly | 6480 of 6480 |
+| pairs admitting `x²+x+1 = r·p^a`, `y²+y+1 = r·p^b`, `a > b ≥ 1`, any `x, y ≥ 2` | **2**: exactly the two near-examples |
+| of those, with `x` and `y` both prime (a Question-10 solution) | **0** |
+
+> **Proposition (computational, exact).** Question 10 has no solution with
+> `p < 1000` and `r < 1000`, for any `a > b > 0` and any `x, y`. Moreover, the
+> only pairs in that range admitting the two equations at all, even with `x, y`
+> composite, are Ochem–Zelinsky's two near-examples.
+
+This is still data on an open question, not a resolution of it: `p` and `r` are
+unbounded. It is exact within its range, where the earlier table was a
+bounded search.
+
+**A lead, not pursued.** Both near-examples satisfy `x ≡ y (mod r)` and
+`x ≡ −1−y (mod p^b)`. With `y′ = −1−y`, that orientation makes
+`((xy′ + x + 1) + (x − y′)ω)/p^b` an Eisenstein integer of norm `p^{a−b} r²`.
+Checked on `(30, 11)`: `47² + 47·6 + 36 = 7·19²`. I see no route from this to
+finiteness.
+
 ## 4b. Audit of `loopless.cpp` — a 64-bit overflow
 
 `loopless.cpp` implements Algorithm 1, the sieve that yields

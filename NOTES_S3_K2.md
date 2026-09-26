@@ -1266,3 +1266,13 @@ independent method or a reproduction target, and two errors in the earlier
 scripts were found and corrected along the way (§14d, §14f). It has **not** had
 an independent audit. That is the recommended next step before this result is
 relied on.
+
+### 14j. Reproducibility  (`verify_all.py`)
+
+`python3 verify_all.py` (fast tier, 16 checks, about 4 min) and
+`python3 verify_all.py full` (19 checks, about 45 min) re-run the scripts behind
+every figure quoted in §§14a–14h. Each output is compared with the value
+written in the runner, which is copied from these tables. At commit time: **19 of
+19 pass**, including 488 860 level-5 sets with 0 alive (scripts 34, 35) and the
+`2,yes,1,4,1` tally `(22, 357, 4, 310, 0, 1, 4)`. This checks reproducibility,
+not correctness; correctness is the audit's job (`PROMPT_AUDIT_S3K2.md`).

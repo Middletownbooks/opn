@@ -17,7 +17,7 @@ Everything is standard-library Python, no external data. Entry points below.
 | item | where | status |
 |---|---|---|
 | Audit of Mantovanelli | `AUDIT_REPORT.md` | **Category C.** Proposition A: acceptance and validity are mutually exclusive for the tail envelope. Decisive, needs no `ω` bound. |
-| Verification of Ochem–Zelinsky §§2–3 | `NOTES_RESTRAINED.md` | Reproduces exactly. §4 has a non-reproducing constant; `loopless.cpp` has a 64-bit overflow. Both recorded. |
+| Verification of Ochem–Zelinsky §§2–3 | `NOTES_RESTRAINED.md` | Reproduces exactly. §4 has a non-reproducing constant; `loopless.cpp` has a 64-bit overflow. Both recorded. Their Question 10 has **no solution with `p, r < 1000`**, exact for all exponents and all `x` (§4a). |
 | `k = 2`, `3 ∤ N` (their §2) | `NOTES_K2.md`, `AUDIT_K2_MODEL_RESULT.md` | **Closed.** My first attempt was wrong (double-counted the prime 5); a reasoning model's fixed-support bound repaired it and I audited it. |
 | `k = 2`, `3` ordinary (their §3) | `NOTES_S3_K2.md` | **All 14 role profiles eliminated, using only two cited theorems:** `ω(N) ≥ 10` (Nielsen) and Matveev 1998, Thm 2.2 (`MATVEEV_1998.md`). No pool, search bound or Thue–Mahler assumption remains (§14h–i). Two errors in the earlier recursion were found and corrected (§14d, §14f). **Not yet independently audited.** |
 | `k = 2`, `3` notable (their §4) | `NOTES_S4_K2.md`, `AUDIT_S4K2_MODEL_RESULT.md` | **Open**, as it is at `k = 1`. New structural results below. |
@@ -152,7 +152,9 @@ Ranked by value, with what blocks each:
    * the claim in `38` that the DFS is exhaustive.
 
    A reasoning-model brief is a natural vehicle.
-2. **A `verify_all` runner** that re-derives every figure the README quotes.
+2. **Done: `verify_all.py`.** It re-derives every §14 figure; 19 of 19 checks
+   pass (`NOTES_S3_K2.md` §14j). Extending it to the pre-§14 notes is still
+   open.
 3. **`3` notable at `k = 2`.** The open sub-case is `p ≡ 5 (mod 12)` with
    `p^e ‖ σ(n₂^{q₂})`; `PROMPT_S4_K2_SPECIAL.md` is the brief that produced the
    `m` bound. The hard branch is `f = ord_p(n₂) > 1` with `p ∤ q₂+1`, where
@@ -179,6 +181,7 @@ sources/                   page images of Matveev 1998, pp. 82 and 85-87
 PROMPT_AUDIT_S3K2.md       brief for an independent audit of section 14
 NOTES_S4_K2.md             k = 2, section 4 -- 3 notable; s4k2/01-03
 PROMPT_*.md                self-contained briefs written for a reasoning model
+verify_all.py              re-derives every section-14 figure (fast / full tiers)
 AUDIT_*_MODEL_RESULT.md    audits of what those briefs returned
 ```
 

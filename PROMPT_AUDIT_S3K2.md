@@ -104,7 +104,10 @@ Check each of these independently:
 
 * the linear form, and `Λ ≠ 0`;
 * `|Λ| ≤ 2√3/|z|`, and the range where it holds;
-* the Kummer condition for `ζ₆` and the `π_t/π̄_t`;
+* the Kummer condition for `ζ₆` and the `π_t/π̄_t`. Its **definition**, (1.5) on
+  p. 82, is not among the page images. `MATVEEV_1998.md` reads it from the
+  OCR as `[K(√α₁,…,√αₙ) : K] = 2ⁿ`. Record whether your argument depends on
+  that reading, and how;
 * `D = 1` and `ρ = 1`;
 * `h(π_t/π̄_t) = ½ log t`;
 * that the choices `ϑ = 1`, `E = 1`, `C₃ = n/ρ` satisfy (2.1)–(2.3);

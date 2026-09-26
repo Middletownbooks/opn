@@ -243,10 +243,99 @@ def primes1_upto(B):
         _P[:] = [p for p in range(7, n+1) if s[p] and p % 3 == 1]; _PMAX[0] = n
     return _P[:bisect.bisect_left(_P, B)]
 
+
+# ------------------------------------------------------------ closure-driven last level
+MB_EXP = {1: 600, 2: 300, 3: 120, 4: 60}   # case-B search bound 10^MB_EXP[|S|]
+
+def margin_pr(S, pr, FULL, wc, alpha):
+    """margin() restricted to the single sub-profile pr of S."""
+    label, w, low, HIW, cost, forced = wc
+    MIN = S[0]; tau = len(FULL)
+    if forced and not forced_ok(S, forced, tau): return None, None
+    LOW = low(MIN)
+    if LOW is None: return None, None
+    lo, hi = bounds(S, pr, MIN, 2 - alpha - cost, tau)
+    if lo is None: return None, None
+    LO = lo*LOW; HI = hi*HIW
+    Sm = [x for x in smooth_x(S) if x != w]
+    etb = math.exp(1.000001*tailY(S))
+    for _ in range(60):
+        R = TARGET/LO; H = F(1)
+        for x in Sm:
+            if geom(x, 2) <= R: H *= geom(x, 2)
+        Hup = F(math.ceil(float(H)*etb*10**12) + 1, 10**12)
+        nl = TARGET/Hup
+        if nl <= LO: break
+        LO = nl
+    return LO, HI
+
+_cB = {}
+def caseB(S, exp10):
+    """primes t > max(S), t = 1 (mod 3), with (t^2+t+1)/3 S-smooth and <= 10^exp10."""
+    key = (S, exp10)
+    if key in _cB: return _cB[key]
+    MB = 10**exp10; out = []; L = list(S)
+    def rec(i, m):
+        if i == len(L):
+            d = 12*m - 3; r = math.isqrt(d)
+            if r*r == d and r % 2 == 1:
+                t = (r-1)//2
+                if t > S[-1] and t % 3 == 1 and isprime(t): out.append(t)
+            return
+        v = m
+        while v <= MB: rec(i+1, v); v *= L[i]
+    rec(0, 1); _cB[key] = sorted(set(out)); return _cB[key]
+
+def last_candidates(S, FULL, wc, alpha):
+    """All t > max(S) such that T = S u {t} can satisfy closure, split on t's role.
+       Returns (candidates, caseB_used, exceptions).  See section 14e."""
+    tau = len(FULL); MIN = S[0]; b3 = 2 - alpha - wc[4]
+    cands = set(); usedB = False; exc = []
+    for rho in sorted(set(FULL)):
+        pr = list(FULL); pr.remove(rho); pr = tuple(sorted(pr))
+        free = False; freeB = False
+        for perm in set(permutations(range(len(S)))):
+            ords = []; ok = True
+            for r, i in zip(pr, perm):
+                if min_factor(S[i], r, MIN, b3) is None: ok = False; break
+                if r == 'o': ords.append(S[i])
+            if not ok or not closure_ok(S, ords, tau): continue
+            need = set()
+            for s0 in ords: need |= {f for f in Fset(s0) if f not in S}
+            if len(need) > 1: continue
+            if need:
+                t = next(iter(need))
+                if rho == 'o' and not (Fset(t) <= set(S)): continue
+                cands.add(t)
+            elif rho == 'o':
+                freeB = True
+            else:
+                free = True
+        if freeB:
+            # t ordinary, F(t) inside S.  With a finite cutoff B for this role split,
+            # t < B gives (t^2+t+1)/3 < B^2, so the S-smooth enumeration to B^2 is
+            # EXACT.  Only a margin <= 1 falls back to the conditional search bound.
+            LO, HI = margin_pr(S, pr, FULL, wc, alpha)
+            if LO is not None:
+                B = threshold_k(S, float(LO)/float(HI), 1)
+                if B < 1e150:
+                    cands |= set(caseB(S, 2*int(math.log10(B)) + 2))
+                else:
+                    cands |= set(caseB(S, MB_EXP[len(S)])); usedB = True
+        if free:
+            LO, HI = margin_pr(S, pr, FULL, wc, alpha)
+            if LO is None: continue
+            m = float(LO)/float(HI)
+            B = threshold_k(S, m, 1)
+            if B == float('inf') or B > 5e8:
+                exc.append((S, wc[0], 't:'+rho, m)); continue
+            cands |= {t for t in primes1_upto(B) if t > S[-1]}
+    return sorted(t for t in cands if t > S[-1]), usedB, exc
+
 # ------------------------------------------------------------ one profile
-def run(FULL, Wrole, alpha, verbose=True, levels_out=None):
+def run(FULL, Wrole, alpha, verbose=True, levels_out=None, closure_last=True):
     tau = len(FULL); need = 6 - alpha
-    res = dict(uncond=0, cond=0, nocfg=0, alive=[], cond_sets=[], exceptions=[], levels={})
+    res = dict(uncond=0, cond=0, nocfg=0, alive=[], cond_sets=[], exceptions=[], levels={}, caseB=[])
     for wc in w_configs(Wrole, alpha):
         live = [(7,), (13,)]
         for L in range(1, tau+1):
@@ -265,6 +354,19 @@ def run(FULL, Wrole, alpha, verbose=True, levels_out=None):
                     if len(keep) < need or pr > R:
                         res['cond'] += 1; res['cond_sets'].append((S, wc[0])); continue
                     res['alive'].append((S, wc[0], keep)); continue
+                if 13 not in S:
+                    # 13 is in T and nothing = 1 (mod 3) lies strictly between 7 and 13,
+                    # so the next element is 13 itself: no cutoff is needed.
+                    if S[-1] < 13: nxt.append(tuple(sorted(S + (13,))))
+                    continue
+                if closure_last and alpha >= 1 and L == tau - 1:
+                    cands, usedB, exc = last_candidates(S, FULL, wc, alpha)
+                    Bf = threshold_k(S, m, 1)           # the plain cutoff still applies
+                    res['exceptions'] += exc
+                    if usedB: res['caseB'].append((S, wc[0]))
+                    for t in cands:
+                        if t < Bf: nxt.append(tuple(sorted(S + (t,))))
+                    continue
                 B = threshold_k(S, m, tau - L)
                 if B == float('inf'):
                     res['exceptions'].append((S, wc[0], m)); continue
@@ -274,6 +376,9 @@ def run(FULL, Wrole, alpha, verbose=True, levels_out=None):
                     if t > S[-1] and ((13 in S) or t == 13):
                         nxt.append(tuple(sorted(S + (t,))))
             live = sorted(set(nxt))
+            if verbose and len(live) > 20000:
+                print(f"      {wc[0]}: level {L+1} has {len(live)} sets "
+                      f"(max prime {max(x[-1] for x in live)})", flush=True)
             if L+1 <= tau:
                 res['levels'].setdefault(L+1, 0); res['levels'][L+1] += len(live)
             if not live: break
@@ -291,6 +396,8 @@ PROFILES = {
     "0,no,2,2,1":  (('n','n'),          's', 0),
     "0,yes,1,2,1": (('s','n'),          'n', 0),
     "0,yes,2,3,0": (('s','n','n'),      None, 0),
+    # the alpha = 2, |W| = 0 branch of sections 8-10, for validating the final test
+    "2,yes,2,5,0": (('o','o','s','n','n'), None, 2),
 }
 
 if __name__ == "__main__":
@@ -327,6 +434,8 @@ if __name__ == "__main__":
     print(f"   exceptions (no cutoff): {len(r['exceptions'])}")
     for e in r['exceptions'][:40]: print("      ", e)
     for a in r['alive'][:40]: print("   ALIVE", a)
+    print(f"   case-B enumerations (conditional on 10^MB_EXP bound): {len(r['caseB'])}")
+    for c in r['caseB'][:30]: print("      ", c)
     print(f"   conditional sets: {len(r['cond_sets'])}")
     for c in r['cond_sets'][:60]: print("      ", c)
     print(f"   time {time.time()-t0:.0f}s")

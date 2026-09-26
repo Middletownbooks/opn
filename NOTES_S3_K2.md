@@ -913,3 +913,99 @@ coupled branch is now proved empty. The uncoupled branch still rests on
 `(t²+t+1)/3 = 13ᶜ` having no solution (searched to `c ≤ 269`), and so does
 §13a; §14b addresses that equation. The row
 `coupled … a₁ < 2·10⁶` of the §13d table is **removed**.
+
+### 14b. Single-exponent equations solved exactly — Skolem's method  (`s3k2/32`)
+
+**Method.** (Proved in the script docstring. Skolem's method and Strassmann's
+theorem are classical; the argument is written out in full there rather than
+cited.) The equation is `x²+x+1 = D·pᶜ` with `D` fixed and `c` free. In `ℤ[ω]`,
+`N(x−ω) = x²+x+1`, and the two conjugate primes over a split `q` cannot both
+divide `x − ω`. So
+
+    x − ω = ε·γ·πᶜ,
+
+with 6 units `ε` and finitely many conjugate choices for `γ` and `π`. The
+condition is that the `ω`-coefficient `B_c = −1`, where `B_c` is an integer
+linear recurrence. For a prime `ℓ ≥ 5` let `L` be the period of `π` mod `ℓ`. On
+each class `c ≡ c₀ (mod L)`, `B_c + 1` is an `ℓ`-adic power series in
+`t = (c−c₀)/L`. Its linear coefficient is `≡ B_{c₀+L} − B_{c₀} (mod ℓ²)`, and
+every higher coefficient has valuation `≥ 2`. By Strassmann, a class is either
+**empty** (`B_{c₀}+1 ≢ 0 mod ℓ`) or has **at most one** solution (linear
+coefficient of valuation exactly 1). Combining several `ℓ` whose periods divide
+a common modulus settles each residue class. The solver reports "complete" only
+when every class is settled, and otherwise claims nothing.
+
+**Trust checks**, all in the script:
+
+* **Reproduction.** Script 26 searched `x²+x+1 = pᶜ` for all 21 primes
+  `p ≡ 1 (mod 3)` below 200, `c ≤ 1200`. The solver reproduces that table
+  exactly, including Nagell's `18² + 18 + 1 = 7³`, and now proves it for all `c`.
+* **Cross-check.** Each new equation below agrees with a direct `4Dpᶜ−3 = □`
+  search for `c ≤ 400`.
+* **Mutation.** With the known-solution search capped below `c = 3`, the solver
+  refuses to call `x²+x+1 = 7ᶜ` complete. It does not drop the hidden solution
+  `x = 18`.
+
+**Results**, complete for every `c ≥ 0`. Solutions are listed as `(c, x)`, one of
+each pair `x ↔ −1−x`, and only those with `x ≥ 1`:
+
+| equation | solutions | where it is used |
+|---|---|---|
+| `x²+x+1 = 13ᶜ` | `(1, 3)` | `Sm({13}) = ∅` (§11c) |
+| `x²+x+1 = 3·13ᶜ` | `(0, 1)`, `(2, 22)` | §13a; uncoupled branch of §13b |
+| `x²+x+1 = 3·61ᶜ` | `(0, 1)`, `(1, 13)` | §13b, 13 ordinary |
+| `x²+x+1 = 39·61ᶜ` | none | §13b, 13 ordinary |
+| `x²+x+1 = 61ᶜ` | none | count for `T = {13,61}` |
+| `x²+x+1 = 13·61ᶜ` | `(0, 3)` | count for `T = {13,61}` |
+| `x²+x+1 = 97ᶜ` | none | count for `T = {13,61,97}` |
+| `x²+x+1 = 61·97ᶜ` | none | count for `T = {13,61,97}` |
+
+**Why this is not a Thue–Mahler solve.** Each equation has one free exponent,
+so the unit-and-exponent group has rank 1 and Skolem's method applies directly.
+With two or more free exponents (the five `|T| = 5` statements of §10b, or
+`Sm(T)` for general `T`), the same method needs Baker-type bounds plus lattice
+reduction. That still needs a CAS.
+
+### 14c. The valuation step that makes the counts single-exponent  (`s3k2/33`)
+
+`Sm({13,61})` and `Sm({13,61,97})` are two- and three-exponent problems. In
+these profiles, though, the `T`-primes' own exponent balance caps how much of
+each `U` may use. The mechanism is the valuation sharpening of §10b. An ordinary
+prime `a` has `e_a = 2 = Σ_C v_a(σ(C))`, and every term is `≥ 0`:
+
+* `T = {13, 61}` (§13a): 13 is ordinary. `σ(3²) = 13` spends one unit, so each
+  `x ∈ U` has `x²+x+1 = 61ᶜ` or `13·61ᶜ`.
+* `T = {13, 61, 97}` (§13b): 13 and 61 are ordinary. `σ(3²) = 13` and
+  `σ(61²) = 3·13·97` spend both units of 13, and `σ(13²) = 3·61` spends one unit
+  of 61. So each `x ∈ U` has `x²+x+1 = 97ᶜ` or `61·97ᶜ`.
+* §13b with 13 ordinary and `a₂ ≠ 61`: 61 is the special, and the same count
+  gives `v₁₃(a₂²+a₂+1) ≤ 1`. The `{13,61}`-smooth search to `10¹⁵⁰` becomes the
+  two equations `3·61ᶜ` and `39·61ᶜ`, whose only prime solution is `a₂ = 13 = a₁`.
+
+By §14b, every one of these equations has no solution usable in `U`.
+
+**Result.** All six profiles marked **free** in §13c are now eliminated with no
+search bound and no Thue–Mahler assumption. Their only input is `ω(N) ≥ 10`
+(Nielsen 2015, a theorem). They are:
+
+* `0,no,1,1,2` and `0,yes,0,1,2`: `T = {13}`, and `Sm({13}) = ∅` exactly.
+* `1,no,0,1,3`: §11b; this was already unconditional.
+* `1,no,1,2,2` and `1,yes,0,2,2`: §13a with §14b and §14c.
+* `2,yes,0,3,2`: §13b with §14a, §14b and §14c.
+
+**Updated tally for the fourteen profiles of §3 at `k = 2`:**
+
+| status | profiles |
+|---|---|
+| **unconditional** (only `ω(N) ≥ 10`) | **6**: the six above |
+| conditional on 5 named Thue–Mahler statements + case-B bound `3·10²⁸` | 1: `α=2, |W|=0, τ=5` |
+| conditional on a pool + `Sm(T)` search bounds | 7: the "limited" rows of §13c |
+
+**The §13d table, revised:**
+
+| equation | status |
+|---|---|
+| `(t²+t+1)/3 = 13ᶜ` | **solved exactly** (§14b) |
+| `(a²+a+1)/3` is `{13,61}`-smooth | **replaced** by `3·61ᶜ`, `39·61ᶜ`, both solved (§14c) |
+| coupled `a₂ \| a₁²+a₁+1`, `a₁ \| a₂²+a₂+1` | **proved empty** (§14a) |
+| `Sm({13,61})`, `Sm({13,61,97})` | **replaced** by four single-exponent equations, all solved (§14c) |

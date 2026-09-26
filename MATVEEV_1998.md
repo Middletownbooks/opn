@@ -12,9 +12,31 @@ Everything below is transcribed from the **screenshots**:
 constant here comes from the OCR or from memory. A zoomed crop of (2.3)–(2.5),
 `sources/matveev1998_p86_eq2.3-2.5_zoom.png`, was compared symbol by symbol
 with the formulas below and with `s3k2/39`: they agree. So was a zoomed crop of Theorem 2.2,
-`sources/matveev1998_p87_eq2.13-2.16_zoom.png`, covering (2.13)–(2.16). The
-paper's remark after (2.16) (`112·2ⁿC₂ϑⁿC₁ⁿe⁻ⁿ(C₃ exp(C₃)Ee/2ϑ)^ρ < 2¹⁵(ne/2ρ)^ρ ρ(2e²ρ ln 2)ⁿ/n^{1/2}`)
-holds numerically for the constants as implemented, for `n = 2, …, 8`. The transcription is kept
+`sources/matveev1998_p87_eq2.13-2.16_zoom.png`, covering (2.13)–(2.16). 
+
+**Correction: the paper's remark after (2.16) does NOT hold numerically.** An
+earlier version of this file, and the message of commit `c717158`, said it did.
+The remark is
+
+    112·2ⁿ C₂ ϑⁿ C₁ⁿ e⁻ⁿ (C₃ exp(C₃) Ee/2ϑ)^ρ  <  2¹⁵ (ne/2ρ)^ρ · ρ(2e²ρ ln 2)ⁿ / n^{1/2}.
+
+With `ϑ = E = ρ = 1` and `C₃ = n`, and with (2.4)–(2.5) exactly as printed
+(confirmed on the zoomed crops), the left side exceeds the right by a factor of
+2.06 (`n = 2`) to 3.09 (`n = 8`). A rough asymptotic of the printed formulas
+gives a limiting ratio of about 4. So the remark is itself loose. It is a side
+comment, not part of the theorem: Theorem 2.2 is stated by (2.16) with the
+constants themselves, which is what `s3k2/39` uses.
+
+The discrepancy cannot hurt the result, for two reasons.
+
+1. **Direction.** If the remark were right and a constant misread, the true
+   constants would be *smaller* than those used, and the bound here would be
+   weaker, still sound.
+2. **Insensitivity.** Multiplying Matveev's exponent bound by `10⁶` leaves the
+   reduced bound and the complete solution lists unchanged. That holds for
+   `T = {7,13,19}` (`L = 89.2`), `{7,13,19,127}` (`121.2`) and
+   `{7,13,19,37,67}` (`152.3`). The lattice step depends on the initial bound
+   only logarithmically, and here not at all at the precision reported. The transcription is kept
 literal, and its use is stated separately.
 
 **Kummer condition (p. 82, (1.5)).** `[K(√α₁, …, √αₙ) : K] = 2ⁿ`. The same
@@ -52,9 +74,11 @@ The constants come from p. 86:
     Ω  = A₁ ⋯ A_n,
     ω  = Ω · (C₁·D·ϑ/e)ⁿ · (C₃·exp(C₃)·E·e/(2ϑ))^ρ                        (2.5)
 
-The paper's own remark after Theorem 2.2 bounds the `n`-dependent factor by
-`2¹⁵ (ne/2ρ)^ρ · ρ(2e²ρ ln 2)ⁿ / n^{1/2}`. That agrees with the formulas as
-transcribed, which is a consistency check on the transcription.
+The paper's remark after Theorem 2.2 bounds the `n`-dependent factor by
+`2¹⁵ (ne/2ρ)^ρ · ρ(2e²ρ ln 2)ⁿ / n^{1/2}`. An earlier version of this file
+called that a consistency check on the transcription. It was never computed,
+and it **fails** by a factor of 2–3 (see the correction above). The
+transcription is confirmed by the zoomed crops instead.
 
 **Hypotheses of Theorem 2.2 that must be checked in each use.**
 

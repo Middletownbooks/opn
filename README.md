@@ -175,6 +175,8 @@ NOTES_Q3.md                the q = 3 investigation; q3/01-06
 NOTES_K2.md                k = 2, section 2; k2/01-04 and k2/audit/01-04
 NOTES_S3_K2.md             k = 2, section 3 -- the main result; s3k2/01-40
 MATVEEV_1998.md            Theorem 2.2 of Matveev 1998, transcribed; used by s3k2/39
+sources/                   page images of Matveev 1998, pp. 85-87
+PROMPT_AUDIT_S3K2.md       brief for an independent audit of section 14
 NOTES_S4_K2.md             k = 2, section 4 -- 3 notable; s4k2/01-03
 PROMPT_*.md                self-contained briefs written for a reasoning model
 AUDIT_*_MODEL_RESULT.md    audits of what those briefs returned

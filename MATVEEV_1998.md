@@ -4,7 +4,8 @@
 линейной формы от логарифмов алгебраических чисел*, Известия РАН, Серия
 математическая, **62**:4 (1998), 81–136.
 
-The user supplied a full OCR transcript and then clean screenshots of pp. 85–87.
+The user supplied a full OCR transcript and then clean screenshots of pp. 85–87,
+kept in `sources/matveev1998_p85.png`, `…p86.png` and `…p87.png`.
 Everything below is transcribed from the **screenshots**. The OCR garbled
 exactly these lines, so no constant here comes from the OCR or from memory. The
 transcription is kept literal, and its use is stated separately.

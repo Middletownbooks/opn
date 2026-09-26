@@ -112,6 +112,12 @@ Check each of these independently:
 * the bound on `|b₀|`;
 * the handling of `b_n ≠ 0`.
 
+The remark after (2.16) on p. 87 does **not** hold numerically for the
+constants as printed: it is off by a factor of 2–3 (see `MATVEEV_1998.md`).
+Check whether this points to a misreading, or only to a loose remark. The
+repo's claim is that the result is insensitive either way: inflating the bound
+by `10⁶` changes nothing. Verify that claim.
+
 Compute the initial bound for `T = {7, 13, 19}` yourself. The repo's value is
 `H ≤ 2.42·10¹²`.
 

@@ -5,17 +5,16 @@
 математическая, **62**:4 (1998), 81–136.
 
 The user supplied a full OCR transcript and then clean screenshots of pp. 85–87,
-kept in `sources/matveev1998_p85.png`, `…p86.png` and `…p87.png`.
-Everything below is transcribed from the **screenshots**, with **one
-exception**: the Kummer condition (1.5) is on p. 82, which is not among the
-screenshots. It is read from the OCR text, which states it in words ("by the
-strong independence condition we will mean the equality … (1.5)", later called
-the Kummer condition). The formula itself was garbled as
-`[ K ( V a r , . . . , > / a ^ ) : K ] =2 n`. The reading
-`[K(√α₁,…,√αₙ) : K] = 2ⁿ` rests on that text plus the surrounding remark that
-square roots suffice. **A page image of p. 82 is still needed** to confirm it.
-No constant comes from the OCR or from memory. The transcription is kept
+kept in `sources/matveev1998_p82.png` and `…p85.png` to `…p87.png`.
+Everything below is transcribed from the **screenshots**:
+`sources/matveev1998_p82.png` for the Kummer condition (1.5), and
+`…p85.png` to `…p87.png` for §2. The OCR garbled exactly these lines, so no
+constant here comes from the OCR or from memory. The transcription is kept
 literal, and its use is stated separately.
+
+**Kummer condition (p. 82, (1.5)).** `[K(√α₁, …, √αₙ) : K] = 2ⁿ`. The same
+paragraph notes that the square root suffices, and names (1.5) the Kummer
+condition.
 
 ## Setting (p. 85)
 

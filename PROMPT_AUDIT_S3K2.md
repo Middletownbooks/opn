@@ -98,16 +98,14 @@ used in `s3k2/34` (`corr_k`).
 * Which `LO`: raw, or narrowed?
 * Is interval narrowing on `S` legitimate when `T ⊋ S`?
 
-**A3. Matveev's application.** Using only `sources/matveev1998_p8{5,6,7}.png`,
+**A3. Matveev's application.** Using only `sources/matveev1998_p8{2,5,6,7}.png`,
 derive the exponent bound for `x² + x + 1 = 3^δ ∏_{t∈T} t^{c_t}` over `ℚ(ω)`.
 Check each of these independently:
 
 * the linear form, and `Λ ≠ 0`;
 * `|Λ| ≤ 2√3/|z|`, and the range where it holds;
-* the Kummer condition for `ζ₆` and the `π_t/π̄_t`. Its **definition**, (1.5) on
-  p. 82, is not among the page images. `MATVEEV_1998.md` reads it from the
-  OCR as `[K(√α₁,…,√αₙ) : K] = 2ⁿ`. Record whether your argument depends on
-  that reading, and how;
+* the Kummer condition for `ζ₆` and the `π_t/π̄_t`. Its definition, (1.5), is
+  on `sources/matveev1998_p82.png`;
 * `D = 1` and `ρ = 1`;
 * `h(π_t/π̄_t) = ½ log t`;
 * that the choices `ϑ = 1`, `E = 1`, `C₃ = n/ρ` satisfy (2.1)–(2.3);

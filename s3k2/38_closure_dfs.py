@@ -53,6 +53,7 @@ def lohi_roles(K, wc, alpha):
         f = min_factor(t, r, MIN, b3)
         if f is None: return None, None, None
         lo *= f; hi *= (geom(t, 2) if r == 'o' else F(t, t-1))
+    if lo > TARGET: return None, None, None     # raw role minimum > 18/13: dead for all T >= K
     Sm = [x for x in smooth_x(Ks) if x != w]
     etb = math.exp(1.000001*tailY(Ks)); LO = lo; keep = Sm
     for _ in range(60):

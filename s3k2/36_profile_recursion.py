@@ -207,6 +207,7 @@ def w_configs(Wrole, alpha):
 # ------------------------------------------------------------ margin
 def subprofiles(FULL, L): return sorted({tuple(sorted(c)) for c in combinations(FULL, L)})
 
+RAW = {}
 def margin(S, FULL, wc, alpha):
     label, w, low, HIW, cost, forced = wc
     MIN = S[0]; tau = len(FULL)
@@ -221,6 +222,7 @@ def margin(S, FULL, wc, alpha):
         los.append(lo); his.append(hi)
     if not los: return None, None, None
     LO = min(los)*LOW; HI = max(his)*HIW
+    RAW[(S, label)] = LO        # role minimum before narrowing: valid for every T containing S
     Sm = [x for x in smooth_x(S) if x != w]
     etb = math.exp(1.000001*tailY(S)); keep = Sm
     for _ in range(60):
@@ -257,6 +259,7 @@ def margin_pr(S, pr, FULL, wc, alpha):
     lo, hi = bounds(S, pr, MIN, 2 - alpha - cost, tau)
     if lo is None: return None, None
     LO = lo*LOW; HI = hi*HIW
+    if LO > TARGET: return None, None      # raw role minimum already exceeds 18/13
     Sm = [x for x in smooth_x(S) if x != w]
     etb = math.exp(1.000001*tailY(S))
     for _ in range(60):
@@ -335,7 +338,7 @@ def last_candidates(S, FULL, wc, alpha):
 # ------------------------------------------------------------ one profile
 def run(FULL, Wrole, alpha, verbose=True, levels_out=None, closure_last=True):
     tau = len(FULL); need = 6 - alpha
-    res = dict(uncond=0, cond=0, nocfg=0, alive=[], cond_sets=[], exceptions=[], levels={}, caseB=[])
+    res = dict(uncond=0, cond=0, nocfg=0, rawdead=0, alive=[], cond_sets=[], exceptions=[], levels={}, caseB=[])
     for wc in w_configs(Wrole, alpha):
         live = [(7,), (13,)]
         for L in range(1, tau+1):
@@ -346,6 +349,10 @@ def run(FULL, Wrole, alpha, verbose=True, levels_out=None, closure_last=True):
                     if L == tau: res['nocfg'] += 1
                     continue
                 m = float(LO)/float(HI)
+                if RAW[(S, wc[0])] > TARGET:
+                    # role minima of S alone exceed 18/13; they only grow with T and
+                    # PROD_U >= 1, so every T containing S is dead (no narrowing used)
+                    res['rawdead'] += 1; continue
                 if L == tau:
                     if LO >= HI or LO > TARGET: res['uncond'] += 1; continue
                     R = TARGET/LO
@@ -429,6 +436,7 @@ if __name__ == "__main__":
     print(f"PROFILE {arg}: T roles {FULL}, W {Wrole}, alpha {alpha}, need |U| >= {6-alpha}", flush=True)
     r = run(FULL, Wrole, alpha)
     print(f"   level counts (summed over W configs): {r['levels']}")
+    print(f"   killed early (raw role minimum > 18/13): {r['rawdead']}")
     print(f"   final sets: uncond dead {r['uncond']}, conditional dead {r['cond']}, "
           f"no role/config {r['nocfg']}, ALIVE {len(r['alive'])}")
     print(f"   exceptions (no cutoff): {len(r['exceptions'])}")

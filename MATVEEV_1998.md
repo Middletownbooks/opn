@@ -9,7 +9,9 @@ kept in `sources/matveev1998_p82.png` and `…p85.png` to `…p87.png`.
 Everything below is transcribed from the **screenshots**:
 `sources/matveev1998_p82.png` for the Kummer condition (1.5), and
 `…p85.png` to `…p87.png` for §2. The OCR garbled exactly these lines, so no
-constant here comes from the OCR or from memory. The transcription is kept
+constant here comes from the OCR or from memory. A zoomed crop of (2.3)–(2.5),
+`sources/matveev1998_p86_eq2.3-2.5_zoom.png`, was compared symbol by symbol
+with the formulas below and with `s3k2/39`: they agree. The transcription is kept
 literal, and its use is stated separately.
 
 **Kummer condition (p. 82, (1.5)).** `[K(√α₁, …, √αₙ) : K] = 2ⁿ`. The same

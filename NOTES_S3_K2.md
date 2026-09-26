@@ -1192,3 +1192,77 @@ The ten unconditional profiles are the six of §14c and the four of §14e.
 `x²+x+1 = ∏_{t∈T} t^{c_t}` of rank `|T| ≥ 2` with `T` explicit, or the matching
 `(t²+t+1)/3` search. §9c's case-B bound `3·10²⁸` is no longer used: the DFS of
 `s3k2/38` finishes the §9a exceptions exactly.
+
+### 14h. The residual statements, solved: Matveev plus lattice reduction  (`s3k2/39`, `s3k2/40`)
+
+**Method.** This is the standard Baker-plus-reduction method, not a new one.
+Because the equations have `Y = 1`, only archimedean logarithms are needed. With
+`z = x − ω`:
+
+    Log(z/z̄) = Σ e_t·Log(π_t/π̄_t) + b₀·Log ζ₆,      |Log(z/z̄)| ≤ 2√3/|z|.
+
+Matveev's Theorem 2.2 (Izv. RAN 62:4, 1998) bounds the exponents. Its
+transcription and the check of every hypothesis are in `MATVEEV_1998.md`: the
+Kummer condition, `D = 1`, `ρ = 1`, and `h(π_t/π̄_t) = ½ log t`.
+
+* **Initial bound.** Matveev gives `H ≤ 10¹¹` (`|T| = 2`) up to `6·10¹⁵`
+  (`|T| = 5`). Floating-point constants are inflated by 1%.
+* **Reduction.** A de Weger-style lattice argument, written out in the
+  docstring, brings `ln(x²+x+1)` down to at most **153** (`|T| = 5`), 121
+  (`|T| = 4`) and 89 (`|T| = 3`). The lower bound on the shortest vector is
+  `min|b*_i|` of the output basis, which is valid for **any** basis of the
+  lattice. The output is checked to be a basis by comparing exact determinants,
+  so soundness does not depend on the LLL routine being correct.
+* **Exhaustive search.** Every `3^δ·T`-smooth `M` below the proved bound is
+  tested for `4M − 3 = □`.
+
+**Validation** (`python3 39_baker_lll.py validate`):
+
+* The identity `Λ = Σ e_t θ_t + b₀π/3` holds on known solutions to `10⁻⁴⁰⁰`.
+* Rank one agrees **exactly** with the independent Skolem solver of §14b, for 8
+  primes with `δ = 0, 1`.
+* For `{7,13}`, `{7,13,19}` and `{7,13,19,31}`, the proved-complete list equals a
+  direct search to `10¹⁵⁰`, including `653` and `18`.
+
+**Results** (`python3 39_baker_lll.py residual`):
+
+| statement | proved bound `ln(x²+x+1) ≤` | complete answer | same as the old search? |
+|---|---|---|---|
+| the seven `α = 2` named 5-sets | 152.3–153.1 | the `Sm(T)` lists of §10b and §14f | yes, all seven |
+| `{7,13}` | 61.2 | `Sm = ∅` | yes |
+| `{13,61,151}`, `{13,61,157}` | 89.5 | `Sm = ∅` | yes |
+| `{7,13,19}` | 89.2 | `Sm = {11, 653}` | yes |
+| `{13,61,157,8269}` | 117.4 | `Sm = ∅` | yes |
+| `{7,13,19,127}` | 121.2 | `Sm = {11, 107, 653}` | yes |
+| Case B, `S = {7,13}` | 61.2 | no `t` | yes |
+| Case B, `S = {13,61,151}`, `{13,61,157}`, `{13,61,28057}` | 89.5 | only `t = 13 < max S` | yes |
+| Case B, `S = {7,13,19}` | 89.2 | only `t = 7 < max S` | yes |
+
+Every count-based kill therefore holds as recorded, now unconditionally. The
+Case-B searches produce no candidate.
+
+**The coupled branch** (`s3k2/40`), previously "Vieta pairs to index 1500",
+closes by a count instead:
+
+* Both unknowns `a, a′` are ordinary and each divides the other's `x²+x+1`, so
+  `U` may use at most one unit of `a` and at most one of `a′`.
+* Every other member of `U` lies in `Sm({7,13})`, whose complete list
+  `{0, 2, 3, 9, 18}` has no usable member.
+* So `|U| ≤ 2 < 4`.
+
+### 14i. Section 3 at `k = 2`: status
+
+**All fourteen role profiles are eliminated.** The only inputs are:
+
+1. `ω(N) ≥ 10` — Nielsen 2015, a cited theorem;
+2. Theorem 2.2 of Matveev 1998, a cited theorem, transcribed in `MATVEEV_1998.md`
+   from the user-supplied pages.
+
+No pool, no search bound and no Thue–Mahler assumption remain.
+
+**How much weight this carries.** The claim now rests on a large amount of code
+written in this session (`s3k2/31`–`40`). Each piece was validated against an
+independent method or a reproduction target, and two errors in the earlier
+scripts were found and corrected along the way (§14d, §14f). It has **not** had
+an independent audit. That is the recommended next step before this result is
+relied on.

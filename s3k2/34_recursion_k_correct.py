@@ -18,6 +18,22 @@ THE LEMMA FOR k PRIMES.  Let T = S u R, |R| = k, every r in R >= B.  Then
     E(S) = prod_{t in S} (1 - t^(-1/2))^(-1);
   * LO(T) >= LO(S) (R-factors are >= 1), and interval narrowing on S stays
     valid because R(T) <= R(S).
+  [CORRECTED after the independent audit, audit_s3k2/AUDIT_S3K2_RESULT.md,
+   findings G1-G3 and proof Pf.2.  The two sentences just above give the wrong
+   reason.  The NARROWED LO(S) is NOT a lower bound for T strictly containing S:
+   for S = {7,13,19,31}, 107 enters Sm(S u {127}).  Only the RAW role minimum
+   LO_raw(S) is.  The kill is nevertheless valid, for this reason:
+     - the narrowing loop is exactly one step (G3): the new cap equals Hup_0,
+       which already bounds every admitted f(x);
+     - its cap uses only LO_raw, which is valid for supersets;
+     - LO_raw <= HI, so margin > 1 forces the narrowed LO to equal (18/13)/Hup_0.
+   Hence margin(S) >= corr_k is exactly (18/13)/(H_0(S) * HI(S)) >= corr_k, and
+   Pf.2 proves that this kills every T whose (|S|+1)-th element is >= B.
+   Do NOT let the cap depend on narrowed information: that would break superset
+   validity silently.
+   The factor 1.01 below is not justified by "1/x plus 1/x^2" when B < ~10^4
+   (G2).  What is needed, log f(x) * (sqrt(M) - 1) < 1 for all x >= 2, is true
+   (audit_s3k2/a2_corr_factor_check.py), so 1.01 is slack.]
 Hence T dies when margin(S) >= corr_k(B, S) with
         corr_k = (B/(B-1))^k * exp(1.01 * (1 + 1/(sqrt(B)-1)) * ((1-u)^(-k) - 1) * E(S)).
 For k = 1 this is script 13's corr exactly.  The recursion below is script 22's,

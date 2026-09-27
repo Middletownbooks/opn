@@ -1276,3 +1276,86 @@ written in the runner, which is copied from these tables. At commit time: **19 o
 19 pass**, including 488 860 level-5 sets with 0 alive (scripts 34, 35) and the
 `2,yes,1,4,1` tally `(22, 357, 4, 310, 0, 1, 4)`. This checks reproducibility,
 not correctness; correctness is the audit's job (`PROMPT_AUDIT_S3K2.md`).
+
+### 14k. Independent audit  (`audit_s3k2/AUDIT_S3K2_RESULT.md`)
+
+An independent session ran `PROMPT_AUDIT_S3K2.md` from a cold start. Its full
+report, scripts and logs are in `audit_s3k2/`. It re-derived the key items
+before reading the code:
+
+* the profile list;
+* the cutoff lemma;
+* Matveev's application, from the page images;
+* a **different** complete solver: exact LLL, then Fincke–Pohst enumeration,
+  then exponent-vector enumeration.
+
+It then reviewed every script and ran twelve mutations.
+
+**Verdict: the claim stands, conditional on the two cited theorems, with repairs
+to documentation only. No finding has status `ERROR`.**
+
+**Agreement with independent methods.**
+
+* Its solver agrees with `s3k2/39` on all 18 residual statements (13 named
+  `Sm(T)` sets and 5 Case-B sets), and on the 8 single-exponent equations of
+  `s3k2/33`.
+* Its final bounds are tighter (`L ≤ 27.5`, `44.9`, `54.0` against the repo's
+  `61.2`, `121.2`, `152.7`), and the lists are identical.
+* The answers are insensitive to Matveev's constant up to a factor of `10³⁰`.
+* It reproduced every figure of §§14d–14h, and `verify_all.py full` gave 19 of 19.
+
+**Corrected tally.** §14i said "ten profiles use only `ω(N) ≥ 10`". That
+understated the result:
+
+| input | profiles |
+|---|---|
+| **no cited theorem at all** | 5: `1,no,0,1,3` (§11b), and `0,no,2,2,1`, `0,yes,2,3,0`, `1,yes,2,4,0`, `1,no,2,3,1` (§14e) |
+| `ω(N) ≥ 10` only | 5: `0,no,1,1,2`, `0,yes,0,1,2`, `1,no,1,2,2`, `1,yes,0,2,2`, `2,yes,0,3,2` (§14c) |
+| `ω(N) ≥ 10` and Matveev 1998, Thm 2.2 | 4: `2,yes,2,5,0`, `0,yes,1,2,1`, `1,yes,1,3,1`, `2,yes,1,4,1` |
+
+The first five profiles have no conditional set, exception or Case-B search.
+Every kill is by abundancy, closure or raw minimum. Nielsen enters only through
+the count test, which those five never reach.
+
+**Findings and what was done.**
+
+* **G1** — narrowing and supersets. The narrowed `LO(S)` is **not** a lower bound
+  for `T ⊋ S` (`107 ∈ Sm({7,13,19,31,127}) ∖ Sm({7,13,19,31})`), so the
+  justification in `s3k2/34`'s docstring and in §14d was wrong. The kill is
+  valid for a different reason, proved in the audit's Pf.2: the cap uses only the
+  raw minimum, and `margin ≥ corr_k` is equivalent to
+  `(18/13)/(H₀·HI) ≥ corr_k`. **Done:** `s3k2/34`'s docstring is corrected and
+  warns against letting the cap depend on narrowed information.
+* **G2** — the factor `1.01` in `corr_k`. Its stated justification fails for
+  `B ≲ 10⁴`. The inequality actually needed, `log f(x)·(√M − 1) < 1`, holds for
+  every `x ≥ 2` (`audit_s3k2/a2_corr_factor_check.py`), so `1.01` is slack.
+  **Done:** documented in `s3k2/34`.
+* **G3** — narrowing is exactly one step. §5⅔'s "one iterates" performs no second
+  exclusion: after the first pass the new cap is `Hup₀`, which already bounds
+  every admitted `f(x)`. This is what makes G1's repair work.
+* **D2** — coverage. `verify_all` relied on the DFS level cut-off happening to
+  include every exception of `s3k2/36`. It did, since the one exception is at
+  level 2, but that was not checked. **Done:** `verify_all.py` now asserts that
+  every exception printed by `36` is a DFS input for the same profile. A
+  last-level (`t:`-tagged) exception, which the DFS never sees, fails the check.
+* **X1** — `verify_all` detects drift, not unsoundness. An over-pruning change can
+  only remove sets, so it never produces `ALIVE`. Mutations C1 (`corr_1`), C4
+  (dropped split) and others are silent on several profiles. **Done:** stated in
+  the runner's docstring. Soundness rests on the audit's proofs Pf.2–Pf.5.
+* **M2** — `|Λ| ≤ (π√3/2)/|z|` holds for **all** `x ≥ 0`, a small strengthening.
+  No change is needed; the repo's `L ≥ ln 12` covers the rest correctly.
+* **M3** — the remark after (2.16) fails by a factor tending to about 4, for both
+  `ρ = 1` and `ρ = 2`. That is consistent with a loose remark and not with a
+  misreading; the zoomed crops read as transcribed.
+* **F1, F2** — trial division capped at `10⁸` in `Fset`, and floating point in
+  `threshold_k`. Both are harmless here, for reasons given in the report, but
+  are not made rigorous.
+
+**What the audit did not establish:**
+
+* Matveev's and Nielsen's theorems themselves;
+* Matveev pp. 81 and 83–84, which could hold further standing hypotheses;
+* an independent **re-implementation** of the `s3k2/36` recursion. It was reviewed
+  line by line, mutation-tested, and spot-checked, but not rewritten.
+
+Of these, the last is the natural next check.

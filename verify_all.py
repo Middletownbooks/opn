@@ -11,6 +11,18 @@ Each check runs a script in s3k2/ and compares its output with the value
 written below.  These values are copied from the notes tables, so a drift in
 either the code or the notes shows up here.  Exit status is 0 only if every
 check passes.
+
+LIMITATION (independent audit, finding X1).  This detects DRIFT, not
+UNSOUNDNESS.  A change that over-prunes (for example, the one-prime cutoff
+where k primes remain) can only remove sets, so it can never produce ALIVE.
+Such a change is caught only if it moves a recorded count, and those counts
+came from the same code.  Soundness rests on the proofs in
+audit_s3k2/AUDIT_S3K2_RESULT.md, appendix Pf.2-Pf.5, not on this runner.
+
+COVERAGE (audit recommendation D2).  After the runs, every exception that
+script 36 prints must appear among the exceptions that script 38 resolves,
+for the same profile.  An exception raised inside the closure-driven last level
+(tagged 't:<role>') is never a DFS input, so its presence fails the check.
 """
 import subprocess, sys, re, time, os
 
@@ -18,6 +30,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 S3 = os.path.join(HERE, "s3k2")
 FULL = len(sys.argv) > 1 and sys.argv[1] == "full"
 results = []
+outputs = {}
 
 def run(args, timeout):
     t0 = time.time()
@@ -30,6 +43,7 @@ def check(name, args, timeout, tests):
         rc, out, dt = run(args, timeout)
     except subprocess.TimeoutExpired:
         results.append((name, False, f"TIMEOUT after {timeout}s")); print(f"FAIL  {name}: timeout", flush=True); return
+    outputs[name] = out
     bad = [] if rc == 0 else [f"exit code {rc}"]
     for desc, pred in tests:
         try:
@@ -124,6 +138,35 @@ if FULL:
            ("none alive", lambda o: re.search(r"STILL ALIVE\s*:\s*0\b", o) is not None)])
     check("36 profile 2,yes,1,4,1", ["36_profile_recursion.py", "2,yes,1,4,1"], 7200,
           [("tally", profile_tally((22, 357, 4, 310, 0, 1, 4)))])
+
+# ------------------------------------------------------------------ coverage (D2)
+def exc36(out):
+    """exceptions printed by script 36: [(S tuple, W label, tag or None)]"""
+    ex = []; on = False
+    for line in out.splitlines():
+        if line.strip().startswith("exceptions (no cutoff)"): on = True; continue
+        if on:
+            m = re.match(r"\s+\(\(([\d, ]+)\), '([^']+)'(?:, '(t:[a-z])')?", line)
+            if not m: break
+            ex.append((tuple(int(v) for v in m.group(1).split(",") if v.strip()), m.group(2), m.group(3)))
+    return ex
+def dfs_inputs(out):
+    return {(tuple(int(v) for v in m.group(1).split(",")), m.group(2))
+            for m in re.finditer(r"S = \[([\d, ]+)\]  W (\S+):", out)}
+COVER = {   # 36 run  ->  38 run that must cover its exceptions
+    "36 profile 1,yes,1,3,1": "38 DFS on 1,yes,1,3,1 exceptions",
+    "36 profile 2,yes,1,4,1": "38 DFS on 2,yes,1,4,1 level-2 exceptions",
+}
+for n36 in [k for k in outputs if k.startswith("36 profile")]:
+    ex = exc36(outputs[n36])
+    if not ex: continue
+    n38 = COVER.get(n36)
+    covered = dfs_inputs(outputs.get(n38, "")) if n38 else set()
+    missing = [e for e in ex if e[2] is not None or (e[0], e[1]) not in covered]
+    ok = not missing
+    results.append((f"coverage: {n36}", ok, "" if ok else f"not resolved by a DFS run: {missing}"))
+    print(f"{'PASS' if ok else 'FAIL'}  coverage: every exception of {n36} is a DFS input ({len(ex)} exception(s))"
+          + ("" if ok else f"\n      missing: {missing}"), flush=True)
 
 print()
 nf = sum(1 for r in results if not r[1])

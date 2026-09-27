@@ -19,7 +19,7 @@ Everything is standard-library Python, no external data. Entry points below.
 | Audit of Mantovanelli | `AUDIT_REPORT.md` | **Category C.** Proposition A: acceptance and validity are mutually exclusive for the tail envelope. Decisive, needs no `ω` bound. |
 | Verification of Ochem–Zelinsky §§2–3 | `NOTES_RESTRAINED.md` | Reproduces exactly. §4 has a non-reproducing constant; `loopless.cpp` has a 64-bit overflow. Both recorded. Their Question 10 has **no solution with `p, r < 1000`**, exact for all exponents and all `x` (§4a). |
 | `k = 2`, `3 ∤ N` (their §2) | `NOTES_K2.md`, `AUDIT_K2_MODEL_RESULT.md` | **Closed.** My first attempt was wrong (double-counted the prime 5); a reasoning model's fixed-support bound repaired it and I audited it. |
-| `k = 2`, `3` ordinary (their §3) | `NOTES_S3_K2.md` | **All 14 role profiles eliminated, using only two cited theorems:** `ω(N) ≥ 10` (Nielsen) and Matveev 1998, Thm 2.2 (`MATVEEV_1998.md`). No pool, search bound or Thue–Mahler assumption remains (§14h–i). Two errors in the earlier recursion were found and corrected (§14d, §14f). **Not yet independently audited.** |
+| `k = 2`, `3` ordinary (their §3) | `NOTES_S3_K2.md` | **All 14 role profiles eliminated.** 5 profiles use no cited theorem, 5 use only `ω(N) ≥ 10` (Nielsen), and 4 use that and Matveev 1998, Thm 2.2 (`MATVEEV_1998.md`). No pool, search bound or Thue–Mahler assumption remains (§14h–i). **Independently audited** (`audit_s3k2/`, §14k): no errors, and three documentation gaps, now repaired. Two errors in the earlier recursion were found and corrected (§14d, §14f). |
 | `k = 2`, `3` notable (their §4) | `NOTES_S4_K2.md`, `AUDIT_S4K2_MODEL_RESULT.md` | **Open**, as it is at `k = 1`. New structural results below. |
 | `q = 3` side-investigation | `NOTES_Q3.md` | A higher-reciprocity obstruction is shown *not to exist* (explicit witness). Avenue closed. |
 | Theorem 1 inversion | `NOTES_INVERSION.md` | Theorem 1′, Negative Result 1, and the `k₀(q)` floors — which are a reconstruction of Norton's, not new. |
@@ -122,19 +122,21 @@ Theorem 1 gives `q ≥ 23 000 000 000`, a reduction, not an elimination.
 
 For §3 at `k = 2`, `3` ordinary:
 
-1. **`ω(N) ≥ 10`** (Nielsen 2015). A cited theorem, used by every counting
-   argument.
+1. **`ω(N) ≥ 10`** (Nielsen 2015). A cited theorem, used by the count test in 9
+   of the 14 profiles. The other 5 need no cited theorem at all.
 2. **Matveev 1998, Theorem 2.2.** A cited theorem, transcribed with every
    hypothesis checked in `MATVEEV_1998.md`. It is used only in `s3k2/39`, to
-   bound the exponents before lattice reduction.
+   bound the exponents before lattice reduction, for 4 profiles.
 
 Nothing else: **no pool, no search bound, and no Thue–Mahler assumption.** The
 fifteen formerly residual sets and every Case-B search are settled exactly
 (`NOTES_S3_K2.md` §14h).
 
-**How much weight this carries.** It rests on `s3k2/31`–`40`, written in one
-session. Each script was validated against an independent method or a
-reproduction target, but none has been independently audited.
+**How much weight this carries.** It rests on `s3k2/31`–`40`. An independent
+audit (`audit_s3k2/AUDIT_S3K2_RESULT.md`; summary in `NOTES_S3_K2.md` §14k)
+found no errors. It confirmed Matveev's application and the lattice lemma from
+first principles, and matched all 18 residual statements with a different
+solver. It did **not** independently re-implement the `s3k2/36` recursion.
 
 ---
 
@@ -142,16 +144,10 @@ reproduction target, but none has been independently audited.
 
 Ranked by value, with what blocks each:
 
-1. **An independent audit of `s3k2/31`–`40` and `MATVEEV_1998.md`.** §3 at
-   `k = 2` now rests on this code, and today's work found two real errors in
-   earlier scripts (§14d, §14f), so an audit is what the new result needs
-   before it is relied on. Specific targets:
-   * the transcription of Theorem 2.2, and its hypotheses as applied;
-   * the lattice lemma in `39`'s docstring;
-   * the role and budget relaxations in `36`;
-   * the claim in `38` that the DFS is exhaustive.
-
-   A reasoning-model brief is a natural vehicle.
+1. **An independent re-implementation of the `s3k2/36` recursion.** This is
+   the one part of §14 the audit reviewed but did not rebuild from scratch
+   (§14k). Matveev pp. 81 and 83–84 could also be checked for any further
+   standing hypotheses.
 2. **Done: `verify_all.py`.** It re-derives every §14 figure; 19 of 19 checks
    pass (`NOTES_S3_K2.md` §14j). Extending it to the pre-§14 notes is still
    open.
@@ -183,6 +179,7 @@ NOTES_S4_K2.md             k = 2, section 4 -- 3 notable; s4k2/01-03
 PROMPT_*.md                self-contained briefs written for a reasoning model
 verify_all.py              re-derives every section-14 figure (fast / full tiers)
 AUDIT_*_MODEL_RESULT.md    audits of what those briefs returned
+audit_s3k2/                independent audit of section 14 (report, solver, mutation harness, logs)
 ```
 
 Every script is runnable as `python3 <file>`; the longer sweeps in `s3k2/`

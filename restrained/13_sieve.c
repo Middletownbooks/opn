@@ -92,14 +92,22 @@ static void small_push(u64 q, u64 t1, u64 t2) {
     sq[ns] = q; sn1[ns] = t1; sn2[ns] = t2; ns++;
 }
 
-/* ---- buckets: entry = (q << CHLOG) | offset; bucket index = chunk mod NB ---- */
-typedef struct { u64 *v; size_t n, cap; } Bucket;
-static Bucket *BK; static u64 NB;
+/* ---- buckets: entry = (q << CHLOG) | offset; bucket index = chunk mod NB ----
+   A bucket is a linked list of fixed-size blocks drawn from a shared free pool, so
+   memory tracks the live entries (one per q), not each slot's historical peak. */
+#define BLK 8190
+typedef struct Block { struct Block *next; u64 n; u64 v[BLK]; } Block;
+static Block **BK; static u64 NB; static Block *FREE; static u64 NBLOCKS;
+static inline Block *balloc(void) {
+    Block *b = FREE;
+    if (b) FREE = b->next;
+    else { b = malloc(sizeof(Block)); if (!b) { fprintf(stderr, "oom block\n"); exit(2); } NBLOCKS++; }
+    b->next = 0; b->n = 0; return b;
+}
 static inline void bpush(u64 chunk, u64 q, u64 off) {
-    Bucket *b = &BK[chunk % NB];
-    if (b->n == b->cap) { b->cap = b->cap ? b->cap + b->cap / 2 : 256;
-        b->v = realloc(b->v, b->cap * 8); if (!b->v) { fprintf(stderr, "oom bucket\n"); exit(2); } }
-    b->v[b->n++] = (q << CHLOG) | off;
+    Block **h = &BK[chunk % NB];
+    if (!*h || (*h)->n == BLK) { Block *b = balloc(); b->next = *h; *h = b; }
+    (*h)->v[(*h)->n++] = (q << CHLOG) | off;
 }
 /* next hit of q after the hit n (n = c mod q for one root c) */
 static inline u64 advance(u64 n, u64 q) {
@@ -131,7 +139,7 @@ int main(int argc, char **argv) {
     SLIM = ZEND / 2 + 1;
     SB = calloc(SLIM / 48 + 2, 1); if (!SB) { fprintf(stderr, "oom SB\n"); return 2; }
     NB = QLIM / CH + 4; if (NB < 4) NB = 4;
-    BK = calloc(NB, sizeof(Bucket)); if (!BK) { fprintf(stderr, "oom BK\n"); return 2; }
+    BK = calloc(NB, sizeof(Block *)); if (!BK) { fprintf(stderr, "oom BK\n"); return 2; }
 
     /* initial M2: primes 7 <= q < 3e6, q = 1 mod 3 */
     u64 m2 = 0, m2big = 0;
@@ -167,20 +175,22 @@ int main(int argc, char **argv) {
             for (t = sn2[j]; t < end; t += q2) hit[(t - base - 1) >> 1] = 1;
             sn2[j] = t;
         }
-        {   Bucket *b = &BK[ci % NB];
-            for (size_t e = 0; e < b->n; e++) {   /* b->n may grow while we loop */
-                u64 q = b->v[e] >> CHLOG, off = b->v[e] & (CH - 1);
-                u64 n = base + 2 * off + 1;
-                for (;;) {
-                    hit[(n - base - 1) >> 1] = 1;
-                    n = advance(n, q);
-                    if (n >= end) break;
+        {   Block *b = BK[ci % NB]; BK[ci % NB] = 0;
+            while (b) {
+                for (u64 e = 0; e < b->n; e++) {
+                    u64 q = b->v[e] >> CHLOG, off = b->v[e] & (CH - 1);
+                    u64 n = base + 2 * off + 1;
+                    for (;;) {
+                        hit[(n - base - 1) >> 1] = 1;
+                        n = advance(n, q);
+                        if (n >= end) break;
+                    }
+                    u64 c2 = (n - LO - 1) / SPAN;
+                    if (c2 % NB == ci % NB) { fprintf(stderr, "bucket wrap\n"); return 3; }
+                    bpush(c2, q, ((n - LO - 1) % SPAN) >> 1);
                 }
-                u64 c2 = (n - LO - 1) / SPAN;
-                if (c2 % NB == ci % NB) { fprintf(stderr, "bucket wrap\n"); return 3; }
-                bpush(c2, q, ((n - LO - 1) % SPAN) >> 1);
+                Block *nx = b->next; b->next = FREE; FREE = b; b = nx;
             }
-            b->n = 0;
         }
         for (u64 i = 0; i < CH; i++) {
             u64 n = base + 2 * i + 1;
@@ -220,8 +230,9 @@ int main(int argc, char **argv) {
             }
         }
         if ((ci & 1023) == 1023) {
-            fprintf(stderr, "[%lds] r ~ %.4e  k = %llu  lnA = %.12Lf  m2 = %llu\n", (long)(time(0) - t0),
-                    (double)end, (unsigned long long)k, acc + cmp, (unsigned long long)m2);
+            fprintf(stderr, "[%lds] r ~ %.4e  k = %llu  lnA = %.12Lf  m2 = %llu  blocks = %llu (%.2f GB)\n", (long)(time(0) - t0),
+                    (double)end, (unsigned long long)k, acc + cmp, (unsigned long long)m2,
+                    (unsigned long long)NBLOCKS, NBLOCKS * (double)sizeof(Block) / 1e9);
             fflush(stdout);
         }
     }

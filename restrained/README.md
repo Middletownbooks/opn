@@ -19,3 +19,7 @@ authors' file; it is kept only so `06` is reproducible.
 | `08_repair_59083_branch.py` | closes the one broken cut by `XS 3` instead of `F 19`, so the file's conclusion stands |
 | `10_section4_reconcile.py` | §4 reconciled against the full transcript: the printed product is the sieve's `A = 1.088507187872` with `K = 43·10⁹`; with the text's `K = 43.5·10⁹` it is `1.99671 < 2`; `k + K_max = 46,355,827,007`; what a re-run must show |
 | `11_wrap_signature.py` | the 64-bit wrap is visible in the paper's reported `k, A`: fitted survival fraction 0.093 below `2³²`, 0.295 above (`≈ √`); and the mechanism measured on sampled primes (exact ≈ 0.11, wrapped ≈ 0.36–0.44) |
+| `12_algorithm1_reference.py` | exact bare-CPython Algorithm 1 for small ranges (optional cutoff `Q`); matches the released `loopless.cpp` line for line |
+| `13_sieve.c` | the overflow-free re-run of Algorithm 1, C with the standard library only. It is exact for `r < Q`; above `Q` it keeps a provable superset of the survivors (header comment). It matches `12` exactly at `2·10⁸`, both exact and with `Q = 5·10⁷`, and the released `loopless.cpp` on every line compared |
+| `14_bound_from_run.py` | turns `13`'s checkpoint lines into `k + K_max` and the resulting `q` bound |
+| `loopless_build/gmp.h` | a declaration-only stand-in for the missing `<gmp.h>`, so the authors' `loopless.cpp` compiles **unmodified** against the system `libgmp.so.10` (`g++ -O3 -I loopless_build ../sources/loopless.cpp /usr/lib/x86_64-linux-gnu/libgmp.so.10`) |

@@ -142,26 +142,74 @@ solver. It did **not** independently re-implement the `s3k2/36` recursion.
 
 ## Where to resume
 
-Ranked by value, with what blocks each:
+**Framing.** Nothing below approaches the existence question itself. Each item
+either widens the class of structures proved impossible, or hardens a
+computation that published work relies on. Items are ranked by value times
+tractability; what blocks each is stated.
 
-1. **An independent re-implementation of the `s3k2/36` recursion.** This is
-   the one part of §14 the audit reviewed but did not rebuild from scratch
-   (§14k). Matveev pp. 81 and 83–84 could also be checked for any further
+**Done since the last ranking:**
+
+* the independent audit of §14 (`audit_s3k2/`, §14k);
+* the independent rebuild of the profile search (`s3k2/41`–`44`, §14l);
+* `verify_all.py`, which now includes the rebuild;
+* the forced primes of `p + 1` at every odd `e`, now used by `s3k2/41`.
+
+1. **A self-contained, checkable write-up of `k = 2`: `3 ∤ N` and `3`
+   ordinary.** It would turn §§2–14 of the notes into one argument a reader can
+   verify, with the scripts as its certificate, and state `3` notable as open.
+   This is the highest value per effort, and it is not blocked.
+   **Needed from the user:** confirmation that nothing since arXiv:2607.19746
+   already covers `k = 2`. The repo cites no such search, and novelty must not
+   be claimed without it. Matveev pp. 81 and 83–84 should also be checked for
    standing hypotheses.
-2. **Done: `verify_all.py`.** It re-derives every §14 figure and checks that the
-   DFS covers every exception; 20 of 20 checks pass (`NOTES_S3_K2.md` §14j–k). Extending it to the pre-§14 notes is still
-   open.
-3. **`3` notable at `k = 2`.** The open sub-case is `p ≡ 5 (mod 12)` with
-   `p^e ‖ σ(n₂^{q₂})`; `PROMPT_S4_K2_SPECIAL.md` is the brief that produced the
-   `m` bound. The hard branch is `f = ord_p(n₂) > 1` with `p ∤ q₂+1`, where
-   `e = v_p(n₂^f − 1)` and no bound is known. A lower bound on `q` is the sieve
-   half of their §4 and is out of reach without heavy computation.
-4. **Leads not yet checked.**
-   * Forced primes of `p+1` at every odd `e`.
-   * The production constraint: primes `≡ 2 (mod 3)` are fed only by the big
-     components.
+2. **An independent, overflow-free re-run of Ochem–Zelinsky's sieve**
+   (Algorithm 1, `loopless.cpp`).
+   * **Why it matters.** It is the load-bearing computation behind their
+     `q ≥ 2.3·10¹⁰`. As released, it overflows past `r = 2³²` (§4b of
+     `NOTES_RESTRAINED.md`), so the published figure is currently unverified,
+     not refuted.
+   * **What a re-run gives.** It settles that either way. It is also the
+     template for any `k = 2` sieve (item 5).
+   * **Blocked on:** the paper's Algorithm 1 text and `loopless.cpp`. Both
+     reached an earlier session but are not in the repo. `gcc` and `clang` are
+     available here. The cost is unknown until the source is read (their run
+     reached `z ≈ 2.2·10¹¹`).
+3. **`k = 3`, for `3 ∤ N` and for `3` ordinary,** using the engine built for
+   `k = 2`: the DFS with closure pinning, the Skolem and Matveev + LLL solvers,
+   and the count.
+   * **What changes.** The 3-budget is `k`-independent (§1). But `|T| ≤ 6`, the
+     count weakens to `|U| ≥ 5 − α`, and `3 ∤ N` must first be redone at `k = 3`.
+   * **Status.** Tractable now, with an uncertain outcome. A clean statement of
+     where the method stops scaling would be a useful negative result.
+4. **Certificates and a small independent checker.**
+   * **What.** Script 41 emits one record per kill: the reason plus the exact
+     numbers. A checker of a few hundred lines re-verifies every record in exact
+     arithmetic, without re-running the search.
+   * **Why.** It narrows the trusted code from thousands of lines to the
+     checker. It speaks to the limit in §14l: the cutoff can only be justified
+     by proof, but each *application* of the cutoff can be checked.
+   * **Status.** Tractable now.
+5. **`3` notable at `k = 2`,** the last open case of `k = 2`. It has two halves.
+   * **The sieve half.** A `k = 2` analogue of their Algorithm 1, after item 2.
+     With the bound of `AUDIT_S4K2_MODEL_RESULT.md`, a `k = 2` analogue of
+     `q ≥ 2.3·10¹⁰` would force `ω(N) ≥ 23`. That is a reduction, not an
+     elimination.
+   * **The structural half.** The sub-case `p ≡ 5 (mod 12)` with
+     `p^e ‖ σ(n₂^{q₂})`, whose hard branch is `f = ord_p(n₂) > 1`, `p ∤ q₂+1`.
+     A candidate for a reasoning-model brief. Closing the whole case would go
+     beyond the published `k = 1` state of the art.
+6. **Question 10.** Two directions:
+   * push the exact range beyond `p, r < 1000` (`restrained/09`), by solving each
+     `p` for all `r` at once;
+   * pursue the `ℤ[ω]` orientation lead of §4a in `NOTES_RESTRAINED.md`.
 
-   These would give independent cross-checks rather than new results.
+   This is the lever Ochem–Zelinsky name for tightening their Lemma 8. Moderate
+   value, and partial results are likely.
+7. **The exact `x² + x + 1` solver applied to other published factor-chain
+   proofs.** Where such proofs cut infinite branches with search bounds,
+   `s3k2/32`/`39` can close them exactly. This is potentially the widest
+   payoff, but it is **blocked** until the user supplies a specific paper;
+   none is in the repo.
 
 ## Layout
 

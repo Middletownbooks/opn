@@ -364,6 +364,53 @@ compensation, and padded by `10⁻¹⁵` in `14`. `∂K_max/∂ ln A = −1/ln(1
 −2.2·10¹¹`, so the padding moves the bound by less than 1. The margin is
 `6.79·10⁹`.
 
+## 4e. `tree.txt`'s claim re-checked: every prime `11 … 3·10⁶` is ruled out (`restrained/15`)
+
+The sieve's input assumption is that every prime `5 ≤ p < 3·10⁶` does not divide
+`N`. The paper argues `5` and `7` by hand and delegates `11 … 3·10⁶` to `tree.txt`,
+which `tree.cpp` generates. `tree.txt` is too large to transfer, so the claim was
+re-checked here with an independent prover.
+
+**The method** is `tree.cpp`'s, and its soundness was argued in
+`NOTES_INVERSION.md`. Roots are taken in increasing order. Assume `r | N`.
+* **Ordinary branch:** the prime factors `≥ 5` of `σ(r²)` (one `3` removed when
+  `r ≡ 1 mod 3`) all divide `N`.
+* **Special branch:** open only if `r ≡ 1 (mod 12)` and no other prime on the path is
+  special. Then the prime factors of `(r+1)/2` divide `N`.
+* **Closing a branch:** it closes if a factor is `< root`, or if some factor not
+  already on the path closes in every status it can have.
+
+**The implementation shares no code with `tree.cpp`.**
+* Small factors come from `gcd(G, ∏ primes 5 … 3·10⁶)`.
+* Larger factors come from Pollard–Brent, then a pure-Python ECM. A factor ECM
+  returns is a gcd, so a bug in it can only lose completeness, never soundness.
+* Primality: Miller–Rabin, deterministic below `3.3·10²⁴`, and a 20-base strong
+  probable-prime test above.
+* Any root that exceeds a budget is reported UNRESOLVED, never ruled out.
+
+**Results** (`runs/15_tree_full_range.txt`):
+* **Without `checkfacts.txt`** (`NOHINTS=1`, nothing of theirs but the method):
+  **216,810 of 216,812** primes in `[11, 3·10⁶]` are ruled out. The run took about
+  1.5 h on 3 cores, with 185 ECM splits.
+* The other two, `502013` and `2152883`, stopped on ECM's budget, not on an open
+  branch. **With `checkfacts.txt`'s factors, each verified to divide and to be a
+  probable prime before use, both are ruled out.**
+* **All 460 `checkfacts.txt` entries verify:** each listed factor divides its
+  `x² + x + 1` or `x + 1` and is a probable prime.
+* **So every prime `11 … 3·10⁶` is ruled out, as the paper states.** The only trust
+  is in probable-prime tests on the large factors; the same is true of `tree.cpp`
+  (`NOTES_INVERSION.md`).
+* A first pass, before ECM and lazy recursion, also ruled out every other root. It
+  left 15 on the Pollard budget, and all 15 were then ruled out with ECM.
+
+**Together with §4d:** the computational half of the paper's §4 is now
+independently confirmed. That covers `tree.txt`'s claim and the sieve. The
+remaining inputs are
+* the hand arguments for `5` and `7` and for `p > 6·10⁶`,
+* `σ₋₁(3^q) < 3/2`, which is immediate,
+* Lemma 8 and the theorems it cites (Bugeaud–Mihăilescu, Ochem–Rao Lemma 3,
+  Bennett–Levin via Lemma 3).
+
 ## 4c. Verification of `3p2.txt`
 
 `3p2.txt` backs the claim that, with 3 ordinary, every prime `≤ 1000` other
@@ -434,6 +481,7 @@ transcription.
 | `3p2.txt` cut markers | **239/241 verify** against freshly computed targets |
 | the `59083` line | **not a defect** — the authors' `tree.txt` lists no 19 either |
 | `loopless.cpp` as released | **64-bit overflow past `r = 2^32`**, confirmed in the original file; the paper's reported `k, A` show the wrap's signature (§4b, `restrained/11`) |
+| `tree.txt`'s claim (primes `11 … 3·10⁶` ruled out) | **confirmed independently** (§4e): all 216,812; two need `checkfacts.txt` factors, which were verified; all 460 entries verify |
 | Algorithm 1, overflow-free re-run to `z` | **`q ≥ 23·10⁹` confirmed** (margin `6.79·10⁹` primes); the same method gives `q ≥ 26,392,853,446`; true `k = 599,351,328`, `A = 1.047357816316` (§4d) |
 
 Honest summary: Lemma A and Corollary B are real structural additions, and the

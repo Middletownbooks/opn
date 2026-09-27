@@ -1,0 +1,47 @@
+# restrained/15, final code, NOHINTS=1 (checkfacts.txt not read), three shards
+roots 78494 in [11, 999983]: ruled out 78493, unresolved 1; 5387.2s total, 68.63 ms/root, 1.2 nodes/root, worst 3612.75s at 502013; checkfacts hints used 0, rejected 0; ECM splits 69
+   UNRESOLVED (502013, 'budget', "('ecm', 15313677972093786849071002108264")
+roots 70435 in [1000003, 1999993]: ruled out 70435, unresolved 0; 3486.2s total, 49.50 ms/root, 1.1 nodes/root, worst 1392.47s at 1124593; checkfacts hints used 0, rejected 0; ECM splits 43
+roots 67883 in [2000003, 2999999]: ruled out 67882, unresolved 1; 5685.5s total, 83.75 ms/root, 1.1 nodes/root, worst 4026.31s at 2152883; checkfacts hints used 0, rejected 0; ECM splits 73
+   UNRESOLVED (2152883, 'budget', "('ecm', 60863889541255346189545928549249")
+
+# the two roots left by ECM's budget, final code WITH verified checkfacts hints
+roots 1 in [502013, 502013]: ruled out 1, unresolved 0; 0.2s total, 164.20 ms/root, 6.0 nodes/root, worst 0.16s at 502013; checkfacts hints used 2, rejected 0; ECM splits 0
+roots 1 in [2152883, 2152883]: ruled out 1, unresolved 0; 0.0s total, 28.33 ms/root, 7.0 nodes/root, worst 0.03s at 2152883; checkfacts hints used 2, rejected 0; ECM splits 0
+
+# first pass (earlier code: no lazy recursion, no ECM, hints on) -- 15 left on the rho budget
+roots 78494 in [11, 999983]: ruled out 78490, unresolved 4; 364.9s total, 4.65 ms/root, 1.2 nodes/root, worst 19.06s at 749299; checkfacts hints used 124, rejected 0
+   UNRESOLVED (682471, 'budget', '50261913586476542183980275535861')
+   UNRESOLVED (683357, 'budget', '821950070968534811844951372622969')
+   UNRESOLVED (749299, 'budget', '1480679842169773453464267455707771')
+   UNRESOLVED (955891, 'budget', '2962328501642081568323206435138819')
+roots 70435 in [1000003, 1999993]: ruled out 70433, unresolved 2; 343.2s total, 4.87 ms/root, 1.1 nodes/root, worst 21.98s at 1508293; checkfacts hints used 76, rejected 0
+   UNRESOLVED (1408699, 'budget', '3429307585287167067658203873306103')
+   UNRESOLVED (1508293, 'budget', '80487614025230904658458984040802211193')
+roots 67883 in [2000003, 2999999]: ruled out 67874, unresolved 9; 549.0s total, 8.09 ms/root, 1.1 nodes/root, worst 53.91s at 2575453; checkfacts hints used 106, rejected 0
+   UNRESOLVED (2158759, 'budget', '7159706384302916717539723284346159')
+   UNRESOLVED (2175907, 'budget', '1670503289184503662071315804937831')
+   UNRESOLVED (2476039, 'budget', '371962158874853200829820513252937351')
+   UNRESOLVED (2558093, 'budget', '5297797492256264132777450822188140433891')
+   UNRESOLVED (2575453, 'budget', '2611202713062411137520211175973855264813')
+   UNRESOLVED (2764313, 'budget', '1262800058976429276071476007182143591282')
+   UNRESOLVED (2770753, 'budget', '1588306601647882125945329278458441474439')
+   UNRESOLVED (2775107, 'budget', '2266273443342481100237282605069636466076')
+   UNRESOLVED (2986871, 'budget', '1856787788463541468681103685348109309')
+
+# those 15, with ECM (hints on)
+roots 1 in [682471, 682471]: ruled out 1, unresolved 0; 2.3s total, 2261.64 ms/root, 6.0 nodes/root, worst 2.26s at 682471; checkfacts hints used 0, rejected 0
+roots 1 in [683357, 683357]: ruled out 1, unresolved 0; 2.2s total, 2163.84 ms/root, 5.0 nodes/root, worst 2.16s at 683357; checkfacts hints used 0, rejected 0
+roots 1 in [749299, 749299]: ruled out 1, unresolved 0; 2.9s total, 2858.33 ms/root, 6.0 nodes/root, worst 2.86s at 749299; checkfacts hints used 0, rejected 0
+roots 1 in [955891, 955891]: ruled out 1, unresolved 0; 3.8s total, 3814.67 ms/root, 4.0 nodes/root, worst 3.81s at 955891; checkfacts hints used 0, rejected 0
+roots 1 in [1408699, 1408699]: ruled out 1, unresolved 0; 4.7s total, 4708.79 ms/root, 4.0 nodes/root, worst 4.71s at 1408699; checkfacts hints used 0, rejected 0
+roots 1 in [1508293, 1508293]: ruled out 1, unresolved 0; 5.5s total, 5523.13 ms/root, 5.0 nodes/root, worst 5.52s at 1508293; checkfacts hints used 0, rejected 0
+roots 1 in [2158759, 2158759]: ruled out 1, unresolved 0; 5.7s total, 5658.50 ms/root, 4.0 nodes/root, worst 5.66s at 2158759; checkfacts hints used 0, rejected 0
+roots 1 in [2175907, 2175907]: ruled out 1, unresolved 0; 1.9s total, 1942.93 ms/root, 4.0 nodes/root, worst 1.94s at 2175907; checkfacts hints used 0, rejected 0
+roots 1 in [2476039, 2476039]: ruled out 1, unresolved 0; 4.0s total, 4001.93 ms/root, 6.0 nodes/root, worst 4.00s at 2476039; checkfacts hints used 0, rejected 0
+roots 1 in [2558093, 2558093]: ruled out 1, unresolved 0; 2.8s total, 2753.39 ms/root, 5.0 nodes/root, worst 2.75s at 2558093; checkfacts hints used 0, rejected 0
+roots 1 in [2575453, 2575453]: ruled out 1, unresolved 0; 9.0s total, 8950.82 ms/root, 5.0 nodes/root, worst 8.95s at 2575453; checkfacts hints used 0, rejected 0
+roots 1 in [2764313, 2764313]: ruled out 1, unresolved 0; 7.0s total, 7029.93 ms/root, 4.0 nodes/root, worst 7.03s at 2764313; checkfacts hints used 0, rejected 0
+roots 1 in [2770753, 2770753]: ruled out 1, unresolved 0; 6.2s total, 6189.90 ms/root, 5.0 nodes/root, worst 6.19s at 2770753; checkfacts hints used 0, rejected 0
+roots 1 in [2775107, 2775107]: ruled out 1, unresolved 0; 2.9s total, 2931.44 ms/root, 4.0 nodes/root, worst 2.93s at 2775107; checkfacts hints used 0, rejected 0
+roots 1 in [2986871, 2986871]: ruled out 1, unresolved 0; 5.3s total, 5325.13 ms/root, 4.0 nodes/root, worst 5.33s at 2986871; checkfacts hints used 0, rejected 0

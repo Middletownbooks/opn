@@ -1361,3 +1361,70 @@ the count test, which those five never reach.
   line by line, mutation-tested, and spot-checked, but not rewritten.
 
 Of these, the last is the natural next check.
+
+### 14l. An independent rebuild of the profile search  (`s3k2/41`–`44`)
+
+The audit's one open item (§14k) was an independent re-implementation of the
+`s3k2/34`/`35`/`36`/`38` recursion. `s3k2/41` rebuilds it from the
+**specification**: §§1–2 and 5, and the audit's proofs Pf.1–Pf.5. The
+architecture is deliberately different.
+
+| | scripts 34–38 | script 41 |
+|---|---|---|
+| search | levels of *sets*, min/max over role assignments; a separate DFS for exceptions | **one** DFS over *role-assigned* partial `T`, from the seeds to the leaves |
+| closure | the last level (36) or exceptions only (38) | **pinning at every level** |
+| cutoff | narrowed margin against `corr_k`, floats, factor `1.01` | the audit's form `(18/13)/(H₀·HI) ≥ corr_u`, Decimal with outward rounding, per-term factor `(1 + 1/(√B−1))²` (proved in its docstring) |
+| filters | forced primes of `w+1` for a special in `W`, at `e = 1` only | forced primes of `p+1` for **every** special, in `T` or `W`, at every odd `e`; admissibility against every prime `≡ 1 (mod 3)` below `lb` |
+| `W` bound | `WB = 500` | `WB = 1000` |
+| conditional items | discharged by `s3k2/39` | discharged by the **auditor's** `a4_solver.py` (`s3k2/43`) |
+
+**How independent this is.** The design and code are new, written without
+consulting `36`. But the author is the same, so shared blind spots in
+*understanding* the problem are possible, even if shared bugs in code are not.
+
+**Results.** All eight recursion-handled profiles finish with **nothing alive and
+nothing unresolved**. Total runtime is about 16 minutes, against about 45 for
+scripts 34–38.
+
+| profile | states | conditional items | compared with 36/38 |
+|---|---|---|---|
+| `0,no,2,2,1` | 839 | none | same |
+| `0,yes,2,3,0` | 146 | none | same |
+| `1,yes,2,4,0` | 7 090 | none | same |
+| `1,no,2,3,1` | 86 720 | none | same |
+| `0,yes,1,2,1` | 664 | `Sm({7,13})`, W = 11 | same |
+| `1,yes,1,3,1` | 21 857 | `Sm({7,13,19})`, W = 23; Case B `{7,13}` | **stronger**: `{13,61,151}` and `{13,61,157}` (W = 5) die outright |
+| `2,yes,1,4,1` | 1 227 157 | `Sm({7,13,19,127})`, W = 29/41/47; Case B `{7,13}`, `{7,13,19}`; coupled `{7,13}` | **stronger**: `{13,61,157,8269}` and three `{13,61,…}` Case-B searches die outright |
+| `2,yes,2,5,0` | 1 679 712 | **exactly the seven named sets** of §10b and §14f | same |
+
+Where the rebuild is stronger, the reason is the forced prime of `p + 1` for a
+special in `T`. For example, 61 special forces `31 ∈ T` through `62 = 2·31`.
+The last row reproduces §14f's correction independently: the `α = 2` branch
+rests on seven sets, not five.
+
+**Discharge** (`s3k2/43`). The 15 distinct conditional items (8 from the `W`
+profiles, 7 from `2,yes,2,5,0`) were each settled by the auditor's solver:
+
+* every complete `Sm(T)` or `Sm(K)` equals the searched list;
+* no Case-B list has a candidate beyond the search.
+
+**Soundness tests of the pruning.**
+
+* **Pool cross-check (`s3k2/42`).** For every `T` from a pool of small primes, and
+  every role assignment and `W` configuration, the complete-information terminal
+  test is run directly. Every configuration it leaves standing must appear among
+  41's items. This **passes on all eight profiles**. Deliberately over-pruned
+  mutants are **caught** when they over-pin or lower the raw threshold to 99% of
+  `18/13`.
+* **What the pool check cannot see.** It cannot catch cutoff bugs, by
+  construction: the cutoff only removes large primes, which small pools do not
+  contain. A dedicated spot-check (`s3k2/44`) builds complete `T` just above
+  recorded thresholds, and the terminal test kills every sample. **But it also
+  passes on mutants whose thresholds are 10× too small.** The cutoff is that
+  conservative relative to the terminal test.
+* **Consequence.** The cutoff's soundness rests on its proof (the docstring of
+  `41`, and the audit's Pf.2), not on any empirical check. That is the honest
+  limit of testing here, and it matches the audit's finding X1.
+
+`verify_all.py full` now also runs `41` on all profiles (asserting the item
+lists above), `43`, and `42` on the two profiles whose pools contain survivors.

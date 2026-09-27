@@ -20,7 +20,7 @@ Everything is standard-library Python, no external data. Entry points below.
 | item | where | status |
 |---|---|---|
 | Audit of Mantovanelli | `AUDIT_REPORT.md` | **Category C.** Proposition A: acceptance and validity are mutually exclusive for the tail envelope. Decisive, needs no `ω` bound. |
-| Verification of Ochem–Zelinsky §§2–3 | `NOTES_RESTRAINED.md` | Reproduces exactly. §4's printed product is reproduced to 10 digits by the sieve's own abundancy with `K = 43·10⁹` (the text says `43.5·10⁹`); with the text's `K` the product is `1.99671 < 2`, so the conclusion follows from the sieve's output (NOTES_RESTRAINED §1a, `restrained/10`). Whether that output is right is open. The original `loopless.cpp` wraps past `r = 2³²`, and the reported `k, A` carry the wrap's signature: the survival fraction triples at `2³²` (§4b, `restrained/11`). The bound is probably still true but unverified until an exact re-run. Their Question 10 has **no solution with `p, r < 1000`**, exact for all exponents and all `x` (§4a). |
+| Verification of Ochem–Zelinsky §§2–3 | `NOTES_RESTRAINED.md` | Reproduces exactly. §4's printed product is reproduced to 10 digits by the sieve's own abundancy with `K = 43·10⁹` (the text says `43.5·10⁹`); with the text's `K` the product is `1.99671 < 2`, so the conclusion follows from the sieve's output (NOTES_RESTRAINED §1a, `restrained/10`). The original `loopless.cpp` wraps past `r = 2³²`, and its reported `k, A` are not Algorithm 1's (§4b). **An overflow-free re-run (`restrained/13`, C) confirms `q ≥ 23·10⁹`** with a margin of `6.79·10⁹` primes. The same method gives `q ≥ 26,392,853,446`. This holds given the rest of their §4 (§4d). Their Question 10 has **no solution with `p, r < 1000`**, exact for all exponents and all `x` (§4a). |
 | `k = 2`, `3 ∤ N` (their §2) | `NOTES_K2.md`, `AUDIT_K2_MODEL_RESULT.md` | **Closed, with two independent proofs.** A reasoning model's fixed-support bound, audited (my first attempt double-counted the prime 5). And a **certified** proof with the section-3 machinery (`k2/05`–`07`, NOTES_K2 §7) that uses **no cited theorem at all**. |
 | `k = 2`, `3` ordinary (their §3) | `NOTES_S3_K2.md` | **All 14 role profiles eliminated.** 5 profiles use no cited theorem, 5 use only `ω(N) ≥ 10` (Nielsen), and 4 use that and Matveev 1998, Thm 2.2 (`MATVEEV_1998.md`). No pool, search bound or Thue–Mahler assumption remains (§14h–i). **Independently audited** (`audit_s3k2/`, §14k): no errors, and three documentation gaps, now repaired. **Independently rebuilt** (`s3k2/41`, §14l) and **certified**: every search tree is verified by a small checker (`s3k2/46`, §14m). Two errors in the earlier recursion were found and corrected (§14d, §14f). |
 | `k = 2`, `3` notable (their §4) | `NOTES_S4_K2.md`, `AUDIT_S4K2_MODEL_RESULT.md` | **Open**, as it is at `k = 1`. New structural results below. |
@@ -166,24 +166,16 @@ tractability; what blocks each is stated.
    already covers `k = 2`. The repo cites no such search, and novelty must not
    be claimed without it. Matveev pp. 81 and 83–84 should also be checked for
    standing hypotheses.
-2. **An independent, overflow-free re-run of Ochem–Zelinsky's sieve**
-   (Algorithm 1, `loopless.cpp`).
-   * **Why it matters.** It is the load-bearing computation behind their
-     `q ≥ 2.3·10¹⁰`. As released, it overflows past `r = 2³²` (§4b of
-     `NOTES_RESTRAINED.md`), so the published figure is currently unverified,
-     not refuted.
-   * **What a re-run gives.** It settles that either way. It is also the
-     template for any `k = 2` sieve (item 5).
-   * **Unblocked:** Algorithm 1, `loopless.cpp` and the full paper transcript
-     are in `sources/`. The paper says the run took 3 weeks. The authors host the
-     original files at `https://www.lirmm.fr/~ochem/opn/restrained/`, which this
-     environment's network policy blocks.
-   * **What must be shown:** `k(z) + K_max(A(z)) ≥ 46·10⁹` for the exact sieve
-     (`restrained/10`, item 5). An over-inclusive sieve is still sound, so an
-     exact sieve for `r ≤ Q` that ignores `M₂` primes `≥ Q` is a sound, cheaper
-     first pass. The paper's own numbers leave a margin of `3.56·10⁸`.
-   * **Pending the user's decision:** the full run needs compiled code (C,
-     standard library only). A CPython run to `z` is not practical.
+2. **Done: overflow-free re-run of Ochem–Zelinsky's sieve** (`restrained/12`–`14`,
+   NOTES_RESTRAINED §4d).
+   * The re-run is exact below `3.44·10¹⁰` and a provable superset above.
+   * It agrees with the authors' unmodified `loopless.cpp` on 253 lines, and with a
+     Python reference.
+   * True `k(z) = 599,351,328` and `A(z) = 1.047357816316`, against the published
+     `2.5·10⁹` and `1.0885`. The result is `k + K_max = 52,785,706,892`.
+   * **`q ≥ 23·10⁹` is confirmed; the same method gives `q ≥ 26,392,853,446`.**
+   * **Next:** report the overflow and the corrected figures to the authors. The
+     user decides. The template for a `k = 2` sieve (item 5) now exists.
 3. **`k = 3`, for `3 ∤ N` and for `3` ordinary,** using the engine built for
    `k = 2`: the DFS with closure pinning, the Skolem and Matveev + LLL solvers,
    and the count.

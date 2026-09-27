@@ -23,3 +23,4 @@ authors' file; it is kept only so `06` is reproducible.
 | `13_sieve.c` | the overflow-free re-run of Algorithm 1, C with the standard library only. It is exact for `r < Q`; above `Q` it keeps a provable superset of the survivors (header comment). It matches `12` exactly at `2·10⁸`, both exact and with `Q = 5·10⁷`, and the released `loopless.cpp` on every line compared |
 | `14_bound_from_run.py` | turns `13`'s checkpoint lines into `k + K_max` and the resulting `q` bound |
 | `loopless_build/gmp.h` | a declaration-only stand-in for the missing `<gmp.h>`, so the authors' `loopless.cpp` compiles **unmodified** against the system `libgmp.so.10` (`g++ -O3 -I loopless_build ../sources/loopless.cpp /usr/lib/x86_64-linux-gnu/libgmp.so.10`) |
+| `runs/` | records of the runs: the full `13` run to `z` with `Q = 2³⁵` (checkpoints, stderr, gzipped progress lines), the `14` bound table, the exact `10¹⁰` checkpoints, and one hour of the released `loopless.cpp` |

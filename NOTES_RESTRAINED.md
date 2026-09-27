@@ -306,6 +306,64 @@ conservative kind, but four samples settle nothing.
 
 ---
 
+## 4d. Algorithm 1 re-run without the overflow (`restrained/12`–`14`)
+
+The sieve was re-run to the paper's `z = 216,171,986,291` with the 64-bit wrap
+removed. The user approved compiled C for this.
+
+**Implementations and cross-checks.**
+* `restrained/12_algorithm1_reference.py`: exact bare-CPython Algorithm 1.
+* `restrained/13_sieve.c`: C with the standard library only. It never forms
+  `r² + r + 1`. Instead, each `q ∈ M₂` marks the `r ≡ ρ, q−1−ρ (mod q)`, where `ρ` is a
+  primitive cube root of unity mod `q`. The `M₁` test for `r ≡ 1 (mod 12)` reduces
+  to one lookup: is `(r+1)/2` a survivor? (Proof in the header: `(r+1)/2 < 9·10¹²` is
+  either divisible by a prime `< 3·10⁶` or is itself a prime.)
+* **Memory limit.** Tracking every `q ∈ M₂` up to `z` needs about 32 GB. So a
+  prime `q ≥ Q = 2³⁵` does not exclude anything. The run is **exact for
+  `r < 3.44·10¹⁰`**. Above that it keeps a **provable superset** of Algorithm 1's
+  survivors (induction in the header). A superset only lowers the bound, so the
+  bound stays valid (§1a).
+* **Agreement.** `12` and `13` agree line for line at `2·10⁸`, both exact and with
+  `Q = 5·10⁷`. The authors' `loopless.cpp` was compiled **unmodified** against the
+  system `libgmp` (with a declaration-only `restrained/loopless_build/gmp.h`). It agrees
+  with the full run on **all 253 progress lines** it produced in one hour, to
+  `r = 579,733,409`. That run is saved as `runs/loopless_released_1h.txt`.
+
+**Result at `z`** (`runs/14_bound_z_Q2e35.txt`; 3188 s, 5.8 GB peak):
+
+| | paper (wrapped test) | re-run (overflow-free) |
+|---|---|---|
+| survivors `k(z)` | "more than 2,500,000,000" | **599,351,328** |
+| abundancy `A(z)` | 1.088507187872 | **1.047357816316** |
+| `K_max` | (43,500,000,000 used) | **52,186,355,564** |
+| `k + K_max` | 46,355,827,007 (§1a) | **52,785,706,892** |
+| resulting `q ≥` | 23,000,000,000 | **26,392,853,446** |
+
+* Exact checkpoints: at `2³²`, `k = 15,656,368` and `A = 1.035515112361`; at
+  `10¹⁰`, `k = 33,867,299` and `A = 1.038326300307`.
+* `k + K_max` first reaches `46·10⁹` at checkpoint `x = 1.89·10¹¹`.
+* `M₂` ends with 3,997,201,149 primes. Of these, 3,313,545,857 are `≥ Q` and
+  unused, which is the conservative part.
+
+**Reading.**
+1. **The paper's conclusion `q ≥ 23·10⁹` is confirmed.** It holds with a margin
+   of `6.79·10⁹` in the prime count, conditional on the rest of its §4, which is
+   not recomputed here. That rest is: primes `5 … 3·10⁶` ruled out (`tree.txt`),
+   `p > 6·10⁶`, `σ₋₁(3^q) < 3/2`, and Lemma 8 with its cited theorems.
+2. **The published sieve output is not Algorithm 1's.** The true survivor count is
+   about a quarter of the reported one, as the wrap signature predicted (§4b).
+   The two error directions partly cancel: a smaller survivor set makes the bound
+   *stronger*. So the overflow did not endanger the theorem, and it only cost bound.
+3. The same method, run correctly to the same `z`, gives **`q ≥ 26,392,853,446`**.
+   This is a recomputation inside their framework, not a new method. It inherits
+   every assumption in item 1, and it should be put to the authors alongside the
+   overflow report before anyone quotes it.
+
+**Numerical safety.** `ln A` is accumulated in `long double` with Neumaier
+compensation, and padded by `10⁻¹⁵` in `14`. `∂K_max/∂ ln A = −1/ln(1 + 1/z) ≈ −z ≈
+−2.2·10¹¹`, so the padding moves the bound by less than 1. The margin is
+`6.79·10⁹`.
+
 ## 4c. Verification of `3p2.txt`
 
 `3p2.txt` backs the claim that, with 3 ordinary, every prime `≤ 1000` other
@@ -376,6 +434,7 @@ transcription.
 | `3p2.txt` cut markers | **239/241 verify** against freshly computed targets |
 | the `59083` line | **not a defect** — the authors' `tree.txt` lists no 19 either |
 | `loopless.cpp` as released | **64-bit overflow past `r = 2^32`**, confirmed in the original file; the paper's reported `k, A` show the wrap's signature (§4b, `restrained/11`) |
+| Algorithm 1, overflow-free re-run to `z` | **`q ≥ 23·10⁹` confirmed** (margin `6.79·10⁹` primes); the same method gives `q ≥ 26,392,853,446`; true `k = 599,351,328`, `A = 1.047357816316` (§4d) |
 
 Honest summary: Lemma A and Corollary B are real structural additions, and the
 exact form of Lemma 8 usefully closes off one route. None of it improves

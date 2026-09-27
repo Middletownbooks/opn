@@ -1,0 +1,2 @@
+PROFILE 2,yes,1,4,1: T roles ('o', 'o', 's', 'n'), W n, alpha 2, need |U| >= 4
+      n=5: level 3 has 315329 sets (max prime 319057)

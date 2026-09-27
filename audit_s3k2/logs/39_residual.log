@@ -1,0 +1,134 @@
+NAMED SETS: complete Sm(T) = { x prime, x = 2 mod 3, x^2+x+1 T-smooth }
+   T = [7, 13, 19, 37, 67], delta = 0: Matveev gives H <= 2.210e+15 (omega = 1.756e+02)
+      round 0: X = 2.210e+15 -> ln(x^2+x+1) <= 463.37, H <= 239
+      round 1: X = 2.390e+02 -> ln(x^2+x+1) <= 164.23, H <= 85
+      round 2: X = 8.500e+01 -> ln(x^2+x+1) <= 152.33, H <= 79
+      round 3: X = 7.900e+01 -> ln(x^2+x+1) <= 152.33, H <= 79
+      exhaustive search to x^2+x+1 <= e^152.3: 15 solution pairs
+      Sm(T) complete = [11, 29, 653]
+   T = [7, 13, 19, 37, 127], delta = 0: Matveev gives H <= 2.584e+15 (omega = 2.024e+02)
+      round 0: X = 2.584e+15 -> ln(x^2+x+1) <= 463.77, H <= 239
+      round 1: X = 2.390e+02 -> ln(x^2+x+1) <= 164.57, H <= 85
+      round 2: X = 8.500e+01 -> ln(x^2+x+1) <= 152.74, H <= 79
+      round 3: X = 7.900e+01 -> ln(x^2+x+1) <= 152.74, H <= 79
+      exhaustive search to x^2+x+1 <= e^152.7: 13 solution pairs
+      Sm(T) complete = [11, 107, 653]
+   T = [7, 13, 19, 43, 127], delta = 0: Matveev gives H <= 2.700e+15 (omega = 2.108e+02)
+      round 0: X = 2.700e+15 -> ln(x^2+x+1) <= 463.37, H <= 239
+      round 1: X = 2.390e+02 -> ln(x^2+x+1) <= 164.12, H <= 85
+      round 2: X = 8.500e+01 -> ln(x^2+x+1) <= 153.05, H <= 79
+      round 3: X = 7.900e+01 -> ln(x^2+x+1) <= 153.05, H <= 79
+      exhaustive search to x^2+x+1 <= e^153.1: 13 solution pairs
+      Sm(T) complete = [11, 107, 653]
+   T = [7, 13, 19, 127, 409], delta = 0: Matveev gives H <= 4.498e+15 (omega = 3.370e+02)
+      round 0: X = 4.498e+15 -> ln(x^2+x+1) <= 467.28, H <= 241
+      round 1: X = 2.410e+02 -> ln(x^2+x+1) <= 164.56, H <= 85
+      round 2: X = 8.500e+01 -> ln(x^2+x+1) <= 152.51, H <= 79
+      round 3: X = 7.900e+01 -> ln(x^2+x+1) <= 152.51, H <= 79
+      exhaustive search to x^2+x+1 <= e^152.5: 12 solution pairs
+      Sm(T) complete = [11, 53, 107, 653]
+   T = [7, 13, 19, 127, 1723], delta = 0: Matveev gives H <= 5.694e+15 (omega = 4.176e+02)
+      round 0: X = 5.694e+15 -> ln(x^2+x+1) <= 471.21, H <= 243
+      round 1: X = 2.430e+02 -> ln(x^2+x+1) <= 164.12, H <= 85
+      round 2: X = 8.500e+01 -> ln(x^2+x+1) <= 152.67, H <= 79
+      round 3: X = 7.900e+01 -> ln(x^2+x+1) <= 152.67, H <= 79
+      exhaustive search to x^2+x+1 <= e^152.7: 12 solution pairs
+      Sm(T) complete = [11, 41, 107, 653]
+   T = [7, 13, 19, 31, 127], delta = 0: Matveev gives H <= 2.448e+15 (omega = 1.924e+02)
+      round 0: X = 2.448e+15 -> ln(x^2+x+1) <= 463.33, H <= 239
+      round 1: X = 2.390e+02 -> ln(x^2+x+1) <= 163.89, H <= 85
+      round 2: X = 8.500e+01 -> ln(x^2+x+1) <= 152.67, H <= 79
+      round 3: X = 7.900e+01 -> ln(x^2+x+1) <= 152.67, H <= 79
+      exhaustive search to x^2+x+1 <= e^152.7: 16 solution pairs
+      Sm(T) complete = [5, 11, 107, 191, 653]
+   T = [7, 13, 19, 31, 331], delta = 0: Matveev gives H <= 2.986e+15 (omega = 2.305e+02)
+      round 0: X = 2.986e+15 -> ln(x^2+x+1) <= 463.60, H <= 239
+      round 1: X = 2.390e+02 -> ln(x^2+x+1) <= 164.09, H <= 85
+      round 2: X = 8.500e+01 -> ln(x^2+x+1) <= 152.63, H <= 79
+      round 3: X = 7.900e+01 -> ln(x^2+x+1) <= 152.63, H <= 79
+      exhaustive search to x^2+x+1 <= e^152.6: 13 solution pairs
+      Sm(T) complete = [5, 11, 191, 653]
+   T = [7, 13], delta = 0: Matveev gives H <= 9.316e+10 (omega = 3.176e+01)
+      round 0: X = 9.316e+10 -> ln(x^2+x+1) <= 147.15, H <= 76
+      round 1: X = 7.600e+01 -> ln(x^2+x+1) <= 65.85, H <= 34
+      round 2: X = 3.400e+01 -> ln(x^2+x+1) <= 61.17, H <= 32
+      round 3: X = 3.200e+01 -> ln(x^2+x+1) <= 61.17, H <= 32
+      exhaustive search to x^2+x+1 <= e^61.2: 5 solution pairs
+      Sm(T) complete = []
+   T = [13, 61, 151], delta = 0: Matveev gives H <= 7.508e+12 (omega = 1.863e+02)
+      round 0: X = 7.508e+12 -> ln(x^2+x+1) <= 245.27, H <= 96
+      round 1: X = 9.600e+01 -> ln(x^2+x+1) <= 95.99, H <= 38
+      round 2: X = 3.800e+01 -> ln(x^2+x+1) <= 89.42, H <= 35
+      round 3: X = 3.500e+01 -> ln(x^2+x+1) <= 89.42, H <= 35
+      exhaustive search to x^2+x+1 <= e^89.4: 2 solution pairs
+      Sm(T) complete = []
+   T = [13, 61, 157], delta = 0: Matveev gives H <= 7.574e+12 (omega = 1.877e+02)
+      round 0: X = 7.574e+12 -> ln(x^2+x+1) <= 245.13, H <= 96
+      round 1: X = 9.600e+01 -> ln(x^2+x+1) <= 95.92, H <= 38
+      round 2: X = 3.800e+01 -> ln(x^2+x+1) <= 89.47, H <= 35
+      round 3: X = 3.500e+01 -> ln(x^2+x+1) <= 89.47, H <= 35
+      exhaustive search to x^2+x+1 <= e^89.5: 3 solution pairs
+      Sm(T) complete = []
+   T = [7, 13, 19], delta = 0: Matveev gives H <= 2.420e+12 (omega = 5.175e+01)
+      round 0: X = 2.420e+12 -> ln(x^2+x+1) <= 237.43, H <= 123
+      round 1: X = 1.230e+02 -> ln(x^2+x+1) <= 96.76, H <= 50
+      round 2: X = 5.000e+01 -> ln(x^2+x+1) <= 89.17, H <= 46
+      round 3: X = 4.600e+01 -> ln(x^2+x+1) <= 89.17, H <= 46
+      exhaustive search to x^2+x+1 <= e^89.2: 9 solution pairs
+      Sm(T) complete = [11, 653]
+   T = [13, 61, 157, 8269], delta = 0: Matveev gives H <= 5.863e+14 (omega = 8.308e+02)
+      round 0: X = 5.863e+14 -> ln(x^2+x+1) <= 359.94, H <= 141
+      round 1: X = 1.410e+02 -> ln(x^2+x+1) <= 127.91, H <= 50
+      round 2: X = 5.000e+01 -> ln(x^2+x+1) <= 120.63, H <= 48
+      round 3: X = 4.800e+01 -> ln(x^2+x+1) <= 117.38, H <= 46
+      round 4: X = 4.600e+01 -> ln(x^2+x+1) <= 117.38, H <= 46
+      exhaustive search to x^2+x+1 <= e^117.4: 3 solution pairs
+      Sm(T) complete = []
+   T = [7, 13, 19, 127], delta = 0: Matveev gives H <= 9.728e+13 (omega = 1.230e+02)
+      round 0: X = 9.728e+13 -> ln(x^2+x+1) <= 345.62, H <= 178
+      round 1: X = 1.780e+02 -> ln(x^2+x+1) <= 128.06, H <= 66
+      round 2: X = 6.600e+01 -> ln(x^2+x+1) <= 121.23, H <= 63
+      round 3: X = 6.300e+01 -> ln(x^2+x+1) <= 121.23, H <= 63
+      exhaustive search to x^2+x+1 <= e^121.2: 11 solution pairs
+      Sm(T) complete = [11, 107, 653]
+
+CASE B: complete { t prime, t = 1 mod 3, (t^2+t+1)/3 S-smooth }
+   T = [7, 13], delta = 1: Matveev gives H <= 9.316e+10 (omega = 3.176e+01)
+      round 0: X = 9.316e+10 -> ln(x^2+x+1) <= 147.15, H <= 76
+      round 1: X = 7.600e+01 -> ln(x^2+x+1) <= 65.85, H <= 34
+      round 2: X = 3.400e+01 -> ln(x^2+x+1) <= 61.17, H <= 32
+      round 3: X = 3.200e+01 -> ln(x^2+x+1) <= 61.17, H <= 32
+      exhaustive search to x^2+x+1 <= e^61.2: 4 solution pairs
+      solutions t = []
+   T = [13, 61, 151], delta = 1: Matveev gives H <= 7.508e+12 (omega = 1.863e+02)
+      round 0: X = 7.508e+12 -> ln(x^2+x+1) <= 245.27, H <= 96
+      round 1: X = 9.600e+01 -> ln(x^2+x+1) <= 95.99, H <= 38
+      round 2: X = 3.800e+01 -> ln(x^2+x+1) <= 89.42, H <= 35
+      round 3: X = 3.500e+01 -> ln(x^2+x+1) <= 89.42, H <= 35
+      exhaustive search to x^2+x+1 <= e^89.4: 3 solution pairs
+      solutions t = [13]
+   T = [13, 61, 157], delta = 1: Matveev gives H <= 7.574e+12 (omega = 1.877e+02)
+      round 0: X = 7.574e+12 -> ln(x^2+x+1) <= 245.13, H <= 96
+      round 1: X = 9.600e+01 -> ln(x^2+x+1) <= 95.92, H <= 38
+      round 2: X = 3.800e+01 -> ln(x^2+x+1) <= 89.47, H <= 35
+      round 3: X = 3.500e+01 -> ln(x^2+x+1) <= 89.47, H <= 35
+      exhaustive search to x^2+x+1 <= e^89.5: 4 solution pairs
+      solutions t = [13]
+   T = [13, 61, 28057], delta = 1: Matveev gives H <= 1.673e+13 (omega = 3.803e+02)
+      round 0: X = 1.673e+13 -> ln(x^2+x+1) <= 252.56, H <= 99
+      round 1: X = 9.900e+01 -> ln(x^2+x+1) <= 96.45, H <= 38
+      round 2: X = 3.800e+01 -> ln(x^2+x+1) <= 89.30, H <= 35
+      round 3: X = 3.500e+01 -> ln(x^2+x+1) <= 89.30, H <= 35
+      exhaustive search to x^2+x+1 <= e^89.3: 3 solution pairs
+      solutions t = [13]
+   T = [7, 13, 19], delta = 1: Matveev gives H <= 2.420e+12 (omega = 5.175e+01)
+      round 0: X = 2.420e+12 -> ln(x^2+x+1) <= 237.43, H <= 123
+      round 1: X = 1.230e+02 -> ln(x^2+x+1) <= 96.76, H <= 50
+      round 2: X = 5.000e+01 -> ln(x^2+x+1) <= 89.17, H <= 46
+      round 3: X = 4.600e+01 -> ln(x^2+x+1) <= 89.17, H <= 46
+      exhaustive search to x^2+x+1 <= e^89.2: 5 solution pairs
+      solutions t = [7]
+
+real	0m19.451s
+user	0m19.294s
+sys	0m0.014s

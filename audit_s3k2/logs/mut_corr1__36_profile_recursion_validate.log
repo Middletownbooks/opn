@@ -1,0 +1,8 @@
+VALIDATION: profile (o,o,s,n,n), W empty, recursion levels 2..4 vs script 34
+   level counts : [6, 91, 4324, 485058]   expected [59, 1372, 31925, 488860]
+   exceptions   : [((7, 13, 19, 31), 0.997627), ((7, 13, 31, 79), 0.996122), ((7, 13, 31, 307), 0.994024)]
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-user-opn/29d8ccf1-27b9-5592-82bc-38990ba368e7/scratchpad/mut_corr1_5ez7aqfl/36_profile_recursion.py", line 430, in <module>
+    assert counts == [59, 1372, 31925, 488860], "does NOT reproduce script 34"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: does NOT reproduce script 34

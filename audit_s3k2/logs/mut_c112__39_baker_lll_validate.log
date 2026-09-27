@@ -1,0 +1,51 @@
+V1. Identity Lambda = sum e_t theta_t + b0 pi/3 on known solutions (residual):
+   T = (7,), x = 18: residual 0.0e+00
+   T = (7,), x = 2: residual 0.0e+00
+   T = (7, 13, 19), x = 653: residual 0.0e+00
+   T = (7, 13, 19, 31), x = 191: residual 0.0e+00
+   T = (7, 19, 31), x = 11: residual 0.0e+00
+   T = (13,), x = 3: residual 0.0e+00
+V2. Rank one against the Skolem solver of script 32 (independent method):
+   p =   7, delta = 0: Baker+LLL [0, 2, 18]   Skolem [0, 2, 18]
+   p =   7, delta = 1: Baker+LLL [1, 4]   Skolem [1, 4]
+   p =  13, delta = 0: Baker+LLL [0, 3]   Skolem [0, 3]
+   p =  13, delta = 1: Baker+LLL [1, 22]   Skolem [1, 22]
+   p =  19, delta = 0: Baker+LLL [0]   Skolem [0]
+   p =  19, delta = 1: Baker+LLL [1, 7]   Skolem [1, 7]
+   p =  31, delta = 0: Baker+LLL [0, 5]   Skolem [0, 5]
+   p =  31, delta = 1: Baker+LLL [1]   Skolem [1]
+   p =  43, delta = 0: Baker+LLL [0, 6]   Skolem [0, 6]
+   p =  43, delta = 1: Baker+LLL [1]   Skolem [1]
+   p =  61, delta = 0: Baker+LLL [0]   Skolem [0]
+   p =  61, delta = 1: Baker+LLL [1, 13]   Skolem [1, 13]
+   p =  73, delta = 0: Baker+LLL [0, 8]   Skolem [0, 8]
+   p =  73, delta = 1: Baker+LLL [1]   Skolem [1]
+   p =  97, delta = 0: Baker+LLL [0]   Skolem [0]
+   p =  97, delta = 1: Baker+LLL [1]   Skolem [1]
+   all agree.
+V3. Multi-prime sets against a direct search to 10^150:
+   T = [7, 13], delta = 0: Matveev gives H <= 8.549e+09 (omega = 3.176e+01)
+      round 0: X = 8.549e+09 -> ln(x^2+x+1) <= 138.30, H <= 72
+      round 1: X = 7.200e+01 -> ln(x^2+x+1) <= 65.85, H <= 34
+      round 2: X = 3.400e+01 -> ln(x^2+x+1) <= 61.17, H <= 32
+      round 3: X = 3.200e+01 -> ln(x^2+x+1) <= 61.17, H <= 32
+      exhaustive search to x^2+x+1 <= e^61.2: 5 solution pairs
+      direct search to 10^150: [0, 2, 3, 9, 18]
+      Baker+LLL (complete):   [0, 2, 3, 9, 18]
+   T = [7, 13, 19], delta = 0: Matveev gives H <= 2.244e+11 (omega = 5.175e+01)
+      round 0: X = 2.244e+11 -> ln(x^2+x+1) <= 224.91, H <= 116
+      round 1: X = 1.160e+02 -> ln(x^2+x+1) <= 96.76, H <= 50
+      round 2: X = 5.000e+01 -> ln(x^2+x+1) <= 89.17, H <= 46
+      round 3: X = 4.600e+01 -> ln(x^2+x+1) <= 89.17, H <= 46
+      exhaustive search to x^2+x+1 <= e^89.2: 9 solution pairs
+      direct search to 10^150: [0, 2, 3, 9, 11, 18, 30, 68, 653]
+      Baker+LLL (complete):   [0, 2, 3, 9, 11, 18, 30, 68, 653]
+   T = [7, 13, 19, 31], delta = 0: Matveev gives H <= 6.197e+12 (omega = 8.719e+01)
+      round 0: X = 6.197e+12 -> ln(x^2+x+1) <= 323.32, H <= 167
+      round 1: X = 1.670e+02 -> ln(x^2+x+1) <= 128.39, H <= 66
+      round 2: X = 6.600e+01 -> ln(x^2+x+1) <= 120.79, H <= 63
+      round 3: X = 6.300e+01 -> ln(x^2+x+1) <= 120.79, H <= 63
+      exhaustive search to x^2+x+1 <= e^120.8: 13 solution pairs
+      direct search to 10^150: [0, 2, 3, 5, 9, 11, 18, 30, 68, 87, 191, 315, 653]
+      Baker+LLL (complete):   [0, 2, 3, 5, 9, 11, 18, 30, 68, 87, 191, 315, 653]
+VALIDATION PASSED

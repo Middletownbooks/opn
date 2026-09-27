@@ -1,0 +1,9 @@
+PROFILE 0,yes,2,3,0: T roles ('s', 'n', 'n'), W None, alpha 0, need |U| >= 6
+   W empty        done; running totals uncond 80 cond 0 exc 0 alive 0
+   level counts (summed over W configs): {2: 20, 3: 97}
+   killed early (raw role minimum > 18/13): 0
+   final sets: uncond dead 80, conditional dead 0, no role/config 17, ALIVE 0
+   exceptions (no cutoff): 0
+   case-B enumerations (conditional on 10^MB_EXP bound): 0
+   conditional sets: 0
+   time 0s

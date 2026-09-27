@@ -1,0 +1,23 @@
+Sm[7, 13, 19, 37, 67]: mine [11, 29, 653]  repo [11, 29, 653]  OK
+Sm[7, 13, 19, 37, 127]: mine [11, 107, 653]  repo [11, 107, 653]  OK
+Sm[7, 13, 19, 43, 127]: mine [11, 107, 653]  repo [11, 107, 653]  OK
+Sm[7, 13, 19, 127, 409]: mine [11, 53, 107, 653]  repo [11, 53, 107, 653]  OK
+Sm[7, 13, 19, 127, 1723]: mine [11, 41, 107, 653]  repo [11, 41, 107, 653]  OK
+Sm[7, 13, 19, 31, 127]: mine [5, 11, 107, 191, 653]  repo [5, 11, 107, 191, 653]  OK
+Sm[7, 13, 19, 31, 331]: mine [5, 11, 191, 653]  repo [5, 11, 191, 653]  OK
+Sm[7, 13]: mine []  repo []  OK
+Sm[13, 61, 151]: mine []  repo []  OK
+Sm[13, 61, 157]: mine []  repo []  OK
+Sm[7, 13, 19]: mine [11, 653]  repo [11, 653]  OK
+Sm[13, 61, 157, 8269]: mine []  repo []  OK
+Sm[7, 13, 19, 127]: mine [11, 107, 653]  repo [11, 107, 653]  OK
+CaseB[7, 13]: mine []  repo []  OK
+CaseB[13, 61, 151]: mine [13]  repo [13]  OK
+CaseB[13, 61, 157]: mine [13]  repo [13]  OK
+CaseB[13, 61, 28057]: mine [13]  repo [13]  OK
+CaseB[7, 13, 19]: mine [7]  repo [7]  OK
+[7, 13, 19, 127, 409]: assignments [([7, 19], 13, [127, 409]), ([7, 19], 409, [13, 127])]  LO_raw 1.335911  R 1.036458  admissible [53, 107, 653]  need 4 -> DEAD
+[7, 13, 19, 127, 1723]: assignments [([7, 19], 13, [127, 1723])]  LO_raw 1.333419  R 1.038395  admissible [41, 107, 653]  need 4 -> DEAD
+[7, 13, 19, 31, 127]: assignments [([7, 19], 13, [31, 127])]  LO_raw 1.377066  R 1.005482  admissible [191, 653]  need 4 -> DEAD
+[7, 13, 19, 31, 331]: assignments [([7, 31], 13, [19, 331])]  LO_raw 1.370517  R 1.010287  admissible [191, 653]  need 4 -> DEAD
+ALL AGREE

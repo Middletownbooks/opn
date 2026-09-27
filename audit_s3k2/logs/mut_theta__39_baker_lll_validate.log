@@ -1,0 +1,9 @@
+V1. Identity Lambda = sum e_t theta_t + b0 pi/3 on known solutions (residual):
+   T = (7,), x = 18: residual 0.0e+00
+   T = (7,), x = 2: residual 0.0e+00
+   T = (7, 13, 19), x = 653: residual 2.0e-30
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-user-opn/29d8ccf1-27b9-5592-82bc-38990ba368e7/scratchpad/mut_theta_ohgw7pvw/39_baker_lll.py", line 317, in <module>
+    assert r < Decimal("1e-400")
+           ^^^^^^^^^^^^^^^^^^^^^
+AssertionError

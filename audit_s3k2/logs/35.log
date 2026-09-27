@@ -1,0 +1,15 @@
+level-5 sets: 488860
+
+   total 5-sets tested                           : 488860
+   dead: no role assignment passes closure        : 485179
+   dead: interval narrowing (unconditional)       : 3676
+   ---------------------------------------------- 
+   unconditional                                  : 488855  (100.00%)
+   dead: omega>=10 + Sm complete (CONDITIONAL)     : 5
+   STILL ALIVE                                    : 0
+   sets needing the conditional step:
+       [7, 13, 19, 37, 67]
+       [7, 13, 19, 37, 127]
+       [7, 13, 19, 43, 127]
+       [7, 13, 19, 127, 409]
+       [7, 13, 19, 127, 1723]

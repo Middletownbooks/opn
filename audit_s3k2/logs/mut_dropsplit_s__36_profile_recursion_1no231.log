@@ -1,0 +1,41 @@
+PROFILE 1,no,2,3,1: T roles ('o', 'n', 'n'), W s, alpha 1, need |U| >= 5
+   s=5,e=1        done; running totals uncond 106 cond 0 exc 0 alive 0
+   s=5,e>=5       done; running totals uncond 4006 cond 0 exc 0 alive 0
+   s=29,e=1       done; running totals uncond 4019 cond 0 exc 0 alive 0
+   s=29,e>=5      done; running totals uncond 4032 cond 0 exc 0 alive 0
+   s=41,e=1       done; running totals uncond 4034 cond 0 exc 0 alive 0
+   s=41,e>=5      done; running totals uncond 4036 cond 0 exc 0 alive 0
+   s=101,e=1      done; running totals uncond 4046 cond 0 exc 0 alive 0
+   s=101,e>=5     done; running totals uncond 4056 cond 0 exc 0 alive 0
+   s=113,e=1      done; running totals uncond 4059 cond 0 exc 0 alive 0
+   s=113,e>=5     done; running totals uncond 4069 cond 0 exc 0 alive 0
+   s=137,e=1      done; running totals uncond 4079 cond 0 exc 0 alive 0
+   s=137,e>=5     done; running totals uncond 4089 cond 0 exc 0 alive 0
+   s=149,e=1      done; running totals uncond 4099 cond 0 exc 0 alive 0
+   s=149,e>=5     done; running totals uncond 4109 cond 0 exc 0 alive 0
+   s=173,e=1      done; running totals uncond 4119 cond 0 exc 0 alive 0
+   s=173,e>=5     done; running totals uncond 4129 cond 0 exc 0 alive 0
+   s=257,e=1      done; running totals uncond 4130 cond 0 exc 0 alive 0
+   s=257,e>=5     done; running totals uncond 4140 cond 0 exc 0 alive 0
+   s=281,e=1      done; running totals uncond 4150 cond 0 exc 0 alive 0
+   s=281,e>=5     done; running totals uncond 4160 cond 0 exc 0 alive 0
+   s=293,e=1      done; running totals uncond 4162 cond 0 exc 0 alive 0
+   s=293,e>=5     done; running totals uncond 4164 cond 0 exc 0 alive 0
+   s=317,e=1      done; running totals uncond 4174 cond 0 exc 0 alive 0
+   s=317,e>=5     done; running totals uncond 4184 cond 0 exc 0 alive 0
+   s=353,e=1      done; running totals uncond 4194 cond 0 exc 0 alive 0
+   s=353,e>=5     done; running totals uncond 4204 cond 0 exc 0 alive 0
+   s=389,e=1      done; running totals uncond 4214 cond 0 exc 0 alive 0
+   s=389,e>=5     done; running totals uncond 4224 cond 0 exc 0 alive 0
+   s=401,e=1      done; running totals uncond 4225 cond 0 exc 0 alive 0
+   s=401,e>=5     done; running totals uncond 4235 cond 0 exc 0 alive 0
+   s=461,e=1      done; running totals uncond 4237 cond 0 exc 0 alive 0
+   s=461,e>=5     done; running totals uncond 4239 cond 0 exc 0 alive 0
+   s>=500         done; running totals uncond 4249 cond 0 exc 0 alive 0
+   level counts (summed over W configs): {2: 1632, 3: 4276}
+   killed early (raw role minimum > 18/13): 17
+   final sets: uncond dead 4249, conditional dead 0, no role/config 16, ALIVE 0
+   exceptions (no cutoff): 0
+   case-B enumerations (conditional on 10^MB_EXP bound): 0
+   conditional sets: 0
+   time 3s

@@ -1,0 +1,37 @@
+corr1: 36_profile_recursion.py validate -> exit 1, log logs/mut_corr1__36_profile_recursion_validate.log
+corr1: 36_profile_recursion.py 0,no,2,2,1 -> exit 0, log logs/mut_corr1__36_profile_recursion_0no221.log
+corr1: 36_profile_recursion.py 0,yes,2,3,0 -> exit 0, log logs/mut_corr1__36_profile_recursion_0yes230.log
+corr1: 36_profile_recursion.py 1,yes,2,4,0 -> exit 0, log logs/mut_corr1__36_profile_recursion_1yes240.log
+corr1: 36_profile_recursion.py 1,no,2,3,1 -> exit 0, log logs/mut_corr1__36_profile_recursion_1no231.log
+corr1: 36_profile_recursion.py 0,yes,1,2,1 -> exit 0, log logs/mut_corr1__36_profile_recursion_0yes121.log
+corr1: 36_profile_recursion.py 1,yes,1,3,1 -> exit 0, log logs/mut_corr1__36_profile_recursion_1yes131.log
+dropsplit_o: 36_profile_recursion.py 1,yes,2,4,0 -> exit 0, log logs/mut_dropsplit_o__36_profile_recursion_1yes240.log
+dropsplit_o: 36_profile_recursion.py 1,no,2,3,1 -> exit 0, log logs/mut_dropsplit_o__36_profile_recursion_1no231.log
+dropsplit_o: 36_profile_recursion.py 1,yes,1,3,1 -> exit 0, log logs/mut_dropsplit_o__36_profile_recursion_1yes131.log
+dropsplit_n: 36_profile_recursion.py 1,yes,2,4,0 -> exit 0, log logs/mut_dropsplit_n__36_profile_recursion_1yes240.log
+dropsplit_n: 36_profile_recursion.py 1,no,2,3,1 -> exit 0, log logs/mut_dropsplit_n__36_profile_recursion_1no231.log
+dropsplit_n: 36_profile_recursion.py 1,yes,1,3,1 -> exit 0, log logs/mut_dropsplit_n__36_profile_recursion_1yes131.log
+dropsplit_s: 36_profile_recursion.py 1,yes,2,4,0 -> exit 0, log logs/mut_dropsplit_s__36_profile_recursion_1yes240.log
+dropsplit_s: 36_profile_recursion.py 1,no,2,3,1 -> exit 0, log logs/mut_dropsplit_s__36_profile_recursion_1no231.log
+dropsplit_s: 36_profile_recursion.py 1,yes,1,3,1 -> exit 0, log logs/mut_dropsplit_s__36_profile_recursion_1yes131.log
+caseB_to_B: 36_profile_recursion.py 1,yes,2,4,0 -> exit 0, log logs/mut_caseB_to_B__36_profile_recursion_1yes240.log
+caseB_to_B: 36_profile_recursion.py 1,no,2,3,1 -> exit 0, log logs/mut_caseB_to_B__36_profile_recursion_1no231.log
+caseB_to_B: 36_profile_recursion.py 1,yes,1,3,1 -> exit 0, log logs/mut_caseB_to_B__36_profile_recursion_1yes131.log
+nogenericW: 36_profile_recursion.py 0,no,2,2,1 -> exit 0, log logs/mut_nogenericW__36_profile_recursion_0no221.log
+nogenericW: 36_profile_recursion.py 0,yes,2,3,0 -> exit 0, log logs/mut_nogenericW__36_profile_recursion_0yes230.log
+nogenericW: 36_profile_recursion.py 1,yes,2,4,0 -> exit 0, log logs/mut_nogenericW__36_profile_recursion_1yes240.log
+nogenericW: 36_profile_recursion.py 1,no,2,3,1 -> exit 0, log logs/mut_nogenericW__36_profile_recursion_1no231.log
+nogenericW: 36_profile_recursion.py 0,yes,1,2,1 -> exit 0, log logs/mut_nogenericW__36_profile_recursion_0yes121.log
+nogenericW: 36_profile_recursion.py 1,yes,1,3,1 -> exit 0, log logs/mut_nogenericW__36_profile_recursion_1yes131.log
+noHIW: 36_profile_recursion.py 0,no,2,2,1 -> exit 0, log logs/mut_noHIW__36_profile_recursion_0no221.log
+noHIW: 36_profile_recursion.py 0,yes,2,3,0 -> exit 0, log logs/mut_noHIW__36_profile_recursion_0yes230.log
+noHIW: 36_profile_recursion.py 1,yes,2,4,0 -> exit 0, log logs/mut_noHIW__36_profile_recursion_1yes240.log
+noHIW: 36_profile_recursion.py 1,no,2,3,1 -> exit 0, log logs/mut_noHIW__36_profile_recursion_1no231.log
+noHIW: 36_profile_recursion.py 0,yes,1,2,1 -> exit 0, log logs/mut_noHIW__36_profile_recursion_0yes121.log
+noHIW: 36_profile_recursion.py 1,yes,1,3,1 -> exit 0, log logs/mut_noHIW__36_profile_recursion_1yes131.log
+theta: 39_baker_lll.py validate -> exit 1, log logs/mut_theta__39_baker_lll_validate.log
+theta: 39_baker_lll.py residual -> exit 0, log logs/mut_theta__39_baker_lll_residual.log
+c112: 39_baker_lll.py validate -> exit 0, log logs/mut_c112__39_baker_lll_validate.log
+c112: 39_baker_lll.py residual -> exit 0, log logs/mut_c112__39_baker_lll_residual.log
+novieta: 38_closure_dfs.py 2,yes,1,4,1 2 -> exit 0, log logs/mut_novieta__38_closure_dfs_2yes141_2.log
+BATCH DONE

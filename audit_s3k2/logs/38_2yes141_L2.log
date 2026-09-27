@@ -1,0 +1,9 @@
+PROFILE 2,yes,1,4,1: 6 exceptions from script 36's recursion through level 2
+   S = [7, 13]  W n=5: uncond 0  nocfg 4  cond 0  ALIVE 0  unresolved 0
+   S = [13, 19]  W n=5: uncond 0  nocfg 2  cond 0  ALIVE 0  unresolved 0
+   S = [13, 31]  W n=5: uncond 0  nocfg 2  cond 0  ALIVE 0  unresolved 0
+   S = [13, 37]  W n=5: uncond 0  nocfg 1  cond 0  ALIVE 0  unresolved 0
+   S = [13, 43]  W n=5: uncond 0  nocfg 2  cond 0  ALIVE 0  unresolved 0
+   S = [7, 13]  W n=11: uncond 0  nocfg 4  cond 0  ALIVE 0  unresolved 0
+        bound used: (t^2+t+1)/3 [7, 13]-smooth to 10^300
+        bound used: Vieta pairs to index 1500

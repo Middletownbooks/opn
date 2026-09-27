@@ -1,0 +1,25 @@
+T=[7, 13] allow3=False Matveev L0 = 2.517e+17
+  round 1: Lcur=2.517e+17 C=10^58 -> Lmin=175.5426 (x < 1.31e+38); 1 vectors in ellipsoid, 1 in box, 3 nodes, 0.0s
+  round 2: Lcur=175.5 C=10^12 -> Lmin=33.4859 (x < 1.87e+07); 1 vectors in ellipsoid, 1 in box, 3 nodes, 0.0s
+  round 3: Lcur=33.49 C=10^10 -> Lmin=27.4668 (x < 9.21e+05); 1 vectors in ellipsoid, 1 in box, 3 nodes, 0.0s
+  final: 88 exponent vectors with sum c_t ln t <= 27.467
+  COMPLETE LIST (x >= 0): [0, 2, 3, 9, 18]
+T=[7, 13, 19] allow3=False Matveev L0 = 6.233e+18
+  round 1: Lcur=6.233e+18 C=10^81 -> Lmin=275.0431 (x < 5.31e+59); 1 vectors in ellipsoid, 1 in box, 4 nodes, 0.2s
+  round 2: Lcur=275 C=10^15 -> Lmin=46.4065 (x < 1.19e+10); 1 vectors in ellipsoid, 1 in box, 4 nodes, 0.0s
+  round 3: Lcur=46.41 C=10^12 -> Lmin=36.0664 (x < 6.79e+07); 1 vectors in ellipsoid, 1 in box, 4 nodes, 0.0s
+  final: 712 exponent vectors with sum c_t ln t <= 36.066
+  COMPLETE LIST (x >= 0): [0, 2, 3, 9, 11, 18, 30, 68, 653]
+T=[7, 13, 19, 127] allow3=False Matveev L0 = 2.386e+20
+  round 1: Lcur=2.386e+20 C=10^107 -> Lmin=387.4875 (x < 1.39e+84); 1 vectors in ellipsoid, 1 in box, 5 nodes, 1.0s
+  round 2: Lcur=387.5 C=10^18 -> Lmin=59.5385 (x < 8.48e+12); 1 vectors in ellipsoid, 1 in box, 5 nodes, 0.1s
+  round 3: Lcur=59.54 C=10^14 -> Lmin=44.7642 (x < 5.25e+09); 1 vectors in ellipsoid, 1 in box, 5 nodes, 0.1s
+  final: 3900 exponent vectors with sum c_t ln t <= 44.764
+  COMPLETE LIST (x >= 0): [0, 2, 3, 9, 11, 18, 30, 68, 107, 146, 653]
+T=[7, 13, 19, 31, 127] allow3=False Matveev L0 = 5.863e+21
+  round 1: Lcur=5.863e+21 C=10^136 -> Lmin=514.6343 (x < 5.64e+111); 1 vectors in ellipsoid, 1 in box, 6 nodes, 3.8s
+  round 2: Lcur=514.6 C=10^22 -> Lmin=77.3898 (x < 6.38e+16); 1 vectors in ellipsoid, 1 in box, 6 nodes, 0.3s
+  round 3: Lcur=77.39 C=10^17 -> Lmin=58.1132 (x < 4.16e+12); 1 vectors in ellipsoid, 1 in box, 6 nodes, 0.2s
+  round 4: Lcur=58.11 C=10^16 -> Lmin=54.1050 (x < 5.61e+11); 1 vectors in ellipsoid, 1 in box, 6 nodes, 0.2s
+  final: 30789 exponent vectors with sum c_t ln t <= 54.105
+  COMPLETE LIST (x >= 0): [0, 2, 3, 5, 9, 11, 18, 30, 68, 87, 107, 146, 191, 273, 315, 653]

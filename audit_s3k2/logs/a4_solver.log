@@ -1,0 +1,33 @@
+T=[7, 13] allow3=False Matveev L0 = 1.645e+11
+  round 1: Lcur=1.645e+11 C=10^39 -> Lmin=116.5263 (x < 2.01e+25); 1 vectors in ellipsoid, 1 in box, 3 nodes, 0.0s
+  round 2: Lcur=116.5 C=10^12 -> Lmin=34.2980 (x < 2.8e+07); 1 vectors in ellipsoid, 1 in box, 3 nodes, 0.0s
+  round 3: Lcur=34.3 C=10^10 -> Lmin=27.4668 (x < 9.21e+05); 1 vectors in ellipsoid, 1 in box, 3 nodes, 0.0s
+  final: 88 exponent vectors with sum c_t ln t <= 27.467
+  COMPLETE LIST (x >= 0): [0, 2, 3, 9, 18]
+  brute force x < 10^6: [0, 2, 3, 9, 18]   agree on that range: True
+
+T=[7, 13, 19] allow3=False Matveev L0 = 4.235e+12
+  round 1: Lcur=4.235e+12 C=10^56 -> Lmin=188.3178 (x < 7.81e+40); 1 vectors in ellipsoid, 1 in box, 4 nodes, 0.1s
+  round 2: Lcur=188.3 C=10^15 -> Lmin=47.1627 (x < 1.74e+10); 1 vectors in ellipsoid, 1 in box, 4 nodes, 0.0s
+  round 3: Lcur=47.16 C=10^12 -> Lmin=36.0132 (x < 6.61e+07); 1 vectors in ellipsoid, 1 in box, 4 nodes, 0.0s
+  final: 709 exponent vectors with sum c_t ln t <= 36.013
+  COMPLETE LIST (x >= 0): [0, 2, 3, 9, 11, 18, 30, 68, 653]
+  brute force x < 10^6: [0, 2, 3, 9, 11, 18, 30, 68, 653]   agree on that range: True
+
+T=[7, 13, 19, 127] allow3=False Matveev L0 = 1.681e+14
+  round 1: Lcur=1.681e+14 C=10^76 -> Lmin=273.0586 (x < 1.97e+59); 1 vectors in ellipsoid, 1 in box, 5 nodes, 0.7s
+  round 2: Lcur=273.1 C=10^17 -> Lmin=55.6235 (x < 1.2e+12); 1 vectors in ellipsoid, 1 in box, 5 nodes, 0.1s
+  round 3: Lcur=55.62 C=10^14 -> Lmin=44.9242 (x < 5.69e+09); 1 vectors in ellipsoid, 1 in box, 5 nodes, 0.1s
+  final: 3955 exponent vectors with sum c_t ln t <= 44.924
+  COMPLETE LIST (x >= 0): [0, 2, 3, 9, 11, 18, 30, 68, 107, 146, 653]
+  brute force x < 10^6: [0, 2, 3, 9, 11, 18, 30, 68, 107, 146, 653]   agree on that range: True
+
+T=[7, 13, 19, 31, 127] allow3=False Matveev L0 = 4.242e+15
+  round 1: Lcur=4.242e+15 C=10^99 -> Lmin=372.5211 (x < 7.8e+80); 1 vectors in ellipsoid, 1 in box, 6 nodes, 2.3s
+  round 2: Lcur=372.5 C=10^21 -> Lmin=73.4346 (x < 8.83e+15); 1 vectors in ellipsoid, 1 in box, 6 nodes, 0.2s
+  round 3: Lcur=73.43 C=10^17 -> Lmin=58.1644 (x < 4.27e+12); 1 vectors in ellipsoid, 1 in box, 6 nodes, 0.2s
+  round 4: Lcur=58.16 C=10^16 -> Lmin=53.9745 (x < 5.25e+11); 1 vectors in ellipsoid, 1 in box, 6 nodes, 0.2s
+  final: 30470 exponent vectors with sum c_t ln t <= 53.975
+  COMPLETE LIST (x >= 0): [0, 2, 3, 5, 9, 11, 18, 30, 68, 87, 107, 146, 191, 273, 315, 653]
+  brute force x < 10^6: [0, 2, 3, 5, 9, 11, 18, 30, 68, 87, 107, 146, 191, 273, 315, 653]   agree on that range: True
+

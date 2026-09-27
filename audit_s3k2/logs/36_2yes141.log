@@ -1,2 +1,67 @@
 PROFILE 2,yes,1,4,1: T roles ('o', 'o', 's', 'n'), W n, alpha 2, need |U| >= 4
       n=5: level 3 has 315329 sets (max prime 319057)
+   n=5            done; running totals uncond 25 cond 1 exc 0 alive 0
+   n=11           done; running totals uncond 35 cond 1 exc 1 alive 0
+   n=17           done; running totals uncond 41 cond 1 exc 1 alive 0
+   n=23           done; running totals uncond 47 cond 1 exc 1 alive 0
+   n=29           done; running totals uncond 52 cond 2 exc 1 alive 0
+   n=41           done; running totals uncond 57 cond 3 exc 1 alive 0
+   n=47           done; running totals uncond 63 cond 4 exc 1 alive 0
+   n=53           done; running totals uncond 70 cond 4 exc 1 alive 0
+   n=59           done; running totals uncond 77 cond 4 exc 1 alive 0
+   n=71           done; running totals uncond 84 cond 4 exc 1 alive 0
+   n=83           done; running totals uncond 91 cond 4 exc 1 alive 0
+   n=89           done; running totals uncond 98 cond 4 exc 1 alive 0
+   n=101          done; running totals uncond 105 cond 4 exc 1 alive 0
+   n=107          done; running totals uncond 112 cond 4 exc 1 alive 0
+   n=113          done; running totals uncond 119 cond 4 exc 1 alive 0
+   n=131          done; running totals uncond 126 cond 4 exc 1 alive 0
+   n=137          done; running totals uncond 133 cond 4 exc 1 alive 0
+   n=149          done; running totals uncond 140 cond 4 exc 1 alive 0
+   n=167          done; running totals uncond 147 cond 4 exc 1 alive 0
+   n=173          done; running totals uncond 154 cond 4 exc 1 alive 0
+   n=179          done; running totals uncond 161 cond 4 exc 1 alive 0
+   n=191          done; running totals uncond 168 cond 4 exc 1 alive 0
+   n=197          done; running totals uncond 175 cond 4 exc 1 alive 0
+   n=227          done; running totals uncond 182 cond 4 exc 1 alive 0
+   n=233          done; running totals uncond 189 cond 4 exc 1 alive 0
+   n=239          done; running totals uncond 196 cond 4 exc 1 alive 0
+   n=251          done; running totals uncond 203 cond 4 exc 1 alive 0
+   n=257          done; running totals uncond 210 cond 4 exc 1 alive 0
+   n=263          done; running totals uncond 217 cond 4 exc 1 alive 0
+   n=269          done; running totals uncond 224 cond 4 exc 1 alive 0
+   n=281          done; running totals uncond 231 cond 4 exc 1 alive 0
+   n=293          done; running totals uncond 238 cond 4 exc 1 alive 0
+   n=311          done; running totals uncond 245 cond 4 exc 1 alive 0
+   n=317          done; running totals uncond 252 cond 4 exc 1 alive 0
+   n=347          done; running totals uncond 259 cond 4 exc 1 alive 0
+   n=353          done; running totals uncond 266 cond 4 exc 1 alive 0
+   n=359          done; running totals uncond 273 cond 4 exc 1 alive 0
+   n=383          done; running totals uncond 280 cond 4 exc 1 alive 0
+   n=389          done; running totals uncond 287 cond 4 exc 1 alive 0
+   n=401          done; running totals uncond 294 cond 4 exc 1 alive 0
+   n=419          done; running totals uncond 301 cond 4 exc 1 alive 0
+   n=431          done; running totals uncond 308 cond 4 exc 1 alive 0
+   n=443          done; running totals uncond 315 cond 4 exc 1 alive 0
+   n=449          done; running totals uncond 322 cond 4 exc 1 alive 0
+   n=461          done; running totals uncond 329 cond 4 exc 1 alive 0
+   n=467          done; running totals uncond 336 cond 4 exc 1 alive 0
+   n=479          done; running totals uncond 343 cond 4 exc 1 alive 0
+   n=491          done; running totals uncond 350 cond 4 exc 1 alive 0
+   n>=500         done; running totals uncond 357 cond 4 exc 1 alive 0
+   level counts (summed over W configs): {2: 3888, 3: 340091, 4: 676}
+   killed early (raw role minimum > 18/13): 22
+   final sets: uncond dead 357, conditional dead 4, no role/config 310, ALIVE 0
+   exceptions (no cutoff): 1
+       ((7, 13), 'n=11', 0.9959271485532929)
+   case-B enumerations (conditional on 10^MB_EXP bound): 4
+       ((13, 61, 151), 'n=5')
+       ((13, 61, 157), 'n=5')
+       ((13, 61, 28057), 'n=5')
+       ((7, 13, 19), 'n=23')
+   conditional sets: 4
+       ((13, 61, 157, 8269), 'n=5')
+       ((7, 13, 19, 127), 'n=29')
+       ((7, 13, 19, 127), 'n=41')
+       ((7, 13, 19, 127), 'n=47')
+   time 3086s

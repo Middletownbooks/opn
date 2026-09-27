@@ -12,7 +12,7 @@ arXiv:2607.19746, plus one algorithm slice from the paper itself.
 
 | file | what it is | provenance |
 |---|---|---|
-| `loopless.cpp` | the authors' implementation of their **Algorithm 1**, the sieve that yields `z = 216 171 986 291` | user paste |
+| `loopless.cpp` | the authors' implementation of their **Algorithm 1**, the sieve that yields `z = 216 171 986 291` | **the original file, attached by the user 2026-09-27** (replaces the recovered paste, which is whitespace-identical to it) |
 | `ochem_zelinsky_algorithm1.txt` | **Algorithm 1** pseudocode, verbatim slice of the paper transcript | user paste of the arXiv transcript |
 | `all.cpp` | the §2 abundancy product computation | user paste |
 | `tree.cpp` | the factor-tree search, with `checkfacts.txt` injection | user paste |
@@ -37,7 +37,13 @@ newlines. I reinserted line breaks **mechanically**, at `;`, `{` and `}`, so:
   (blocked by this environment's network policy as of 2026-09-27).
 
 The data files (`checkfacts.txt`, `3p2.txt`) are whitespace-separated records and
-survive this intact.
+survive this intact. `loopless.cpp` has since been replaced by the original
+file, so it is exempt from this caveat.
+
+**`tree.txt` is not here and is not needed to transfer.** It backs the paper's
+"every prime from 11 up to 3,000,000 is ruled out", which is the input
+assumption of Algorithm 1. It is too large to paste, and it can be regenerated
+here from `tree.cpp` and `checkfacts.txt` if that step is ever checked.
 
 ## What has already been checked against them
 

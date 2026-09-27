@@ -260,8 +260,36 @@ computed value differs from the true one in every case, and the sieve's verdict
 
 **Update (full transcript).** The paper names "the C++/GMP program
 loopless.cpp", run for 3 weeks, and hosts its files at
-`https://www.lirmm.fr/~ochem/opn/restrained/`. This environment cannot reach that
-host, so it is not yet known whether the hosted file differs from the pasted one.
+`https://www.lirmm.fr/~ochem/opn/restrained/`.
+
+**Update (original file).** The user attached `loopless.cpp` itself, with its line
+breaks; it is now `sources/loopless.cpp`. Ignoring whitespace it is identical to
+the recovered paste, and **line 135 is `u64 val = r * r + r + 1;`**. So the file
+the paper names does wrap past `r = 2³²`.
+
+**The wrap is visible in the paper's own numbers (`restrained/11`).**
+* **Part 1.** Fit a survival fraction `f₀` on `(3·10⁶, 2³²)` and `f₁` on
+  `(2³², z)` to the reported `k = 2.5·10⁹` and `A = 1.088507187872`. This gives
+  **`f₀ = 0.093` and `f₁ = 0.295`**, with `√f₀ = 0.305`. An exact sieve's survival
+  fraction can only fall with `r`, since `M₂` only grows. The reported output
+  triples at `2³²`.
+* **Part 2.** Here is the mechanism, measured on sampled primes against the initial
+  `M₂`. A prime `q ≡ 1 (mod 3)` divides `r² + r + 1` with probability about
+  `2/q`, but divides an unrelated wrapped value with probability about `1/q`. So
+  the wrapped test passes about `√(exact)`. With 10,000 samples:
+
+  | r in | exact | wrapped |
+  |---|---|---|
+  | `10⁷ … 10⁸` (no wrap) | 0.1133 | 0.1133 |
+  | `2³² … 2³² + 10⁹` | 0.1163 | 0.4358 |
+  | `10¹¹ … z` | 0.1133 | 0.3592 |
+
+**Reading.** On this evidence, the published `k` and `A` at `z` are the output of
+the wrapped test, not of Algorithm 1. That is strong evidence, but not a
+reproduction of their run. The heuristic direction is that the exact survivor set is
+*smaller*, which would only raise `k + K_max` (§1a). So `q ≥ 23·10⁹` is **probably
+still true, but currently unverified**. Only an exact re-run settles it. As before,
+this should go to the authors as a question, not as a claimed error in the paper.
 
 **How to read this.** The most likely explanation by far is that the published
 run used a 128-bit or GMP variant that is not the released file — it already
@@ -347,7 +375,7 @@ transcription.
 | `3p2.txt` factorisations | **382/385 verify**; all 3 failures are OCR in the transcript |
 | `3p2.txt` cut markers | **239/241 verify** against freshly computed targets |
 | the `59083` line | **not a defect** — the authors' `tree.txt` lists no 19 either |
-| `loopless.cpp` as released | **64-bit overflow past `r = 2^32`**; likely a different build was run |
+| `loopless.cpp` as released | **64-bit overflow past `r = 2^32`**, confirmed in the original file; the paper's reported `k, A` show the wrap's signature (§4b, `restrained/11`) |
 
 Honest summary: Lemma A and Corollary B are real structural additions, and the
 exact form of Lemma 8 usefully closes off one route. None of it improves

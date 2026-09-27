@@ -18,3 +18,4 @@ authors' file; it is kept only so `06` is reproducible.
 | `07_verify_3p2_markers.py` | second pass over `3p2.txt`: checks every `F t` / `XS t` marker prime actually divides the line's target (239/241) |
 | `08_repair_59083_branch.py` | closes the one broken cut by `XS 3` instead of `F 19`, so the file's conclusion stands |
 | `10_section4_reconcile.py` | §4 reconciled against the full transcript: the printed product is the sieve's `A = 1.088507187872` with `K = 43·10⁹`; with the text's `K = 43.5·10⁹` it is `1.99671 < 2`; `k + K_max = 46,355,827,007`; what a re-run must show |
+| `11_wrap_signature.py` | the 64-bit wrap is visible in the paper's reported `k, A`: fitted survival fraction 0.093 below `2³²`, 0.295 above (`≈ √`); and the mechanism measured on sampled primes (exact ≈ 0.11, wrapped ≈ 0.36–0.44) |

@@ -1,0 +1,13 @@
+T=[7, 13, 19] allow3=False Matveev L0 = 1.412e+43
+  round 1: Lcur=1.412e+43 C=10^178 -> Lmin=609.5846 (x < 2.34e+132); 1 vectors in ellipsoid, 1 in box, 4 nodes, 0.9s
+  round 2: Lcur=609.6 C=10^17 -> Lmin=54.0304 (x < 5.4e+11); 1 vectors in ellipsoid, 1 in box, 4 nodes, 0.0s
+  round 3: Lcur=54.03 C=10^12 -> Lmin=35.7732 (x < 5.86e+07); 1 vectors in ellipsoid, 1 in box, 4 nodes, 0.0s
+  final: 697 exponent vectors with sum c_t ln t <= 35.773
+  COMPLETE LIST (x >= 0): [0, 2, 3, 9, 11, 18, 30, 68, 653]
+T=[7, 13, 19, 31, 127] allow3=False Matveev L0 = 1.228e+46
+  round 1: Lcur=1.228e+46 C=10^282 -> Lmin=1074.9861 (x < 2.69e+233); 1 vectors in ellipsoid, 1 in box, 6 nodes, 17.0s
+  round 2: Lcur=1075 C=10^24 -> Lmin=85.1350 (x < 3.07e+18); 1 vectors in ellipsoid, 1 in box, 6 nodes, 0.2s
+  round 3: Lcur=85.14 C=10^17 -> Lmin=57.9284 (x < 3.79e+12); 1 vectors in ellipsoid, 1 in box, 6 nodes, 0.2s
+  round 4: Lcur=57.93 C=10^16 -> Lmin=54.1050 (x < 5.61e+11); 1 vectors in ellipsoid, 1 in box, 6 nodes, 0.2s
+  final: 30789 exponent vectors with sum c_t ln t <= 54.105
+  COMPLETE LIST (x >= 0): [0, 2, 3, 5, 9, 11, 18, 30, 68, 87, 107, 146, 191, 273, 315, 653]

@@ -1,0 +1,6 @@
+margin {7}  = 1.186813   (repo 1.186813)
+margin {13} = 1.278107   (repo 1.278107)
+S=[7] k=4: B (no 1.01) =    1720.0   B (with 1.01, as coded) =    1751.0   repo 1751   | k=1 (the 14d error)    139.5
+S=[13] k=4: B (no 1.01) =     699.9   B (with 1.01, as coded) =     711.7   repo 712   | k=1 (the 14d error)     63.4
+S=[7, 13] k=3: B (no 1.01) =    5857.4   B (with 1.01, as coded) =    5969.4   repo 5970   | k=1 (the 14d error)    727.3
+S=[7, 13, 19] k=2: B (no 1.01) =   27184.5   B (with 1.01, as coded) =   27720.5   repo 27723   | k=1 (the 14d error)   7081.3

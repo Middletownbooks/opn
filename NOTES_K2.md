@@ -125,3 +125,45 @@ smallest solutions `m(a,b,c)` for the new triple classes (their `pairs.py`
 generalised to triples, which is a real computation), or an extra structural
 constraint cutting the class count back toward linear growth. The second is the
 interesting one, and I do not have it.
+
+## 7. Theorem A rebuilt and certified: no cited theorem needed  (`k2/05`–`07`)
+
+The closure of `3 ∤ N` at `k = 2` (§§4–6, `AUDIT_K2_MODEL_RESULT.md`) rested on the
+reasoning model's fixed-support argument, together with Nielsen 2007
+(`ω(N) ≥ 12`) and Bennett–Levin for case (iii). It is now reproved with the
+machinery built for section 3 (`NOTES_S3_K2.md` §§14l–14m).
+
+**Specification**, derived in `k2/05`'s docstring:
+
+* every ordinary prime is `≡ 2 (mod 3)`, and these form `U`;
+* the special is `≡ 1 (mod 12)`, with `3 ∤ e+1`;
+* a notable `≡ 1 (mod 3)` has `3 ∤ q+1`;
+* `T` is the special plus the notables `≡ 1 (mod 3)`, and `W` holds the rest;
+* `∏ σ(C)/C = 2`, and `U ⊆ Sm(T)`;
+* the primes `≡ 1 (mod 3)` of `p + 1` are forced into `T`.
+
+The search starts at `K = ∅`, `lb = 6`.
+
+| profile (`T` roles, `|W|`) | nodes | outcome |
+|---|---|---|
+| `s`, 2 | 7 484 | each of the 3 742 `W` pairs: the cutoff leaves only `p = 13`, and `14 = 2·7` forces `7 ∈ T` |
+| `sn`, 1 | 630 | closure 100, two-sided abundancy 87 |
+| `snn`, 0 | 54 | closure 14, two-sided abundancy 7 |
+
+**What confirms it.**
+
+* **Certificates.** Every one is **VALID** under the independent checker `k2/06`.
+* **No count kill.** None appears, so Theorem A needs **neither** Nielsen 2007
+  **nor** Bennett–Levin, and no solution list either.
+* **Brute force.** `k2/07` runs every `T` from the primes below 400, with every
+  role and every `W`, through the complete-information test. Of 31 481
+  configurations, none survives.
+* **Forged certificates.**
+  * Cutoff thresholds 10× too small, a dropped role split, and a raw kill at
+    half of 2 are all **rejected**.
+  * A hand-edited closure claim citing a non-dividing prime is **rejected**.
+  * Over-eager forcing, and a raw kill at 90% of 2, leave the tree unchanged,
+    since these trees have no pin node and no raw minimum near 2. So those two
+    are correctly accepted.
+
+The model's argument (§§4–6) now stands as an independent second proof.

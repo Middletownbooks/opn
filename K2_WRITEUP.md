@@ -27,9 +27,12 @@ with `q ≥ 4` even). That case is **open** (§5).
 | result | used for | where cited |
 |---|---|---|
 | Nielsen 2015: `ω(N) ≥ 10` | the count in 9 of the 14 profiles of Theorem B | `README.md` |
-| Nielsen 2007 (*Math. Comp.* 76): `ω(N) ≥ 12` if `3 ∤ N` | Theorem A, case (iii) | `AUDIT_REPORT.md` |
-| Matveev 1998, Theorem 2.2 (Izv. RAN 62:4) | exact solution lists, used by 4 of the 14 profiles | `MATVEEV_1998.md`, transcribed from the page images in `sources/` and checked line by line against them |
-| Bennett–Levin: `z² + z + 1 = r^t` has no solution with `z, r` prime and `t > 1` | Theorem A, case (iii) | stated in `PROMPT_S_UNIT_BOUND.md`. **Its statement has not been checked against the original paper in this repository.** |
+| Matveev 1998, Theorem 2.2 (Izv. RAN 62:4) | exact solution lists, used by 4 of the 14 profiles of Theorem B | `MATVEEV_1998.md`, transcribed from the page images in `sources/` and checked line by line against them |
+
+**Theorem A uses no cited theorem.** Its certified proof (§2) needs only the
+abundancy identity, closure and the cutoff. The earlier argument for Theorem A,
+kept below as an independent second proof, used Nielsen 2007 (`ω(N) ≥ 12` if
+`3 ∤ N`) and Bennett–Levin. The certified proof needs neither.
 
 **How thoroughly each part has been checked.** The two theorems are not equally
 well established, and this should be read before relying on either.
@@ -40,12 +43,14 @@ well established, and this should be read before relying on either.
   * **independently rebuilt** with a different architecture (`s3k2/41`);
   * **certified**: every search tree is checked by a small independent checker
     (`s3k2/46`), which rejects deliberately forged trees (§4).
-* **Theorem A** rests on a fixed-support abundancy argument produced by a
-  reasoning model. Its arithmetic and logical skeleton were **audited**
-  (`AUDIT_K2_MODEL_RESULT.md`, `k2/audit/`). The audit states that it did not
-  referee every monomial enumeration. Theorem A has **not** been rebuilt
-  independently or certified. §5 describes how the Theorem B machinery could
-  do that.
+* **Theorem A** has two independent proofs.
+  * The first is a fixed-support abundancy argument produced by a reasoning
+    model. Its arithmetic and skeleton were audited (`AUDIT_K2_MODEL_RESULT.md`,
+    `k2/audit/`), but it was not refereed in full.
+  * The second is **certified**. It was rebuilt with Theorem B's machinery
+    (`k2/05`), every search tree is checked by an independent checker (`k2/06`)
+    that rejects forged trees, and a brute-force cross-check agrees (`k2/07`).
+    It uses no cited theorem.
 
 **Novelty.** This document claims **no** novelty until a literature search
 confirms that nothing since Ochem–Zelinsky (arXiv:2607.19746, which treats one
@@ -75,6 +80,41 @@ Two facts are used throughout.
 ---
 
 ## 2. Theorem A: `3 ∤ N`
+
+### 2.1 The certified proof  (`k2/05`–`07`, `NOTES_K2.md` §7)
+
+**Structure** (each step proved in `k2/05`'s docstring).
+
+* An ordinary `s ≡ 1 (mod 3)` gives `3 | s² + s + 1 | 2N`. So every ordinary
+  prime is `≡ 2 (mod 3)`; call their set `U`.
+* A special `p ≡ 2 (mod 3)`, with `e` odd, gives
+  `σ(p^e) ≡ Σ_{i ≤ e} (−1)^i = 0 (mod 3)`. So the special is `≡ 1 (mod 3)`,
+  hence `≡ 1 (mod 12)`, and `3 ∤ e + 1`.
+* A notable `n ≡ 1 (mod 3)` needs `3 ∤ q + 1`.
+* `T` is the special plus the notables `≡ 1 (mod 3)`; `W` holds the other
+  notables. There are three profiles: `T` roles `s`, `sn`, `snn`, with `|W| = 2, 1, 0`.
+* `∏ σ(C)/C = 2`, and `U ⊆ Sm(T)`.
+* Forcing: the primes `≡ 1 (mod 3)` dividing `p + 1` lie in `T`.
+
+**Search.** The search starts from `K = ∅` with `lb = 6`, so the smallest element
+of `T` is itself enumerated under the cutoff. The `W` slots run over every pair
+of notables `≡ 2 (mod 3)`: explicit below 1000, or generic.
+
+**Result.**
+
+| profile | nodes | kills |
+|---|---|---|
+| `s` (two notables in `W`) | 7 484 | every `W` pair: the cutoff leaves only `p = 13`, and `13 + 1 = 14` forces `7 ∈ T`, a contradiction |
+| `sn` | 630 | closure 100, two-sided abundancy 87 |
+| `snn` | 54 | closure 14, two-sided abundancy 7 |
+
+**Every certificate is VALID, and no count kill appears.** So Theorem A needs
+neither Nielsen's `ω` bound nor any solution list. A brute-force cross-check
+agrees: every `T` from the primes below 400, with every role and every `W`,
+through the complete-information test. Of 31 481 configurations, **none
+survives** (`k2/07`).
+
+### 2.2 An independent second proof: the reasoning model's argument
 
 Full argument: `NOTES_K2.md`, `AUDIT_K2_MODEL_RESULT.md`, `k2/audit/01`–`04`.
 
@@ -229,9 +269,9 @@ things.
    * raw minima, two-sided tests and cutoff inequalities are recomputed;
    * a count uses the axioms file.
 
-**Trust base.** To accept Theorem B's search profiles you must trust:
+**Trust base.** To accept the searched profiles (all of Theorem A, and 8 of the 14 profiles of Theorem B) you must trust:
 
-* the checker, `s3k2/46`, about 300 lines;
+* the checkers, `s3k2/46` for Theorem B and `k2/06` for Theorem A, about 300 lines each and sharing one design;
 * the axioms file `s3k2/axioms_complete_lists.json`: 12 complete solution lists,
   each produced by two independent solvers that agree (`s3k2/45`);
 * the cited theorems.
@@ -245,11 +285,16 @@ You need not trust the search, which is about 450 lines, nor scripts 34–38.
 | `0,no,2,2,1` | 839 | VALID |
 | `0,yes,1,2,1` | 664 | VALID |
 | `0,yes,2,3,0` | 146 | VALID |
-| `1,no,2,3,1` | CERT_1no231 | CERT_1no231_V |
-| `1,yes,1,3,1` | CERT_1yes131 | CERT_1yes131_V |
+| `1,no,2,3,1` | 86 720 | VALID |
+| `1,yes,1,3,1` | 21 857 | VALID |
 | `1,yes,2,4,0` | 7 090 | VALID |
-| `2,yes,1,4,1` | CERT_2yes141 | CERT_2yes141_V |
-| `2,yes,2,5,0` | CERT_2yes250 | CERT_2yes250_V |
+| `2,yes,1,4,1` | 1 227 157 | VALID |
+| `2,yes,2,5,0` | 1 679 712 | VALID |
+| Theorem A: `s`, `sn`, `snn` | 7 484, 630, 54 | VALID (checker `k2/06`) |
+
+The checker's list of axioms used confirms the tally of §3.3 independently. The
+four profiles `0,no,2,2,1`, `0,yes,2,3,0`, `1,no,2,3,1` and `1,yes,2,4,0` use
+no solution list and no count.
 
 **The checker rejects forged proofs.** Each forgery comes from a deliberately
 broken search, so every node is consistent with the broken logic; these are not
@@ -281,14 +326,8 @@ Their arguments are a few lines each and are in the notes.
   `AUDIT_S4K2_MODEL_RESULT.md`:
   * a Zsigmondy costing of the second notable;
   * the bound `q ≤ m + 3ω(N) − 8`, with `m` bounded by a Nielsen-style descent.
-* **Rebuild and certify Theorem A** with the Theorem B machinery.
-  * **Why it fits.** With `3 ∤ N`, `T` is the set of big components `≡ 1 (mod 3)`
-    (`|T| ≤ 3`), every ordinary prime lies in `U ⊆ Sm(T)`, the identity is
-    `∏ σ(C)/C = 2`, and Nielsen 2007 gives `|U| ≥ 9`.
-  * **What is new.** The search would need `W` slots for two or three big
-    components. `s3k2/41` handles at most one.
-  * **What it would change.** It would replace Theorem A's reliance on the
-    reasoning model's argument and on Bennett–Levin with the audited engine.
+* **Certify the six small profiles of Theorem B** that are closed by hand or by
+  short scripts. This is optional, since each is a few lines.
 * **Literature check** (§0), before any claim of novelty.
 
 ---
@@ -301,7 +340,11 @@ python3 s3k2/45_axioms.py               # the 12 axioms, by two solvers
 for p in 0,no,2,2,1 0,yes,1,2,1 0,yes,2,3,0 1,no,2,3,1 1,yes,1,3,1 1,yes,2,4,0 2,yes,1,4,1 2,yes,2,5,0; do
   python3 s3k2/41_rebuild_dfs.py --cert $p | python3 s3k2/46_check_certificate.py
 done                                    # certificates (about 1 h in total)
-python3 k2/audit/02_check_case_i.py     # Theorem A, case (i) rows
+for p in s sn snn; do
+  python3 k2/05_theoremA_dfs.py --cert $p | python3 k2/06_check_theoremA.py
+done                                    # Theorem A certificates (about 1 min)
+python3 k2/07_theoremA_pool.py 400      # Theorem A brute-force cross-check
+python3 k2/audit/02_check_case_i.py     # Theorem A, second proof: case (i) rows
 ```
 
 Everything is standard-library Python 3.

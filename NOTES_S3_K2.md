@@ -1428,3 +1428,69 @@ profiles, 7 from `2,yes,2,5,0`) were each settled by the auditor's solver:
 
 `verify_all.py full` now also runs `41` on all profiles (asserting the item
 lists above), `43`, and `42` on the two profiles whose pools contain survivors.
+
+### 14m. Certificates and an independent checker  (`s3k2/41 --cert`, `s3k2/45`, `s3k2/46`)
+
+**What is emitted.** `41 --cert` writes the whole search tree, one JSON line per
+node:
+
+* the node's `K` with its roles, `lb`, the open roles, and the `W` configuration;
+* its action: pin, cut at `B`, Case B, or a kill with its reason;
+* a divisibility witness for every forcing claim.
+
+**What the checker does.** `s3k2/46` shares no code with the search. At every
+node it:
+
+* recomputes, from the specification, the children the case split requires, and
+  demands exactly those (exhaustiveness);
+* re-verifies the claim: forcing by divisibility, the raw minimum, the two-sided
+  test, the cutoff inequality in outward-rounded Decimal, and the count against
+  the axioms file.
+
+**Axioms.** `s3k2/axioms_complete_lists.json` holds 12 complete solution lists.
+`s3k2/45` computes each with both `s3k2/39` and `audit_s3k2/a4_solver.py`, and
+writes the file only if they agree; they agree on all 12. `45` also exposed a
+hazard: Python's decimal precision is process-global, and `a4_solver` lowers
+it. Script 39 then failed loudly, as it should. `45` resets the precision.
+
+**Results.** All eight certificates are **VALID**:
+
+| profile | nodes |
+|---|---|
+| `0,no,2,2,1` | 839 |
+| `0,yes,1,2,1` | 664 |
+| `0,yes,2,3,0` | 146 |
+| `1,no,2,3,1` | 86 720 |
+| `1,yes,1,3,1` | 21 857 |
+| `1,yes,2,4,0` | 7 090 |
+| `2,yes,1,4,1` | 1 227 157 |
+| `2,yes,2,5,0` | 1 679 712 |
+
+The axioms each certificate uses confirm the tally of §14k:
+
+* `0,no,2,2,1`, `0,yes,2,3,0`, `1,no,2,3,1` and `1,yes,2,4,0` use **no** axiom
+  and no count;
+* the other four use exactly the named sets of §14h.
+
+**Forged certificates are rejected.** Each is produced by a deliberately broken
+search, so every node is consistent with the broken logic.
+
+| forgery | verdict |
+|---|---|
+| cutoff with `u → 1` (the error of §14d) | INVALID: cutoff inequality |
+| cutoff thresholds 10× too small | INVALID: cutoff inequality |
+| over-eager forcing | INVALID: closure claim |
+| raw kill at 99% of `18/13` | INVALID on every profile where it changes the tree; identical tree otherwise |
+| a role split dropped | INVALID: missing required child |
+
+The first two are exactly the errors that no empirical test can see (§14l),
+because the cutoff is conservative relative to the terminal test. The checker
+catches them because it re-proves every cutoff.
+
+**Trust base for the eight searched profiles:**
+
+* the checker, about 300 lines;
+* the axioms, each from two solvers;
+* Nielsen 2015 and Matveev 1998.
+
+The search itself (`41`) and scripts 34–38 need not be trusted.

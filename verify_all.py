@@ -123,6 +123,22 @@ check("39 residual statements", ["39_baker_lll.py", "residual"], 3600,
       [("complete lists as in 14h", residual_ok)])
 check("40 coupled branch by count", ["40_coupled_count.py"], 900,
       [("dead", has("Coupled branch DEAD"))])
+# ---- Theorem A (k = 2, 3 does not divide N): certified rebuild (NOTES_K2.md 7) ----
+K2 = os.path.join(HERE, "k2")
+for prof in ["s", "sn", "snn"]:
+    t0 = time.time()
+    gen = subprocess.Popen([sys.executable, "05_theoremA_dfs.py", "--cert", prof], cwd=K2,
+                           stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    chk = subprocess.run([sys.executable, "06_check_theoremA.py"], cwd=K2, stdin=gen.stdout,
+                         capture_output=True, text=True, timeout=3600)
+    gen.stdout.close(); gen.wait()
+    ok = chk.returncode == 0 and "CERTIFICATE VALID" in chk.stdout and "cited theorems used: none" in chk.stdout
+    results.append((f"Theorem A certificate {prof}", ok, "" if ok else chk.stdout[-300:]))
+    print(f"{'PASS' if ok else 'FAIL'}  Theorem A certificate {prof}, no cited theorem  ({time.time()-t0:.0f}s)", flush=True)
+p7 = subprocess.run([sys.executable, "07_theoremA_pool.py", "400"], cwd=K2, capture_output=True, text=True, timeout=3600)
+ok = p7.returncode == 0 and p7.stdout.strip().endswith("PASS")
+results.append(("Theorem A brute-force cross-check", ok, "" if ok else p7.stdout[-300:]))
+print(f"{'PASS' if ok else 'FAIL'}  Theorem A brute-force cross-check (pool < 400)", flush=True)
 
 # ------------------------------------------------------------------ full tier
 if FULL:

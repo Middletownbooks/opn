@@ -21,7 +21,7 @@ Everything is standard-library Python, no external data. Entry points below.
 |---|---|---|
 | Audit of Mantovanelli | `AUDIT_REPORT.md` | **Category C.** Proposition A: acceptance and validity are mutually exclusive for the tail envelope. Decisive, needs no `ω` bound. |
 | Verification of Ochem–Zelinsky §§2–3 | `NOTES_RESTRAINED.md` | Reproduces exactly. §4 has a non-reproducing constant; `loopless.cpp` has a 64-bit overflow. Both recorded. Their Question 10 has **no solution with `p, r < 1000`**, exact for all exponents and all `x` (§4a). |
-| `k = 2`, `3 ∤ N` (their §2) | `NOTES_K2.md`, `AUDIT_K2_MODEL_RESULT.md` | **Closed.** My first attempt was wrong (double-counted the prime 5); a reasoning model's fixed-support bound repaired it and I audited it. |
+| `k = 2`, `3 ∤ N` (their §2) | `NOTES_K2.md`, `AUDIT_K2_MODEL_RESULT.md` | **Closed, with two independent proofs.** A reasoning model's fixed-support bound, audited (my first attempt double-counted the prime 5). And a **certified** proof with the section-3 machinery (`k2/05`–`07`, NOTES_K2 §7) that uses **no cited theorem at all**. |
 | `k = 2`, `3` ordinary (their §3) | `NOTES_S3_K2.md` | **All 14 role profiles eliminated.** 5 profiles use no cited theorem, 5 use only `ω(N) ≥ 10` (Nielsen), and 4 use that and Matveev 1998, Thm 2.2 (`MATVEEV_1998.md`). No pool, search bound or Thue–Mahler assumption remains (§14h–i). **Independently audited** (`audit_s3k2/`, §14k): no errors, and three documentation gaps, now repaired. **Independently rebuilt** (`s3k2/41`, §14l) and **certified**: every search tree is verified by a small checker (`s3k2/46`, §14m). Two errors in the earlier recursion were found and corrected (§14d, §14f). |
 | `k = 2`, `3` notable (their §4) | `NOTES_S4_K2.md`, `AUDIT_S4K2_MODEL_RESULT.md` | **Open**, as it is at `k = 1`. New structural results below. |
 | `q = 3` side-investigation | `NOTES_Q3.md` | A higher-reciprocity obstruction is shown *not to exist* (explicit witness). Avenue closed. |
@@ -225,7 +225,8 @@ AUDIT_REPORT.md            the audit of Mantovanelli; audit/01-06
 NOTES_INVERSION.md         Theorem 1 inversion; inversion/01-10
 NOTES_RESTRAINED.md        verification of Ochem-Zelinsky; restrained/01-08
 NOTES_Q3.md                the q = 3 investigation; q3/01-06
-NOTES_K2.md                k = 2, section 2; k2/01-04 and k2/audit/01-04
+NOTES_K2.md                k = 2, section 2; k2/01-04, k2/audit/01-04, and the certified
+                           rebuild k2/05 (search), 06 (checker), 07 (brute force)
 NOTES_S3_K2.md             k = 2, section 3 -- the main result; s3k2/01-46
                            (41: rebuild; 45: axioms; 46: certificate checker)
 K2_WRITEUP.md              self-contained account of k = 2 (Theorems A and B), with certificates

@@ -33,7 +33,8 @@
  *     prime 5 <= p < 3e6).  Otherwise, because s < 9e12, s is itself a prime > 3e6,
  *     and it is in M1 iff it did not survive.  So:
  *         r joins M2  <=>  r = 3 (mod 4), or s is not a survivor.
- *     Survivors = 1 (mod 6) up to Z_END/2 are kept in a bitset.
+ *     Survivors = 1 (mod 6) up to Z_END/2 are kept in a FIFO queue; the queries
+ *     (r+1)/2 only increase, so consumed entries are freed.
  *   * The primes r come from a segmented sieve of Eratosthenes over odd numbers.
  *   * ln A = sum over survivors of log1p(1/(r-1)), accumulated in long double with
  *     Neumaier compensation.
@@ -78,10 +79,34 @@ static u64 next_odd_hit(u64 n, u64 c, u64 q) {
     return t;
 }
 
-/* ---- survivors bitset, s = 1 (mod 6), s <= ZEND/2+1 ---- */
-static uint8_t *SB; static u64 SLIM;
-static inline void s_set(u64 s) { u64 i = s / 6; SB[i >> 3] |= (uint8_t)(1u << (i & 7)); }
-static inline int s_get(u64 s) { u64 i = s / 6; return (SB[i >> 3] >> (i & 7)) & 1; }
+/* ---- survivors s = 1 (mod 6), s <= ZEND/2+1, as a FIFO queue ----
+   They are pushed in increasing order, and queried in increasing order of
+   s = (r+1)/2, which always lies below the current r.  So a queue with a forward-only
+   read pointer answers "is s a survivor?" exactly, and consumed blocks are freed.
+   Memory is the survivors in (r/2, r], not all of them up to ZEND/2. */
+#define QB (1 << 20)
+typedef struct QBlk { struct QBlk *next; u64 n; u64 v[QB]; } QBlk;
+static QBlk *QH, *QT; static u64 QHI; static u64 SLIM;
+static inline void s_set(u64 s) {
+    if (!QT || QT->n == QB) {
+        QBlk *b = malloc(sizeof(QBlk)); if (!b) { fprintf(stderr, "oom queue\n"); exit(2); }
+        b->next = 0; b->n = 0;
+        if (QT) QT->next = b; else QH = b;
+        QT = b;
+    }
+    QT->v[QT->n++] = s;
+}
+static inline int s_get(u64 s) {
+    for (;;) {
+        if (!QH) return 0;
+        if (QHI < QH->n) {
+            if (QH->v[QHI] < s) { QHI++; continue; }
+            return QH->v[QHI] == s;
+        }
+        if (QH == QT) return 0;                  /* all consumed; more may come later */
+        QBlk *nx = QH->next; free(QH); QH = nx; QHI = 0;
+    }
+}
 
 /* ---- small M2 list ---- */
 static u64 *sq, *sn1, *sn2; static size_t ns, cs;
@@ -137,7 +162,6 @@ int main(int argc, char **argv) {
     }
 
     SLIM = ZEND / 2 + 1;
-    SB = calloc(SLIM / 48 + 2, 1); if (!SB) { fprintf(stderr, "oom SB\n"); return 2; }
     NB = QLIM / CH + 4; if (NB < 4) NB = 4;
     BK = calloc(NB, sizeof(Block *)); if (!BK) { fprintf(stderr, "oom BK\n"); return 2; }
 
@@ -150,8 +174,8 @@ int main(int argc, char **argv) {
     free(ip);
 
     /* checkpoints */
-    u64 cps[512]; int ncp = 0;
-    for (u64 x = 1000000000ULL; x < ZEND && ncp < 500; x += 1000000000ULL) cps[ncp++] = x;
+    u64 *cps = malloc((ZEND / 1000000000ULL + 8) * 8); int ncp = 0;
+    for (u64 x = 1000000000ULL; x < ZEND; x += 1000000000ULL) cps[ncp++] = x;
     cps[ncp++] = 4294967296ULL; cps[ncp++] = 216171986291ULL; cps[ncp++] = ZEND;
     for (int i = 0; i < ncp; i++) for (int j = i + 1; j < ncp; j++) if (cps[j] < cps[i]) { u64 t = cps[i]; cps[i] = cps[j]; cps[j] = t; }
     int icp = 0;
@@ -199,6 +223,7 @@ int main(int argc, char **argv) {
                 printf("CP x=%llu k=%llu lnA=%.21Lg m2=%llu m2big=%llu\n",
                        (unsigned long long)cps[icp], (unsigned long long)k, acc + cmp,
                        (unsigned long long)m2, (unsigned long long)m2big);
+                fflush(stdout);
                 icp++;
             }
             if (comp[i]) continue;

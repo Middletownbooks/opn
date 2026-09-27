@@ -1,10 +1,10 @@
 # Recovered sources supplied by the user
 
-*(This file describes only the seven files listed below. The `matveev1998_*.png`
+*(This file describes only the eight files listed below. The `matveev1998_*.png`
 page images in this directory come from other work on the branch and are not
 covered here.)*
 
-These are **not my work** and **not from the repository's own history**. Each was
+These are **not my work** and **not from the repository's own history**. The first seven were
 pasted into the chat by the user during the original session, summarised out of
 my context when it was compacted, and recovered afterwards from the session
 transcript. They are the artefacts accompanying Ochem & Zelinsky,
@@ -19,6 +19,7 @@ arXiv:2607.19746, plus one algorithm slice from the paper itself.
 | `pairs.py` | the pair search accompanying their Question 10 | user paste |
 | `checkfacts.txt` | the factorisation database `tree.cpp` reads | user paste |
 | `3p2.txt` | the "3 ordinary" marker file verified in `restrained/06`–`07` | user paste |
+| `ochem_zelinsky_2607.19746_transcript.txt` | **full text of the paper** (PDF text extraction) | user paste, 2026-09-27, saved directly (not recovered) |
 
 ## Read this before trusting the layout
 
@@ -32,7 +33,8 @@ newlines. I reinserted line breaks **mechanically**, at `;`, `{` and `}`, so:
   on the reconstructed line — `//` now swallows the rest of its line. Several
   header comments in `tree.cpp` and `loopless.cpp` show this. Before compiling,
   re-break those comment lines by hand, or fetch the originals from the authors'
-  site.
+  site, which the paper gives as `https://www.lirmm.fr/~ochem/opn/restrained/`
+  (blocked by this environment's network policy as of 2026-09-27).
 
 The data files (`checkfacts.txt`, `3p2.txt`) are whitespace-separated records and
 survive this intact.

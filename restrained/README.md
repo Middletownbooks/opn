@@ -5,7 +5,7 @@ Standard library only. Findings in `../NOTES_RESTRAINED.md`.
 | script | establishes |
 |---|---|
 | `01_notable_component_mod12.py` | Lemma A — every prime factor of `σ(3^q)` is `≡ ±1 mod 12` — with verification for even `q ≤ 32` and an odd-`q` control; Corollary B |
-| `02_verify_sections_3_and_4.py` | recomputes all five §3 abundancy bounds (all match) and the §4 final product (does not reproduce; conclusion unaffected) |
+| `02_verify_sections_3_and_4.py` | recomputes all five §3 abundancy bounds (all match) and the §4 final product (does not reproduce from the text's constants; see `10`) |
 | `03_question10_search.py` | collision search for their Question 10; run at 200000 and 1000000 |
 | `04_question10_p3_excluded.py` | Question 10 has no solution with `p = 3`; root structure mod `p²` |
 
@@ -17,3 +17,4 @@ Standard library only. Findings in `../NOTES_RESTRAINED.md`.
 authors' file; it is kept only so `06` is reproducible.
 | `07_verify_3p2_markers.py` | second pass over `3p2.txt`: checks every `F t` / `XS t` marker prime actually divides the line's target (239/241) |
 | `08_repair_59083_branch.py` | closes the one broken cut by `XS 3` instead of `F 19`, so the file's conclusion stands |
+| `10_section4_reconcile.py` | §4 reconciled against the full transcript: the printed product is the sieve's `A = 1.088507187872` with `K = 43·10⁹`; with the text's `K = 43.5·10⁹` it is `1.99671 < 2`; `k + K_max = 46,355,827,007`; what a re-run must show |

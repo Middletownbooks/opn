@@ -43,6 +43,39 @@ error in the paper — I cannot distinguish without the PDF. **The argument is
 unaffected either way: every candidate reading is `< 2`, which is all §4
 needs.** The conclusion `q ≥ 23×10⁹` does not depend on the reading.
 
+### 1a. Resolved against the full transcript (`restrained/10`)
+
+The user supplied the full paper text (`sources/ochem_zelinsky_2607.19746_transcript.txt`).
+It is not OCR damage: the paper itself prints the two constants. It says the sieve
+ran "for 3 weeks until it said to need more than 2,500,000,000 ordinary primes up
+to z = 216,171,986,291 only to reach abundancy 1.088507187872". Then it writes the
+final product with `1.076855990994` and `K = 43,500,000,000`.
+
+* **The printed product `1.99209763359616948564` is reproduced to 10 significant
+  digits by `A = 1.088507187872` (the sieve's value) with `K = 43,000,000,000`**:
+  `1.99209763353720…`, a difference of `−5.9·10⁻¹¹`. The implied `A` at
+  `K = 43·10⁹` is `1.0885071879042`, which differs from the printed `A` in its 11th
+  decimal. That fits a value read from a slightly later progress line; it is a
+  guess, not verified.
+* With the text's `K = 43.5·10⁹` and the sieve's `A`, the product is
+  `1.99671063469… < 2`. **So the conclusion follows from the sieve's reported
+  output as stated.** `A` could be up to `1.090300386` (a 0.165% headroom) before
+  `K = 43.5·10⁹` fails.
+* `1.076855990994` reproduces nothing tried. Its source is unknown, and it is not
+  load-bearing.
+* **The rigorous form.** Ordinary primes `m ≥ k + K_max + 1`. With the printed `A`
+  rounded up, `K_max = 43,855,827,007`, so `k + K_max = 46,355,827,007`, a margin
+  of `3.56·10⁸` over the `46·10⁹` needed. Lemma 8 then gives `q ≥ 23·10⁹` (`q` is
+  even, and `ω/2 − 2 ≥ 22,999,999,999.5`).
+* **What a re-run must show.** `k(z) + K_max(A(z)) ≥ 46·10⁹` for the exact sieve.
+  The argument needs only that the survivor set contains every possible ordinary
+  prime in `(3·10⁶, z)`, so an over-inclusive sieve is still sound. Each survivor
+  `r` changes `k + K_max` by `1 − z·ln(r/(r−1)) ≤ 0`, so extra survivors only cost
+  margin.
+
+**Status: the §4 arithmetic discrepancy is resolved.** What remains is whether the
+sieve output is correct (§4b).
+
 ---
 
 ## 2. Lemma A — the notable component can only produce primes `≡ ±1 (mod 12)`
@@ -225,6 +258,11 @@ computed value differs from the true one in every case, and the sieve's verdict
 | 4294967371 | excluded by [7, 831373] | **can be ordinary** |
 | 4294967377 | excluded by [19, 79273] | excluded by [875011] |
 
+**Update (full transcript).** The paper names "the C++/GMP program
+loopless.cpp", run for 3 weeks, and hosts its files at
+`https://www.lirmm.fr/~ochem/opn/restrained/`. This environment cannot reach that
+host, so it is not yet known whether the hosted file differs from the pasted one.
+
 **How to read this.** The most likely explanation by far is that the published
 run used a 128-bit or GMP variant that is not the released file — it already
 defines `u128` and links GMP, so the authors clearly had the machinery. The
@@ -299,7 +337,7 @@ transcription.
 | result | status |
 |---|---|
 | §2 and §3 of the paper | **verified**, all seven numeric bounds |
-| §4 final product | **not reproduced** from the transcript; conclusion unaffected |
+| §4 final product | **resolved** (§1a): printed value = sieve's `A` with `K = 43·10⁹`; with the text's `K` it is `1.99671 < 2` |
 | Lemma A (`σ(3^q)` factors `≡ ±1 mod 12`) | **proved** + verified; a corollary of their Lemma 4 |
 | Corollary B (ordinary `s ≡ 5 mod 12`) | **proved** |
 | `q = o₁ + v₃(e+1)` | **proved**; shows `q ≥ o₁` is tight |
@@ -318,13 +356,16 @@ counting argument I could construct against `o₂ ≤ o₁ + 2`.
 
 ## 6. What would help next
 
-- The **PDF** of arXiv:2607.19746, to settle the §4 discrepancy.
+- ~~The **PDF** of arXiv:2607.19746, to settle the §4 discrepancy.~~ Done via the
+  full transcript (§1a).
 - **Confirmation from the authors on the two code/data points above**: which
   build of `loopless.cpp` produced the reported `z`, and what the real
   `59083^2` line of `3p2.txt` says.
 - `tree.txt`, the remaining data file (primes up to 3,000,000), which did not
   transfer. The same mechanical check as `restrained/06` would apply to it.
-- The **PDF** of arXiv:2607.19746, to settle the §4 constant.
+- The original files from `https://www.lirmm.fr/~ochem/opn/restrained/`
+  (`loopless.cpp` with its true line breaks, `tree.txt`), if network access to
+  that host is allowed.
 
 **On Corollary B as a sieve condition — negative.** I had hoped to add it to
 Algorithm 1. It does not fit: the sieve's test is whether a candidate `r` *can

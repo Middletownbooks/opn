@@ -20,7 +20,7 @@ Everything is standard-library Python, no external data. Entry points below.
 | item | where | status |
 |---|---|---|
 | Audit of Mantovanelli | `AUDIT_REPORT.md` | **Category C.** Proposition A: acceptance and validity are mutually exclusive for the tail envelope. Decisive, needs no `ω` bound. |
-| Verification of Ochem–Zelinsky §§2–3 | `NOTES_RESTRAINED.md` | Reproduces exactly. §4 has a non-reproducing constant; `loopless.cpp` has a 64-bit overflow. Both recorded. Their Question 10 has **no solution with `p, r < 1000`**, exact for all exponents and all `x` (§4a). |
+| Verification of Ochem–Zelinsky §§2–3 | `NOTES_RESTRAINED.md` | Reproduces exactly. §4's printed product is reproduced to 10 digits by the sieve's own abundancy with `K = 43·10⁹` (the text says `43.5·10⁹`); with the text's `K` the product is `1.99671 < 2`, so the conclusion follows from the sieve's output (NOTES_RESTRAINED §1a, `restrained/10`). Whether that output is right is open: `loopless.cpp` has a 64-bit overflow (§4b). Their Question 10 has **no solution with `p, r < 1000`**, exact for all exponents and all `x` (§4a). |
 | `k = 2`, `3 ∤ N` (their §2) | `NOTES_K2.md`, `AUDIT_K2_MODEL_RESULT.md` | **Closed, with two independent proofs.** A reasoning model's fixed-support bound, audited (my first attempt double-counted the prime 5). And a **certified** proof with the section-3 machinery (`k2/05`–`07`, NOTES_K2 §7) that uses **no cited theorem at all**. |
 | `k = 2`, `3` ordinary (their §3) | `NOTES_S3_K2.md` | **All 14 role profiles eliminated.** 5 profiles use no cited theorem, 5 use only `ω(N) ≥ 10` (Nielsen), and 4 use that and Matveev 1998, Thm 2.2 (`MATVEEV_1998.md`). No pool, search bound or Thue–Mahler assumption remains (§14h–i). **Independently audited** (`audit_s3k2/`, §14k): no errors, and three documentation gaps, now repaired. **Independently rebuilt** (`s3k2/41`, §14l) and **certified**: every search tree is verified by a small checker (`s3k2/46`, §14m). Two errors in the earlier recursion were found and corrected (§14d, §14f). |
 | `k = 2`, `3` notable (their §4) | `NOTES_S4_K2.md`, `AUDIT_S4K2_MODEL_RESULT.md` | **Open**, as it is at `k = 1`. New structural results below. |
@@ -174,10 +174,16 @@ tractability; what blocks each is stated.
      not refuted.
    * **What a re-run gives.** It settles that either way. It is also the
      template for any `k = 2` sieve (item 5).
-   * **Blocked on:** the paper's Algorithm 1 text and `loopless.cpp`. Both
-     reached an earlier session but are not in the repo. `gcc` and `clang` are
-     available here. The cost is unknown until the source is read (their run
-     reached `z ≈ 2.2·10¹¹`).
+   * **Unblocked:** Algorithm 1, `loopless.cpp` and the full paper transcript
+     are in `sources/`. The paper says the run took 3 weeks. The authors host the
+     original files at `https://www.lirmm.fr/~ochem/opn/restrained/`, which this
+     environment's network policy blocks.
+   * **What must be shown:** `k(z) + K_max(A(z)) ≥ 46·10⁹` for the exact sieve
+     (`restrained/10`, item 5). An over-inclusive sieve is still sound, so an
+     exact sieve for `r ≤ Q` that ignores `M₂` primes `≥ Q` is a sound, cheaper
+     first pass. The paper's own numbers leave a margin of `3.56·10⁸`.
+   * **Pending the user's decision:** the full run needs compiled code (C,
+     standard library only). A CPython run to `z` is not practical.
 3. **`k = 3`, for `3 ∤ N` and for `3` ordinary,** using the engine built for
    `k = 2`: the DFS with closure pinning, the Skolem and Matveev + LLL solvers,
    and the count.

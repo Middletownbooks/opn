@@ -1,0 +1,325 @@
+[
+ {
+  "T": [
+   7,
+   13
+  ],
+  "allow3": false,
+  "complete": [
+   0,
+   2,
+   3,
+   9,
+   18
+  ],
+  "solvers": [
+   "s3k2/39_baker_lll.py",
+   "audit_s3k2/a4_solver.py"
+  ]
+ },
+ {
+  "T": [
+   7,
+   13,
+   19
+  ],
+  "allow3": false,
+  "complete": [
+   0,
+   2,
+   3,
+   9,
+   11,
+   18,
+   30,
+   68,
+   653
+  ],
+  "solvers": [
+   "s3k2/39_baker_lll.py",
+   "audit_s3k2/a4_solver.py"
+  ]
+ },
+ {
+  "T": [
+   7,
+   13,
+   19,
+   127
+  ],
+  "allow3": false,
+  "complete": [
+   0,
+   2,
+   3,
+   9,
+   11,
+   18,
+   30,
+   68,
+   107,
+   146,
+   653
+  ],
+  "solvers": [
+   "s3k2/39_baker_lll.py",
+   "audit_s3k2/a4_solver.py"
+  ]
+ },
+ {
+  "T": [
+   7,
+   13,
+   19,
+   31,
+   127
+  ],
+  "allow3": false,
+  "complete": [
+   0,
+   2,
+   3,
+   5,
+   9,
+   11,
+   18,
+   30,
+   68,
+   87,
+   107,
+   146,
+   191,
+   273,
+   315,
+   653
+  ],
+  "solvers": [
+   "s3k2/39_baker_lll.py",
+   "audit_s3k2/a4_solver.py"
+  ]
+ },
+ {
+  "T": [
+   7,
+   13,
+   19,
+   31,
+   331
+  ],
+  "allow3": false,
+  "complete": [
+   0,
+   2,
+   3,
+   5,
+   9,
+   11,
+   18,
+   30,
+   68,
+   87,
+   191,
+   315,
+   653
+  ],
+  "solvers": [
+   "s3k2/39_baker_lll.py",
+   "audit_s3k2/a4_solver.py"
+  ]
+ },
+ {
+  "T": [
+   7,
+   13,
+   19,
+   37,
+   67
+  ],
+  "allow3": false,
+  "complete": [
+   0,
+   2,
+   3,
+   9,
+   11,
+   18,
+   26,
+   29,
+   30,
+   68,
+   581,
+   653,
+   900,
+   1712,
+   2382
+  ],
+  "solvers": [
+   "s3k2/39_baker_lll.py",
+   "audit_s3k2/a4_solver.py"
+  ]
+ },
+ {
+  "T": [
+   7,
+   13,
+   19,
+   37,
+   127
+  ],
+  "allow3": false,
+  "complete": [
+   0,
+   2,
+   3,
+   9,
+   11,
+   18,
+   26,
+   30,
+   68,
+   107,
+   146,
+   581,
+   653
+  ],
+  "solvers": [
+   "s3k2/39_baker_lll.py",
+   "audit_s3k2/a4_solver.py"
+  ]
+ },
+ {
+  "T": [
+   7,
+   13,
+   19,
+   43,
+   127
+  ],
+  "allow3": false,
+  "complete": [
+   0,
+   2,
+   3,
+   6,
+   9,
+   11,
+   18,
+   30,
+   68,
+   107,
+   146,
+   165,
+   653
+  ],
+  "solvers": [
+   "s3k2/39_baker_lll.py",
+   "audit_s3k2/a4_solver.py"
+  ]
+ },
+ {
+  "T": [
+   7,
+   13,
+   19,
+   127,
+   409
+  ],
+  "allow3": false,
+  "complete": [
+   0,
+   2,
+   3,
+   9,
+   11,
+   18,
+   30,
+   53,
+   68,
+   107,
+   146,
+   653
+  ],
+  "solvers": [
+   "s3k2/39_baker_lll.py",
+   "audit_s3k2/a4_solver.py"
+  ]
+ },
+ {
+  "T": [
+   7,
+   13,
+   19,
+   127,
+   1723
+  ],
+  "allow3": false,
+  "complete": [
+   0,
+   2,
+   3,
+   9,
+   11,
+   18,
+   30,
+   41,
+   68,
+   107,
+   146,
+   653
+  ],
+  "solvers": [
+   "s3k2/39_baker_lll.py",
+   "audit_s3k2/a4_solver.py"
+  ]
+ },
+ {
+  "T": [
+   7,
+   13
+  ],
+  "allow3": true,
+  "complete": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   9,
+   16,
+   18,
+   22
+  ],
+  "solvers": [
+   "s3k2/39_baker_lll.py",
+   "audit_s3k2/a4_solver.py"
+  ]
+ },
+ {
+  "T": [
+   7,
+   13,
+   19
+  ],
+  "allow3": true,
+  "complete": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   7,
+   9,
+   11,
+   16,
+   18,
+   22,
+   30,
+   68,
+   653
+  ],
+  "solvers": [
+   "s3k2/39_baker_lll.py",
+   "audit_s3k2/a4_solver.py"
+  ]
+ }
+]

@@ -277,24 +277,53 @@ def forced_set(K, wc):
         elif r == 's': N |= P1(t + 1)
     return {x for x in N if x not in K}
 
+def forced_src(K, wc):
+    """forced prime -> (source, kind): kind 'o' divides src^2+src+1, 's' divides
+       src+1, 'w' divides w+1.  Primes already in K are omitted."""
+    N = {}
+    for x in sorted(wc[3]): N.setdefault(x, (wc[1], 'w'))
+    for t in sorted(K):
+        r = K[t]
+        if r == 'o':
+            for x in sorted(P1(t*t + t + 1)): N.setdefault(x, (t, 'o'))
+        elif r == 's':
+            for x in sorted(P1(t + 1)): N.setdefault(x, (t, 's'))
+    return {x: v for x, v in N.items() if x not in K}
+
+# ---- certificate stream (s3k2/46 checks it) ----
+CERT = None
+def emit(K, lb, left, wc, **action):
+    if CERT is None: return
+    import json
+    CERT.write(json.dumps({"K": sorted([t, r] for t, r in K.items()), "lb": lb,
+                           "left": sorted(left), "w": wc[0], **action}) + "\n")
+
 def role_ok(t, r):
     return not (r == 's' and t % 12 != 1)
 
 def dfs(K, lb, left, wc, alpha, out, final_excl_all=True):
     out.states += 1
-    N = forced_set(K, wc)
-    if any(x <= lb for x in N): out.kill('closure: forced prime not in T'); return
-    if len(N) > len(left): out.kill('closure: too many forced primes'); return
+    NS = forced_src(K, wc); N = set(NS)
+    low_f = sorted(x for x in N if x <= lb)
+    if low_f:
+        x = low_f[0]; emit(K, lb, left, wc, a="dead", why="closure1", f=x, src=NS[x][0], kind=NS[x][1])
+        out.kill('closure: forced prime not in T'); return
+    if len(N) > len(left):
+        emit(K, lb, left, wc, a="dead", why="closure2", fs=[[x, NS[x][0], NS[x][1]] for x in sorted(N)])
+        out.kill('closure: too many forced primes'); return
     rem = 2 - alpha - wc[2]
     excl = excluded(K, lb) if left else tuple(q for q in SMALLQ if q not in K)
     b = bounds(K, wc, excl, rem)
-    if b is None: out.kill('impossible role'); return
+    if b is None:
+        emit(K, lb, left, wc, a="dead", why="impossible"); out.kill('impossible role'); return
     lo, hi = b
-    if lo > TARGET: out.kill('raw minimum > 18/13'); return
-    if not left: return terminal(K, wc, alpha, lo, hi, out)
+    if lo > TARGET:
+        emit(K, lb, left, wc, a="dead", why="raw"); out.kill('raw minimum > 18/13'); return
+    if not left: return terminal(K, wc, alpha, lo, hi, out, lb)
     if N:
         x = min(N)
-        for r in set(left):
+        emit(K, lb, left, wc, a="pin", f=x, src=NS[x][0], kind=NS[x][1])
+        for r in sorted(set(left)):
             if role_ok(x, r):
                 l2 = list(left); l2.remove(r)
                 dfs({**K, x: r}, lb, tuple(l2), wc, alpha, out)
@@ -304,9 +333,10 @@ def dfs(K, lb, left, wc, alpha, out, final_excl_all=True):
     u = len(left)
     B = threshold(K, base, u) if base > 1 else None
     if B is not None and B <= 5*10**8:
+        emit(K, lb, left, wc, a="cut", B=B)
         for t in primes1_between(lb, B):
             if t in K: continue
-            for r in set(left):
+            for r in sorted(set(left)):
                 if role_ok(t, r):
                     l2 = list(left); l2.remove(r)
                     dfs({**K, t: r}, t, tuple(l2), wc, alpha, out)
@@ -315,6 +345,7 @@ def dfs(K, lb, left, wc, alpha, out, final_excl_all=True):
     if all(r == 'o' for r in left) and u in (1, 2):
         EXP = 300 if len(K) <= 2 else (120 if len(K) == 3 else 60)
         out.cond.append(('caseB', tuple(sorted(K)), wc[0], EXP))
+        emit(K, lb, left, wc, a="caseB")
         for t in caseB(tuple(sorted(K)), EXP):
             if t > lb and t not in K:
                 l2 = list(left); l2.remove('o')
@@ -329,6 +360,7 @@ def dfs(K, lb, left, wc, alpha, out, final_excl_all=True):
             else:
                 out.unres.append(('coupled', dict(K), lb, left, wc[0]))
         return
+    emit(K, lb, left, wc, a="unresolved")
     out.unres.append(('no cutoff', dict(K), lb, left, wc[0], float(base)))
 
 _cb = {}
@@ -348,20 +380,24 @@ def caseB(K, EXP):
         while v <= lim: rec(i+1, v); v *= K[i]
     rec(0, 1); _cb[key] = sorted(set(out)); return _cb[key]
 
-def terminal(T, wc, alpha, lo, hi, out):
+def terminal(T, wc, alpha, lo, hi, out, lb=None):
     Tk = tuple(sorted(T)); w = wc[1]
     h = H0(T, lo, w)                              # every x in U has f(x) <= 18/13/lo
     lo_n = max(Dfrac(lo), D(TARGET.numerator)/D(TARGET.denominator)/h)
-    if lo_n >= Dfrac(hi): out.kill('final: two-sided abundancy'); return
+    if lo_n >= Dfrac(hi):
+        emit(T, lb, (), wc, a="dead", why="final-abund"); out.kill('final: two-sided abundancy'); return
     cap = D(TARGET.numerator)/D(TARGET.denominator)/lo_n
     adm = sorted((x for x in Sm_Y(Tk) if x != w and Dfrac(f(x)) <= cap), reverse=True)
     need = 6 - alpha
     if len(adm) < need:
+        emit(T, lb, (), wc, a="dead", why="final-count")
         out.kill('final: count (Sm complete)'); out.cond.append(('SmT', Tk, wc[0], tuple(adm))); return
     pr = F(1)
     for x in adm[:need]: pr *= f(x)                 # the need smallest factors
     if Dfrac(pr) > cap:
+        emit(T, lb, (), wc, a="dead", why="final-count")
         out.kill('final: count product (Sm complete)'); out.cond.append(('SmT', Tk, wc[0], tuple(adm))); return
+    emit(T, lb, (), wc, a="alive")
     out.alive.append((dict(T), wc[0], adm))
 
 PROFILES = {   # T roles, W role, alpha   (NOTES_S3_K2.md 13c)
@@ -379,7 +415,7 @@ def run_profile(name, log=print):
     roles, Wrole, alpha = PROFILES[name]; out = Out(); t0 = time.time()
     for wc in w_configs(Wrole, alpha):
         # seeds: min T is 7 or 13 (13 is in T; no prime = 1 mod 3 lies between 7 and 13)
-        rs = set(roles)
+        rs = sorted(set(roles))
         for r7 in rs:
             for r13 in rs:
                 l = list(roles); l.remove(r7)
@@ -402,5 +438,15 @@ def run_profile(name, log=print):
     return out
 
 if __name__ == "__main__":
-    names = list(PROFILES) if sys.argv[1] == "all" else sys.argv[1:]
+    args = sys.argv[1:]
+    if args and args[0] == "--cert":
+        # python3 41_rebuild_dfs.py --cert <profile>   writes the proof tree to stdout
+        CERT = sys.stdout
+        import json
+        name = args[1]
+        CERT.write(json.dumps({"profile": name}) + "\n")
+        run_profile(name, log=lambda *a: None)
+        CERT.write(json.dumps({"end": name}) + "\n")
+        sys.exit(0)
+    names = list(PROFILES) if args[0] == "all" else args
     for n in names: run_profile(n)

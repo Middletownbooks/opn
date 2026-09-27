@@ -30,6 +30,7 @@ IMPLEMENTATION, independent of tree.cpp:
     reported UNRESOLVED, never as ruled out.
 
 Run:  python3 15_tree_pilot.py LO HI [MAXROOTS]      (roots: primes in [LO, HI])
+      NOHINTS=1 python3 15_tree_pilot.py ...          (do not read checkfacts.txt at all)
 Prints the roots ruled out, the unresolved ones, and the timing per root.
 """
 import sys, os, math, time, random
@@ -168,7 +169,7 @@ def ecm(n, rng):
 # checkfacts.txt: "x type f" triples, type 3 = factor of x^2+x+1, type 2 = factor of x+1
 HINTS = {}
 cf = os.path.join(HERE, "..", "sources", "checkfacts.txt")
-if os.path.exists(cf):
+if os.path.exists(cf) and not os.environ.get("NOHINTS"):
     tok = open(cf).read().split()
     for i in range(0, len(tok) - 2, 3):
         x, t, f = int(tok[i]), int(tok[i+1]), int(tok[i+2])
@@ -277,6 +278,6 @@ if __name__ == "__main__":
     print(f"roots {len(roots)} in [{roots[0] if roots else '-'}, {roots[-1] if roots else '-'}]: "
           f"ruled out {ok}, unresolved {len(unres)}; {T:.1f}s total, {T/max(1,len(roots))*1000:.2f} ms/root, "
           f"{nodes/max(1,len(roots)):.1f} nodes/root, worst {worst[0]:.2f}s at {worst[1]}; "
-          f"checkfacts hints used {HINT_USED[0]}, rejected {len(HINT_REJECTED)}")
+          f"checkfacts hints used {HINT_USED[0]}, rejected {len(HINT_REJECTED)}; ECM splits {len(ECM_USED)}")
     for u in unres[:30]: print("   UNRESOLVED", u)
     for h in HINT_REJECTED[:10]: print("   REJECTED HINT", h)

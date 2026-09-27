@@ -138,6 +138,42 @@ if FULL:
            ("none alive", lambda o: re.search(r"STILL ALIVE\s*:\s*0\b", o) is not None)])
     check("36 profile 2,yes,1,4,1", ["36_profile_recursion.py", "2,yes,1,4,1"], 7200,
           [("tally", profile_tally((22, 357, 4, 310, 0, 1, 4)))])
+    # ---- the independent rebuild (NOTES_S3_K2.md 14l) ----
+    REBUILD = {   # profile -> set of conditional items script 41 must report
+        "0,no,2,2,1": set(), "0,yes,2,3,0": set(), "1,yes,2,4,0": set(), "1,no,2,3,1": set(),
+        "0,yes,1,2,1": {('SmT', (7, 13), 'n=11', ())},
+        "1,yes,1,3,1": {('SmT', (7, 13, 19), 'n=23', (653,)), ('caseB', (7, 13), 'n=11', 300)},
+        "2,yes,1,4,1": {('SmK-coupled', (7, 13), 'n=11', 0), ('SmT', (7, 13, 19, 127), 'n=29', (653,)),
+                        ('SmT', (7, 13, 19, 127), 'n=41', (653, 107)), ('SmT', (7, 13, 19, 127), 'n=47', (653, 107)),
+                        ('caseB', (7, 13), 'n=11', 300), ('caseB', (7, 13, 19), 'n=23', 120)},
+        "2,yes,2,5,0": {('SmT', (7, 13, 19, 31, 127), 'W empty', (653, 191)), ('SmT', (7, 13, 19, 31, 331), 'W empty', (653, 191)),
+                        ('SmT', (7, 13, 19, 37, 67), 'W empty', (653,)), ('SmT', (7, 13, 19, 37, 127), 'W empty', (653, 107)),
+                        ('SmT', (7, 13, 19, 43, 127), 'W empty', (653, 107)), ('SmT', (7, 13, 19, 127, 409), 'W empty', (653, 107, 53)),
+                        ('SmT', (7, 13, 19, 127, 1723), 'W empty', (653, 107, 41))},
+    }
+    def rebuild_ok(out):
+        import ast
+        blocks = re.split(r"^PROFILE ", out, flags=re.M)[1:]
+        seen = {}
+        for b in blocks:
+            name = b.split(":")[0]
+            items = {ast.literal_eval(l.strip()) for l in b.splitlines() if l.strip().startswith("('")}
+            if not re.search(r"UNRESOLVED: 0\b", b): raise ValueError(f"{name}: unresolved states")
+            if not re.search(r"ALIVE: 0\b", b): raise ValueError(f"{name}: ALIVE")
+            seen[name] = items
+        for name, exp in REBUILD.items():
+            if seen.get(name) != exp: raise ValueError(f"{name}: items {seen.get(name)} expected {exp}")
+        return True
+    check("41 rebuild, all eight profiles", ["41_rebuild_dfs.py", "all"], 7200,
+          [("nothing alive or unresolved; conditional items as recorded", rebuild_ok)])
+    import tempfile
+    tf = tempfile.NamedTemporaryFile("w", suffix=".log", delete=False)
+    tf.write(outputs.get("41 rebuild, all eight profiles", "")); tf.close()
+    check("43 discharge by the auditor's solver", ["43_discharge.py", tf.name], 3600,
+          [("all discharged", has("ALL DISCHARGED"))])
+    for prof, pool in (("2,yes,1,4,1", "140"), ("2,yes,2,5,0", "140")):
+        check(f"42 pool cross-check {prof} (pool < {pool})", ["42_pool_crosscheck.py", prof, pool], 3600,
+              [("no survivor missing", has("   PASS"))])
 
 # ------------------------------------------------------------------ coverage (D2)
 def exc36(out):

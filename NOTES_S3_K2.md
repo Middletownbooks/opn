@@ -1336,7 +1336,9 @@ the count test, which those five never reach.
 * **D2** — coverage. `verify_all` relied on the DFS level cut-off happening to
   include every exception of `s3k2/36`. It did, since the one exception is at
   level 2, but that was not checked. **Done:** `verify_all.py` now asserts that
-  every exception printed by `36` is a DFS input for the same profile. A
+  every exception printed by `36` is a DFS input for the same profile. After the
+  change, `verify_all.py full` passes **20 of 20**, including the new coverage
+  check on `2,yes,1,4,1`. A
   last-level (`t:`-tagged) exception, which the DFS never sees, fails the check.
 * **X1** — `verify_all` detects drift, not unsoundness. An over-pruning change can
   only remove sets, so it never produces `ALIVE`. Mutations C1 (`corr_1`), C4

@@ -148,8 +148,8 @@ Ranked by value, with what blocks each:
    the one part of §14 the audit reviewed but did not rebuild from scratch
    (§14k). Matveev pp. 81 and 83–84 could also be checked for any further
    standing hypotheses.
-2. **Done: `verify_all.py`.** It re-derives every §14 figure; 19 of 19 checks
-   pass (`NOTES_S3_K2.md` §14j). Extending it to the pre-§14 notes is still
+2. **Done: `verify_all.py`.** It re-derives every §14 figure and checks that the
+   DFS covers every exception; 20 of 20 checks pass (`NOTES_S3_K2.md` §14j–k). Extending it to the pre-§14 notes is still
    open.
 3. **`3` notable at `k = 2`.** The open sub-case is `p ≡ 5 (mod 12)` with
    `p^e ‖ σ(n₂^{q₂})`; `PROMPT_S4_K2_SPECIAL.md` is the brief that produced the

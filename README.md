@@ -12,6 +12,9 @@ Everything is standard-library Python, no external data. Entry points below.
 
 ---
 
+**Start here for `k = 2`:** `K2_WRITEUP.md`, a self-contained account of Theorems A
+(`3 ∤ N`) and B (`3² ‖ N`), with their trust base, verification levels and certificates.
+
 ## Status in one table
 
 | item | where | status |
@@ -19,7 +22,7 @@ Everything is standard-library Python, no external data. Entry points below.
 | Audit of Mantovanelli | `AUDIT_REPORT.md` | **Category C.** Proposition A: acceptance and validity are mutually exclusive for the tail envelope. Decisive, needs no `ω` bound. |
 | Verification of Ochem–Zelinsky §§2–3 | `NOTES_RESTRAINED.md` | Reproduces exactly. §4 has a non-reproducing constant; `loopless.cpp` has a 64-bit overflow. Both recorded. Their Question 10 has **no solution with `p, r < 1000`**, exact for all exponents and all `x` (§4a). |
 | `k = 2`, `3 ∤ N` (their §2) | `NOTES_K2.md`, `AUDIT_K2_MODEL_RESULT.md` | **Closed.** My first attempt was wrong (double-counted the prime 5); a reasoning model's fixed-support bound repaired it and I audited it. |
-| `k = 2`, `3` ordinary (their §3) | `NOTES_S3_K2.md` | **All 14 role profiles eliminated.** 5 profiles use no cited theorem, 5 use only `ω(N) ≥ 10` (Nielsen), and 4 use that and Matveev 1998, Thm 2.2 (`MATVEEV_1998.md`). No pool, search bound or Thue–Mahler assumption remains (§14h–i). **Independently audited** (`audit_s3k2/`, §14k): no errors, and three documentation gaps, now repaired. Two errors in the earlier recursion were found and corrected (§14d, §14f). |
+| `k = 2`, `3` ordinary (their §3) | `NOTES_S3_K2.md` | **All 14 role profiles eliminated.** 5 profiles use no cited theorem, 5 use only `ω(N) ≥ 10` (Nielsen), and 4 use that and Matveev 1998, Thm 2.2 (`MATVEEV_1998.md`). No pool, search bound or Thue–Mahler assumption remains (§14h–i). **Independently audited** (`audit_s3k2/`, §14k): no errors, and three documentation gaps, now repaired. **Independently rebuilt** (`s3k2/41`, §14l) and **certified**: every search tree is verified by a small checker (`s3k2/46`, §14m). Two errors in the earlier recursion were found and corrected (§14d, §14f). |
 | `k = 2`, `3` notable (their §4) | `NOTES_S4_K2.md`, `AUDIT_S4K2_MODEL_RESULT.md` | **Open**, as it is at `k = 1`. New structural results below. |
 | `q = 3` side-investigation | `NOTES_Q3.md` | A higher-reciprocity obstruction is shown *not to exist* (explicit witness). Avenue closed. |
 | Theorem 1 inversion | `NOTES_INVERSION.md` | Theorem 1′, Negative Result 1, and the `k₀(q)` floors — which are a reconstruction of Norton's, not new. |
@@ -154,8 +157,9 @@ tractability; what blocks each is stated.
 * `verify_all.py`, which now includes the rebuild;
 * the forced primes of `p + 1` at every odd `e`, now used by `s3k2/41`.
 
-1. **A self-contained, checkable write-up of `k = 2`: `3 ∤ N` and `3`
-   ordinary.** It would turn §§2–14 of the notes into one argument a reader can
+1. **Written: `K2_WRITEUP.md`.** Still needs a literature check before any claim
+   of novelty. Originally: **a self-contained, checkable write-up of `k = 2`:
+   `3 ∤ N` and `3` ordinary.** It would turn §§2–14 of the notes into one argument a reader can
    verify, with the scripts as its certificate, and state `3` notable as open.
    This is the highest value per effort, and it is not blocked.
    **Needed from the user:** confirmation that nothing since arXiv:2607.19746
@@ -181,7 +185,10 @@ tractability; what blocks each is stated.
      count weakens to `|U| ≥ 5 − α`, and `3 ∤ N` must first be redone at `k = 3`.
    * **Status.** Tractable now, with an uncertain outcome. A clean statement of
      where the method stops scaling would be a useful negative result.
-4. **Certificates and a small independent checker.**
+4. **Done: certificates (`s3k2/41 --cert`) and the checker (`s3k2/46`),
+   NOTES_S3_K2.md §14m.** New follow-on: rebuild and certify Theorem A (`3 ∤ N`)
+   with the same machinery, which needs `W` slots for two or three components.
+   Originally: **certificates and a small independent checker.**
    * **What.** Script 41 emits one record per kill: the reason plus the exact
      numbers. A checker of a few hundred lines re-verifies every record in exact
      arithmetic, without re-running the search.
@@ -219,7 +226,9 @@ NOTES_INVERSION.md         Theorem 1 inversion; inversion/01-10
 NOTES_RESTRAINED.md        verification of Ochem-Zelinsky; restrained/01-08
 NOTES_Q3.md                the q = 3 investigation; q3/01-06
 NOTES_K2.md                k = 2, section 2; k2/01-04 and k2/audit/01-04
-NOTES_S3_K2.md             k = 2, section 3 -- the main result; s3k2/01-40
+NOTES_S3_K2.md             k = 2, section 3 -- the main result; s3k2/01-46
+                           (41: rebuild; 45: axioms; 46: certificate checker)
+K2_WRITEUP.md              self-contained account of k = 2 (Theorems A and B), with certificates
 MATVEEV_1998.md            Theorem 2.2 of Matveev 1998, transcribed; used by s3k2/39
 sources/                   page images of Matveev 1998, pp. 82 and 85-87
 PROMPT_AUDIT_S3K2.md       brief for an independent audit of section 14

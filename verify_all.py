@@ -171,6 +171,20 @@ if FULL:
     tf.write(outputs.get("41 rebuild, all eight profiles", "")); tf.close()
     check("43 discharge by the auditor's solver", ["43_discharge.py", tf.name], 3600,
           [("all discharged", has("ALL DISCHARGED"))])
+    # ---- certificates (NOTES_S3_K2.md 14m): search -> independent checker ----
+    for prof in ["0,no,2,2,1", "0,yes,1,2,1", "0,yes,2,3,0", "1,no,2,3,1",
+                 "1,yes,1,3,1", "1,yes,2,4,0", "2,yes,1,4,1", "2,yes,2,5,0"]:
+        t0 = time.time()
+        gen = subprocess.Popen([sys.executable, "41_rebuild_dfs.py", "--cert", prof], cwd=S3,
+                               stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+        chk = subprocess.run([sys.executable, "46_check_certificate.py"], cwd=S3, stdin=gen.stdout,
+                             capture_output=True, text=True, timeout=7200)
+        gen.stdout.close(); gen.wait()
+        ok = chk.returncode == 0 and "CERTIFICATE VALID" in chk.stdout
+        name = f"certificate {prof} checked by s3k2/46"
+        outputs[name] = chk.stdout
+        results.append((name, ok, "" if ok else chk.stdout.strip()[-300:]))
+        print(f"{'PASS' if ok else 'FAIL'}  {name}  ({time.time()-t0:.0f}s)" + ("" if ok else "\n      " + chk.stdout.strip()[-300:]), flush=True)
     for prof, pool in (("2,yes,1,4,1", "140"), ("2,yes,2,5,0", "140")):
         check(f"42 pool cross-check {prof} (pool < {pool})", ["42_pool_crosscheck.py", prof, pool], 3600,
               [("no survivor missing", has("   PASS"))])

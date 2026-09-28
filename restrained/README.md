@@ -29,3 +29,5 @@ authors' file; it is kept only so `06` is reproducible.
 | `16b_m2_dump.py` | exact Algorithm-1 `M₂` below `Y`, as a byte map |
 | `16c_selberg_tables.c` | `G(ξ)`, `W(ξ)` and the sharper weighted error sum for `ξ < 10⁸`, with `ω = 3` on `M₂` |
 | `16d_selberg_projection.py` | loss factors, projections and the sensitivity table (`runs/16d_*`); a qualified negative, `NOTES_RESTRAINED` §4g |
+| `16e_tail_heuristic.py` | heuristic: the survivors' abundancy appears to converge (`ln A(∞) ≈ 0.12 < 0.2877`); a proof needs a tail bound within a factor of about 3.1 |
+| `16f_bootstrap_pilot.py` | the Selberg bound against the true survivors: about 12.6 times (idealised 8.8), against the 3.1 needed; negative (§4h) |

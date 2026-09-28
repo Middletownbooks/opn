@@ -546,6 +546,41 @@ This is **a heuristic, not a result.**
 * **Verdict.** Uncertain and hard. It is also the only route here with a
   qualitatively large payoff.
 
+## 4h. Bootstrap pilot: negative (`restrained/16f`)
+
+**Question.** Can an upper-bound sieve bound the survivors' tail within the factor
+of about 3.1 that the addendum to §4g says a full proof needs?
+
+**The decisive measurement** is in the exactly known range: the true survivors below
+`3.44·10¹⁰` against the best Selberg bound, with `M₂` exact below `10⁸`. A bootstrap
+cannot beat this, since here `M₂` is known exactly rather than bounded.
+
+| range | true survivors | Selberg bound | bound/true | idealised bound/true |
+|---|---|---|---|---|
+| `(10⁹, 2·10⁹]` | 3,649,303 | 45,610,152 | 12.50 | 8.41 |
+| `(4·10⁹, 8·10⁹]` | 12,948,576 | 162,802,309 | 12.57 | 8.63 |
+| `(1.6·10¹⁰, 3.2·10¹⁰]` | 46,192,027 | 584,715,219 | 12.66 | 8.83 |
+
+The "idealised" column is `x/G(√x)`: the error term ignored, at the maximal level.
+No valid Selberg bound beats it. Both ratios **rise** slowly with `x`, because the
+true survivors avoid `M₂` all the way up to `r`, while the sieve sees `M₂` only below
+`ξ ≤ √x`. Asymptotically, Selberg's loss in dimension `κ ≈ 1.9` is about
+`2^κ Γ(κ+1) ≈ 6.8`.
+
+**The allowed overshoot grows only slowly with brute force** (from the heuristic
+tail): 3.1 at `z₀ = 3.4·10¹⁰`, 3.4 at `10¹²`, 3.9 at `10¹⁵`, 4.7 at `10²⁰`, and
+5.9 at `10²⁸`.
+
+**Verdict: this route is closed for sieve methods at any reachable scale.** The
+measured Selberg ratio is about 12.6, and the idealised one about 8.8. Both exceed
+the 3–4 allowed by a factor of 3 or more. A better upper-bound sieve (the beta sieve,
+or Diamond–Halberstam–Richert) improves on Selberg's constants in dimension about 2.
+But it cannot fall below the factor of 2 forced by the prime condition alone (the
+parity barrier), and its exact constant here is unknown to us. Closing a gap of 3
+or more would require it to be nearly optimal at every scale. We do not expect that,
+so the literature search for option 2 is **not recommended**. Proving the survivor
+tail small would need an input beyond upper-bound sieves.
+
 ## 4c. Verification of `3p2.txt`
 
 `3p2.txt` backs the claim that, with 3 ordinary, every prime `≤ 1000` other
@@ -617,6 +652,7 @@ transcription.
 | the `59083` line | **not a defect** — the authors' `tree.txt` lists no 19 either |
 | `loopless.cpp` as released | **64-bit overflow past `r = 2^32`**, confirmed in the original file; the paper's reported `k, A` show the wrap's signature (§4b, `restrained/11`) |
 | `tree.txt`'s claim (primes `11 … 3·10⁶` ruled out) | **confirmed independently** (§4e): all 216,812; two need `checkfacts.txt` factors, which were verified; all 460 entries verify |
+| Bootstrap sieve toward a full proof, pilot | **negative** (§4h): the sieve bound is at least about 8.8 times the true survivors (12.6 as measured); a proof needs at most about 3.1–3.4 |
 | Upper-bound (Selberg) sieve beyond `10¹²`, pilot | **qualified negative** (§4g): about `q ≳ 7·10¹²` in principle (60 times the brute-force bound), not orders of magnitude; the loss factor of 5–7 is the obstacle |
 | Algorithm 1, corrected, to `z = 10¹²` | `k + K_max = 240,019,297,934`, so **`q ≥ 120,009,648,968`** inside their framework (§4f) |
 | Algorithm 1, overflow-free re-run to `z` | **`q ≥ 23·10⁹` confirmed** (margin `6.79·10⁹` primes); the same method gives `q ≥ 26,392,853,446`; true `k = 599,351,328`, `A = 1.047357816316` (§4d) |

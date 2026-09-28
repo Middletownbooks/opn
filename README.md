@@ -176,6 +176,9 @@ tractability; what blocks each is stated.
    * **`q ≥ 23·10⁹` is confirmed; the same method gives `q ≥ 26,392,853,446`.**
    * **Extended (§4f):** at `z = 10¹²`, `q ≥ 120,009,648,968`. `tree.txt`'s claim is
      independently confirmed (§4e).
+   * **Bootstrap pilot (§4h): negative.** A full proof via the survivors' tail would
+     need a sieve within a factor of about 3 of the truth; Selberg is at 12.6
+     (idealised, 8.8). Closed for sieve methods at reachable scales.
    * **Upper-bound sieve pilot (§4g): qualified negative.** In principle it gives
      `q ≳ 7·10¹²`, not orders of magnitude. Options: make that rigorous, or import
      stronger explicit sieve results from a user-supplied paper.

@@ -168,7 +168,8 @@ def ecm(n, rng):
 
 # checkfacts.txt: "x type f" triples, type 3 = factor of x^2+x+1, type 2 = factor of x+1
 HINTS = {}
-cf = os.path.join(HERE, "..", "sources", "checkfacts.txt")
+cf = next((c for c in (os.path.join(HERE, "checkfacts.txt"),
+                      os.path.join(HERE, "..", "sources", "checkfacts.txt")) if os.path.exists(c)), "")
 if os.path.exists(cf) and not os.environ.get("NOHINTS"):
     tok = open(cf).read().split()
     for i in range(0, len(tok) - 2, 3):

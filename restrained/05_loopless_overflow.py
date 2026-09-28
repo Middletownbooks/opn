@@ -91,15 +91,13 @@ correct arithmetic it could not hold r^2+r+1 ~ 4.7e22 for r ~ 2.2e11.  The
 released file therefore cannot perform the advertised computation beyond
 r = 2^32, whatever the wrap does.
 
-Most likely explanations, in order: (a) the published run used a 128-bit or GMP
-variant not in the released file; (b) the released file is an earlier draft;
-(c) the reported z is affected.  I cannot distinguish these from the source
-alone, and (a) is the most probable -- the file already defines u128 and links
-GMP.  This should be checked with the authors rather than asserted as an error
-in the paper.
+UPDATE (later work; NOTES_RESTRAINED.md 4b, 4d).  The original file, supplied
+later, has this same line.  The paper says this program produced its run.  The
+reported k and A carry the wrap's signature (restrained/11).  An overflow-free re-run
+(restrained/13) gives different k and A at z, but it CONFIRMS the paper's conclusion
+q >= 23e9.  The earlier guess that a 128-bit build was run is not supported.
 
-Direction of risk, if the released file IS what was run: a wrapped value gives
-essentially random factors, so verdicts flip both ways.  Wrongly INCLUDING a
-prime as ordinary inflates the abundancy A and is conservative; wrongly
-EXCLUDING one deflates A and would make the resulting bound unsound.  Both
-occur, so the run could not be relied on as stated.""")
+Direction of risk, for a wrapped test: a wrapped value gives essentially random
+factors, so verdicts flip both ways.  Wrongly INCLUDING a prime as ordinary is
+conservative; wrongly EXCLUDING one would make the bound unsound.  Both occur, so the
+published run cannot be relied on as it stands -- hence the re-run.""")

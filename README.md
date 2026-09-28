@@ -176,8 +176,10 @@ tractability; what blocks each is stated.
    * **`q ≥ 23·10⁹` is confirmed; the same method gives `q ≥ 26,392,853,446`.**
    * **Extended (§4f):** at `z = 10¹²`, `q ≥ 120,009,648,966`. `tree.txt`'s claim is
      independently confirmed (§4e).
-   * **Next:** report the overflow and the corrected figures to the authors. The
-     user decides. The template for a `k = 2` sieve (item 5) now exists.
+   * **Next:** report to the authors. **Drafted:** `outreach/ochem_zelinsky/`
+     (`NOTE_TO_AUTHORS.md`, the attachment `ochem_zelinsky_bundle.zip` built by
+     `make_bundle.py`, and `AUDIT_BRIEF.md` for an independent check before sending).
+     Not sent; the user decides. The template for a `k = 2` sieve (item 5) now exists.
 3. **`k = 3`, for `3 ∤ N` and for `3` ordinary,** using the engine built for
    `k = 2`: the DFS with closure pinning, the Skolem and Matveev + LLL solvers,
    and the count.

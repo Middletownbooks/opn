@@ -24,7 +24,7 @@ be, and the two sessions could share blind spots. The note should say this (§3 
 | C5 | **CONFIRMED** | `12` and `13` agree line for line at `2·10⁸` |
 | C6 | **CONFIRMED** | re-run: all 219 checkpoints identical to the record; `14` output identical |
 | C7 | **CONFIRMED** | the argument is sound, including with a superset of survivors. The note should say what it takes from the rest of the paper. |
-| C8 | **CONFIRMED on a sample; full range not re-run** | 40,000+ random roots ruled out; two provers; all 460 `checkfacts.txt` entries verify |
+| C8 | **CONFIRMED on a sample; full range not re-run** | 40,000 random roots checked: all ruled out, except 2152883 without hints, as recorded. The two exceptions behave as stated with and without hints. A second prover written from the paper agrees. All 460 `checkfacts.txt` entries verify. |
 | C9 | **CONFIRMED except one number** | `k + K_max = 240,019,297,934` is right. The `q` bound it gives is `≥ 120,009,648,968`, not `…966` (a rounding bug in `14`). |
 | C10 | **CONFIRMED** | `A = 1.088507187872`, `K = 43·10⁹` gives `1.99209763353720…`, a relative difference of 3·10⁻¹¹ from the printed value |
 | C11 | **CONFIRMED, but not worth sending** | `while (1)`, with the bounded loop commented out. The file's own `Run:` line suggests this is deliberate. |
@@ -248,7 +248,7 @@ The logic matches `tree.cpp`'s `prove()`. I found no unsound step.
 | `15` on 20,000 random roots (seed 2026) + the 15 listed roots, with hints | 20,012 roots, **all ruled out**, 256 s; 19 hints used, 0 rejected |
 | `15` on 20,000 random roots (seed 2027) + the 15, `NOHINTS=1` | 20,015 roots: **20,014 ruled out**. The one exception is `2152883`, which the random draw happened to include. It stopped on the ECM budget (reported as unresolved, not as an open branch), exactly as recorded. 0 hints; 33 ECM splits; 4,957 s. |
 | `15`, `502013` and `2152883` with hints | both ruled out (2 hints each, 0 rejected) |
-| `15`, `502013` and `2152883`, `NOHINTS=1` | HARDROOTS |
+| `15`, `502013` and `2152883`, `NOHINTS=1` | both **UNRESOLVED on the ECM budget** after 4,126 s and 4,568 s, stopping on the same cofactors as the record (`1531367797…`, `6086388954…`). They are reported as unresolved, not ruled out, as the note says. |
 | **auditor's own prover** (`audit/auditor_tree_prover.py`, written from the paper only), 5,000 random roots (seed 99) + the 15 + the 2 | 4,977 ruled out, **0 open**; 39 hit its small Pollard budget (it has no ECM). With a larger budget 9 more were ruled out. `15` rules out the remaining 14 without hints. Given `checkfacts.txt` factors, my prover rules out `502013` and `2152883`. |
 | `checkfacts.txt`, auditor's own check | **460 entries, 0 failures**: each factor divides its `x²+x+1` (type 3) or `x+1` (type 2) and passes 13 fixed-base plus 30 random-base strong-probable-prime tests |
 

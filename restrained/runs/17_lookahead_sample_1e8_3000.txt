@@ -1,0 +1,1 @@
+survivors in (50,000,000, 100,000,000]: 242,408; sample 3000: 2998 have a prime factor P > r (99.9%); look-ahead removes 2488 (82.9% of the sample)

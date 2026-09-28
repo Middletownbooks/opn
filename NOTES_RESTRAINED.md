@@ -581,6 +581,34 @@ or more would require it to be nearly optimal at every scale. We do not expect t
 so the literature search for option 2 is **not recommended**. Proving the survivor
 tail small would need an input beyond upper-bound sieves.
 
+## 4i. A sound strengthening of Algorithm 1: the look-ahead (`restrained/17`)
+
+**The observation.** If `r` survives and `r² + r + 1` has a prime factor `P > r`, then
+`P | σ(r²) | 2N`. `P ≠ 3`, so `P` is ordinary or special.
+* **Ordinary** needs no prime of `M₂` to divide `P² + P + 1`.
+* **Special** needs `P ≡ 1 (mod 12)` and no prime of `(P+1)/2` in `M₁`. (`e` is odd,
+  so `P + 1 | σ(P^e)`. The primes of `(P+1)/2` divide `N` and cannot be special.)
+
+If both fail, `r` cannot be ordinary. Algorithm 1 never examines `P`.
+
+**Measured** on 3,000 random exact survivors in `(5·10⁷, 10⁸]`, using only `M₁` and
+`M₂` below `5·10⁷`:
+* 99.9% have such a `P`;
+* **82.9% are removed by the look-ahead** (`runs/17_lookahead_sample_1e8_3000.txt`).
+
+**Consequences.**
+* **For the brute-force bound: small.** At `z = 10¹²`, `ln A` is already small, and
+  the bound is dominated by `z·c`.
+* **For the heuristic tail: large.** The "can be ordinary" density is several times
+  smaller, so the allowed sieve loss for a full proof rises from about 3 to
+  perhaps 10–20.
+* **The catch.** The upper-bound sieves of §4g and §4h do not see the look-ahead.
+  Capturing it seems to need higher-dimensional sieving.
+
+This is recorded as a lead in `PROMPT_IDEAS_RESTRAINED_TAIL.md`. **Status:** a sample
+at one scale. Soundness is argued above; the rate at larger `r` has not been
+measured.
+
 ## 4c. Verification of `3p2.txt`
 
 `3p2.txt` backs the claim that, with 3 ordinary, every prime `≤ 1000` other

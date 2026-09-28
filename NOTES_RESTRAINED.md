@@ -425,12 +425,16 @@ checkpoint up to the paper's `z` is identical** to the §4d run. The run took
 |---|---|---|---|---|
 | `2.16·10¹¹` (paper's) | 599,351,328 | 1.047357816316 | 52,785,706,892 | 26,392,853,446 |
 | `5·10¹¹` | 1,356,573,080 | 1.049706090471 | 120,942,420,398 | 60,471,210,198 |
-| `10¹²` | 2,670,032,132 | 1.051620849343 | 240,019,297,934 | **120,009,648,966** |
+| `10¹²` | 2,670,032,132 | 1.051620849343 | 240,019,297,934 | **120,009,648,968** |
 
 * **Within the paper's framework, the corrected method gives `q ≥ 1.2·10¹¹`,**
   about 5.2 times its published `23·10⁹`. The bound grows about linearly in `z`,
   roughly `0.12 z`, so more compute buys more. The cost is about 3.8 h per
   `10¹²` at the current rate, growing slowly.
+* **Correction (audit, 2026-09-28).** The `q` column was first printed as
+  `120,009,648,966`. `14` rounded `(B−1)/2` up with `Decimal`'s `//`, which truncates
+  toward zero. The correct value is `⌊B/2⌋`, rounded up to even: `120,009,648,968`.
+  The weaker figure was still true. At the paper's `z` the value was unaffected.
 * **It is conservative.** Of the 17.4·10⁹ primes that end in `M₂`, 16.7·10⁹ are
   `≥ Q` and were not used to exclude anything. An exact run would give a larger
   bound, but it needs a different memory design.
@@ -511,7 +515,7 @@ transcription.
 | the `59083` line | **not a defect** — the authors' `tree.txt` lists no 19 either |
 | `loopless.cpp` as released | **64-bit overflow past `r = 2^32`**, confirmed in the original file; the paper's reported `k, A` show the wrap's signature (§4b, `restrained/11`) |
 | `tree.txt`'s claim (primes `11 … 3·10⁶` ruled out) | **confirmed independently** (§4e): all 216,812; two need `checkfacts.txt` factors, which were verified; all 460 entries verify |
-| Algorithm 1, corrected, to `z = 10¹²` | `k + K_max = 240,019,297,934`, so **`q ≥ 120,009,648,966`** inside their framework (§4f) |
+| Algorithm 1, corrected, to `z = 10¹²` | `k + K_max = 240,019,297,934`, so **`q ≥ 120,009,648,968`** inside their framework (§4f) |
 | Algorithm 1, overflow-free re-run to `z` | **`q ≥ 23·10⁹` confirmed** (margin `6.79·10⁹` primes); the same method gives `q ≥ 26,392,853,446`; true `k = 599,351,328`, `A = 1.047357816316` (§4d) |
 
 Honest summary: Lemma A and Corollary B are real structural additions, and the

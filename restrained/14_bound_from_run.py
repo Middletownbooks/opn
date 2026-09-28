@@ -42,8 +42,10 @@ print(f"{'x':>16s} {'k(x)':>14s} {'A(x)':>16s} {'K_max':>16s} {'k+K_max':>16s} {
 first = None
 for x, k, L, big in rows:
     K = kmax(x, L); B = k + K
-    qb = (B + 3) / 2 - 2                     # q >= omega/2 - 2, omega >= B + 3
-    q = int(-(-D(qb) // 1)); q += q % 2       # round up to an even integer
+    # q >= omega/2 - 2 with omega >= B + 3, i.e. q >= (B-1)/2; the least integer
+    # >= (B-1)/2 is B//2; then q is even.  (An earlier version rounded with
+    # Decimal's //, which truncates toward zero, and so could come out 2 low.)
+    q = B // 2; q += q % 2
     if first is None and B >= NEED: first = x
     print(f"{x:>16,d} {k:>14,d} {float(L.exp()):>16.12f} {K:>16,d} {B:>16,d} {q:>16,d}  {big:,d}")
 print()

@@ -23,6 +23,10 @@ container with 15 GB of RAM.
 | `loopless_build/gmp.h` | Used only to build your **unmodified** `loopless.cpp` where GMP's header is not installed. It declares the GMP functions the program uses, so the program links against the system `libgmp.so.10`. You will not need it if GMP's development files are installed. |
 | `results/` | Our outputs, for comparison. |
 
+The programs' comments sometimes refer to files in the repository they come from
+(`NOTES_RESTRAINED.md`, `sources/…`, other script numbers). Those files are not
+included. `05`'s printed text also carries some of that repository's history.
+
 ## 1. The overflow (seconds)
 
 In `loopless.cpp`, `check_M2` computes `u64 val = r * r + r + 1;` (line 135 of the
@@ -35,7 +39,7 @@ file with its original line breaks). For `r ≥ 2³²` this wraps modulo `2⁶�
 ## 2. Our sieve agrees with `loopless.cpp` wherever `loopless.cpp` is exact
 
     gcc -O3 -march=native -o sieve 13_sieve.c -lm
-    ./sieve 4294967296 4294967297 > exact_2p32.txt        # 87 s; exact Algorithm 1 up to 2^32
+    ./sieve 4294967296 4294967297 > exact_2p32.txt        # 81-87 s; exact Algorithm 1 up to 2^32
 
 It prints progress lines in `loopless.cpp`'s own format, every 10,000 survivors.
 Your program, run unchanged, should print the same lines. Two to compare:
@@ -70,7 +74,7 @@ not used to exclude anything.
   A superset of the survivors still gives a valid count, because every possible
   ordinary prime below `z` is among them.
 
-Expected (`results/14_bound_z_Q2e35.txt`):
+Expected (the row for `x = 216,171,986,291` in `results/14_bound_z_Q2e35.txt`):
 
     x = 216,171,986,291   k = 599,351,328   A = 1.047357816316
     K_max = 52,186,355,564   k + K_max = 52,785,706,892   q >= 26,392,853,446
@@ -85,10 +89,10 @@ and `q` even.
     ./sieve 1000000000000 34359738368 0 > run_1e12.txt  # about 3.8 h, 6 GB
     python3 14_bound_from_run.py run_1e12.txt
 
-Expected (`results/14_bound_1e12_Q2e35.txt`):
+Expected (the row for `x = 10¹²` in `results/14_bound_1e12_Q2e35.txt`):
 
     x = 10^12   k = 2,670,032,132   A = 1.051620849343
-    k + K_max = 240,019,297,934   q >= 120,009,648,966
+    k + K_max = 240,019,297,934   q >= 120,009,648,968
 
 Its checkpoints up to `216,171,986,291` are identical to those of the run in §3.
 
@@ -98,10 +102,11 @@ Its checkpoints up to `216,171,986,291` are identical to those of the run in §3
 
 ## 6. Every prime `11 … 3·10⁶` is ruled out
 
-    NOHINTS=1 python3 15_tree_pilot.py 11 3000000     # about 4.5 CPU-hours; split the range to parallelise
+    NOHINTS=1 python3 15_tree_pilot.py 11 3000000     # about 4 CPU-hours; split the range to parallelise
 
 This ignores `checkfacts.txt` entirely. It rules out every root except 502013 and
-2152883, where its own factoring (Pollard–Brent, then ECM) runs out of budget. With
+2152883, where its own factoring (Pollard–Brent, then ECM) runs out of budget,
+after about an hour each. With
 your `checkfacts.txt` beside the script, both are ruled out. Each hint is checked
 to divide and to be a probable prime before use:
 

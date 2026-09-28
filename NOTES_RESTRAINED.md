@@ -521,6 +521,31 @@ that needs a specific paper, which the user would supply.
 * **(b)** Import stronger explicit sieve results from a named paper, to cut `L`.
 * **(c)** More brute force: linear, poor value.
 
+### 4g addendum. Heuristic: the survivors' total abundancy seems to converge below the threshold (`16e`)
+
+This is **a heuristic, not a result.**
+* **The data.** The exact local survival rate falls steadily: 7.56%, 7.24%, 7.02%
+  and 6.86% on `(10⁹, 4·10⁹]`, `(4·10⁹, 10¹⁰]`, `(10¹⁰, 2·10¹⁰]` and
+  `(2·10¹⁰, 3.4·10¹⁰]`. A fit gives `f(r) ≈ 1.05 (ln r)^−0.86`.
+* **The tail.** If that continues, `Σ 1/r` over survivors converges. The tail beyond
+  `3.4·10¹⁰` is about 0.079, so `ln A(∞) ≈ 0.12`, well below
+  `c = ln(4/3) − ln(1 + 1/6·10⁶) = 0.2877`.
+* **What a proof would give.** An upper bound on the whole tail within a factor
+  **about 3.1** of this estimate would give `ln A(z) < c` for every `z`. `K_max`
+  would then be unbounded, so no restrained odd perfect number could exist, given
+  the rest of the paper's §4. That is the open case Ochem and Zelinsky say "new
+  ideas are required" for.
+* **Why the pilot's static set cannot do this.** Its rate stays near 11.3% and does
+  not fall. The falling rate comes from `M₂` growing with `r`: about 90% of the
+  primes `≡ 1 (mod 3)` enter it.
+* **What a proof would need.** A **bootstrap**. The primes `≡ 1 (mod 3)` outside `M₂`
+  are, apart from a sparse exceptional set, survivors themselves. So an inductive
+  bound on survivor density at small scales would keep the sieve dimension near 2 at
+  every level. The sieve's overshoot would then have to be at most about 3,
+  where the pilot measured 5–7 for the static set.
+* **Verdict.** Uncertain and hard. It is also the only route here with a
+  qualitatively large payoff.
+
 ## 4c. Verification of `3p2.txt`
 
 `3p2.txt` backs the claim that, with 3 ordinary, every prime `≤ 1000` other

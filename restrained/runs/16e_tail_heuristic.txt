@@ -1,0 +1,8 @@
+local survival rate (survivors / primes), exact ranges:
+   (1.0e+09, 4.0e+09]: 7.56%
+   (4.0e+09, 1.0e+10]: 7.24%
+   (1.0e+10, 2.0e+10]: 7.02%
+   (2.0e+10, 3.4e+10]: 6.86%
+fit f(r) ~ 1.051 (ln r)^-0.86
+exact ln A(3.4e10) = 0.0412; heuristic tail = 0.0791; heuristic ln A(inf) ~ 0.120; c = 0.2877
+a proof needs a tail bound within a factor 3.11 of the heuristic

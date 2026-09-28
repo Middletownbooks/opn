@@ -20,7 +20,7 @@ be, and the two sessions could share blind spots. The note should say this (§3 
 | C1 | **CONFIRMED** | line 135 wraps for `r ≥ 2³²`; `get_factors` takes `u64`; the wrap flips verdicts both ways |
 | C2 | **CONFIRMED; wording should change** | the fit gives 9.3% and 29.5%, as stated. Exact figures exist, need no fit, and are stronger. |
 | C3 | **CONFIRMED** | the auditor's own direct-factoring Algorithm 1 gives the identical survivor list. The superset claim holds when tested directly. |
-| C4 | **CONFIRMED** | LOOPLESS_RESULT |
+| C4 | **CONFIRMED** | the unmodified `loopless.cpp`, run here for 70 min, printed 260 lines. All match `13`, and the first 253 are byte-identical to the repo record. `13` reaches `2³²` in 81 s. |
 | C5 | **CONFIRMED** | `12` and `13` agree line for line at `2·10⁸` |
 | C6 | **CONFIRMED** | re-run: all 219 checkpoints identical to the record; `14` output identical |
 | C7 | **CONFIRMED** | the argument is sound, including with a superset of survivors. The note should say what it takes from the rest of the paper. |
@@ -129,7 +129,10 @@ I built the unmodified `sources/loopless.cpp` with
 `restrained/loopless_build/gmp.h` contains only typedefs, prototypes and `#define`s
 that map the names to `__gmpf_*`. The `mpf` struct layout is GMP's.
 
-LOOPLESS_DETAIL
+I ran it for 70 minutes on a loaded 4-core machine and it printed 260 progress lines.
+* `diff` against the first 260 `k:` lines of `13`'s run to `2³²` is empty.
+* Its first 253 lines are byte-identical to `restrained/runs/loopless_released_1h.txt`,
+  whose last line is `k: 2530000  | r: 579733409  | A: 1.028007677068`.
 
 `13` run to `2³²` from the unpacked zip, per README §2:
 * **81 s** (the note says 87 s);

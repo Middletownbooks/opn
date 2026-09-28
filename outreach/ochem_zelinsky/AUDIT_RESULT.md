@@ -246,7 +246,7 @@ The logic matches `tree.cpp`'s `prove()`. I found no unsound step.
 | run | result |
 |---|---|
 | `15` on 20,000 random roots (seed 2026) + the 15 listed roots, with hints | 20,012 roots, **all ruled out**, 256 s; 19 hints used, 0 rejected |
-| `15` on 20,000 random roots (seed 2027) + the 15, `NOHINTS=1` | NOHINTS_SAMPLE |
+| `15` on 20,000 random roots (seed 2027) + the 15, `NOHINTS=1` | 20,015 roots: **20,014 ruled out**. The one exception is `2152883`, which the random draw happened to include. It stopped on the ECM budget (reported as unresolved, not as an open branch), exactly as recorded. 0 hints; 33 ECM splits; 4,957 s. |
 | `15`, `502013` and `2152883` with hints | both ruled out (2 hints each, 0 rejected) |
 | `15`, `502013` and `2152883`, `NOHINTS=1` | HARDROOTS |
 | **auditor's own prover** (`audit/auditor_tree_prover.py`, written from the paper only), 5,000 random roots (seed 99) + the 15 + the 2 | 4,977 ruled out, **0 open**; 39 hit its small Pollard budget (it has no ECM). With a larger budget 9 more were ruled out. `15` rules out the remaining 14 without hints. Given `checkfacts.txt` factors, my prover rules out `502013` and `2152883`. |

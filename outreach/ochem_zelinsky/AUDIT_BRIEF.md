@@ -27,7 +27,7 @@ built by `outreach/ochem_zelinsky/make_bundle.py`, with
 
 | # | claim | where the other session's work is |
 |---|---|---|
-| C1 | `loopless.cpp` line 135, `u64 val = r * r + r + 1;`, wraps for `r ≥ 2³²`; `get_factors` takes `u64` | `sources/loopless.cpp`, `restrained/05` |
+| C1 | `loopless.cpp` (the user copied it from the authors' page) line 135, `u64 val = r * r + r + 1;`, wraps for `r ≥ 2³²`; `get_factors` takes `u64` | `sources/loopless.cpp`, `restrained/05` |
 | C2 | the published `k`, `A` show the wrap's signature: a survival rate of about 9% below `2³²` and about 29% above, which is about the square root | `restrained/11`, `NOTES_RESTRAINED.md` §4b |
 | C3 | `restrained/13_sieve.c` implements Algorithm 1 exactly for `r < Q`, and keeps a superset of the survivors above `Q` | header of `13_sieve.c` |
 | C4 | `13` agrees with the unmodified `loopless.cpp` on all 253 lines of one hour's output (to `r = 579,733,409`), including `k: 2530000 \| r: 579733409 \| A: 1.028007677068`, and prints `k: 15650000 \| r: 4293066907 \| A: 1.035513576704`; the run to `2³²` takes about 87 s | `restrained/runs/loopless_released_1h.txt` |

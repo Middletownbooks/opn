@@ -31,7 +31,7 @@ figures do.
 
 ## 1. The overflow
 
-In `loopless.cpp` [confirm: the copy downloaded from lirmm.fr/~ochem/opn/restrained/], line 135 is
+In `loopless.cpp`, as on your page lirmm.fr/~ochem/opn/restrained/, line 135 is
 
     u64 val = r * r + r + 1;
 

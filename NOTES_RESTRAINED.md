@@ -262,8 +262,9 @@ computed value differs from the true one in every case, and the sieve's verdict
 loopless.cpp", run for 3 weeks, and hosts its files at
 `https://www.lirmm.fr/~ochem/opn/restrained/`.
 
-**Update (original file).** The user attached `loopless.cpp` itself, with its line
-breaks; it is now `sources/loopless.cpp`. Ignoring whitespace it is identical to
+**Update (original file).** The user copied `loopless.cpp` from the authors' page
+(`lirmm.fr/~ochem/opn/restrained/`) and attached it, with its line breaks; it is
+now `sources/loopless.cpp`. Ignoring whitespace it is identical to
 the recovered paste, and **line 135 is `u64 val = r * r + r + 1;`**. So the file
 the paper names does wrap past `r = 2³²`.
 

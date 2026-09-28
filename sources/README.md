@@ -12,7 +12,7 @@ arXiv:2607.19746, plus one algorithm slice from the paper itself.
 
 | file | what it is | provenance |
 |---|---|---|
-| `loopless.cpp` | the authors' implementation of their **Algorithm 1**, the sieve that yields `z = 216 171 986 291` | **the original file, attached by the user 2026-09-27** (replaces the recovered paste, which is whitespace-identical to it) |
+| `loopless.cpp` | the authors' implementation of their **Algorithm 1**, the sieve that yields `z = 216 171 986 291` | **the original file, copied by the user from the authors' page (lirmm.fr/~ochem/opn/restrained/) and attached on 2026-09-27** (replaces the recovered paste, which is whitespace-identical to it) |
 | `ochem_zelinsky_algorithm1.txt` | **Algorithm 1** pseudocode, verbatim slice of the paper transcript | user paste of the arXiv transcript |
 | `all.cpp` | the §2 abundancy product computation | user paste |
 | `tree.cpp` | the factor-tree search, with `checkfacts.txt` injection | user paste |

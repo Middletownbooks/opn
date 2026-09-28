@@ -176,7 +176,10 @@ tractability; what blocks each is stated.
    * **`q ≥ 23·10⁹` is confirmed; the same method gives `q ≥ 26,392,853,446`.**
    * **Extended (§4f):** at `z = 10¹²`, `q ≥ 120,009,648,968`. `tree.txt`'s claim is
      independently confirmed (§4e).
-   * **Next:** report to the authors. **Drafted:** `outreach/ochem_zelinsky/`
+   * **Upper-bound sieve pilot (§4g): qualified negative.** In principle it gives
+     `q ≳ 7·10¹²`, not orders of magnitude. Options: make that rigorous, or import
+     stronger explicit sieve results from a user-supplied paper.
+   * **Sent to the authors** (user, 2026-09-28). Materials: `outreach/ochem_zelinsky/`
      (`NOTE_TO_AUTHORS.md`, the attachment `ochem_zelinsky_bundle.zip` built by
      `make_bundle.py`, and `AUDIT_BRIEF.md` for an independent check before sending).
      Not sent; the user decides. The template for a `k = 2` sieve (item 5) now exists.

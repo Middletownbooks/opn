@@ -25,3 +25,7 @@ authors' file; it is kept only so `06` is reproducible.
 | `loopless_build/gmp.h` | a declaration-only stand-in for the missing `<gmp.h>`, so the authors' `loopless.cpp` compiles **unmodified** against the system `libgmp.so.10` (`g++ -O3 -I loopless_build ../sources/loopless.cpp /usr/lib/x86_64-linux-gnu/libgmp.so.10`) |
 | `runs/` | records of the runs: the full `13` run to `z` with `Q = 2³⁵` (checkpoints, stderr, gzipped progress lines), the `14` bound table, the exact `10¹⁰` checkpoints, and one hour of the released `loopless.cpp` |
 | `15_tree_pilot.py` | independent re-check of `tree.txt`'s claim, that every prime `11 … 3·10⁶` is ruled out. It uses `tree.cpp`'s method but none of its code, with gcd, Pollard–Brent and pure-Python ECM factoring. `checkfacts.txt` is used only as verified hints, and `NOHINTS=1` ignores it. All 216,812 are ruled out (`runs/15_tree_full_range.txt`) |
+| `16_selberg_pilot.py` | pilot, first pass: sanity checks (exact `G` at least `G_low`; sieve bound at least a brute-force count; bound against the true static count) and a crude projection |
+| `16b_m2_dump.py` | exact Algorithm-1 `M₂` below `Y`, as a byte map |
+| `16c_selberg_tables.c` | `G(ξ)`, `W(ξ)` and the sharper weighted error sum for `ξ < 10⁸`, with `ω = 3` on `M₂` |
+| `16d_selberg_projection.py` | loss factors, projections and the sensitivity table (`runs/16d_*`); a qualified negative, `NOTES_RESTRAINED` §4g |

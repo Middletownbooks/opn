@@ -444,6 +444,83 @@ checkpoint up to the paper's `z` is identical** to the §4d run. The run took
 * **Attribution.** This is Ochem–Zelinsky's method, run correctly and further.
   It is offered to them, not claimed as a new result.
 
+## 4g. Pilot: an upper-bound sieve beyond brute force (`restrained/16*`)
+
+**Question.** Brute force grows the `q` bound only linearly in `z`: about `0.12 z`,
+at 3.8 h per `10¹²`. Can a provable upper bound on `ln A(z)` carry the §4 count much
+further?
+
+**Reduction (sound).** The count needs only an upper bound on `ln A(z)`. The
+dynamic `M₂` contains `M₂ ∩ [7, Y)` for every `r > Y`, so every survivor
+`r > Y` lies in the static set
+`T' = {primes r : no q ∈ M₂, q < Y, divides r² + r + 1}`, with `Y = 10⁸` (exact `M₂`
+from `16b`). So
+`ln A(z) ≤ ln A(10¹²) + Σ over dyadic (x, 2x] of #T'(x, 2x] / x`.
+Here `ln A(10¹²)` is the value from the superset run.
+
+**The sieve.** Selberg's Λ² bound on the integers of `(x, 2x]`, sieving by every
+prime `p < ξ`:
+* `ω(p) = 3` for `p ∈ M₂` (the classes `0, ρ, ρ²`); `ω(p) = 1` otherwise;
+* `|R_d| ≤ ω(d)`;
+* bound `x/G(ξ) + (Σ_{d<ξ} ω(d)|λ_d|)²`, with `|λ_d| ≤ min(1, h(d) G(ξ/d)/G(ξ))`
+  and `h(d) = ∏_{p|d}(1 + g(p))`.
+
+`G`, `W` and the weighted sum are computed exactly for `ξ < 10⁸` (`16c`). The
+Selberg inequality and the `λ_d` formula are textbook. They are **not yet written
+out here**, so the pilot is not a proof. Floating point is used throughout.
+
+**Checks.**
+* The exact `G(ξ)` is at least the lower bound `G_low(ξ)` (`16`, first pass).
+* A brute-force count on a small instance stays below the sieve bound.
+* The measured density of the static set (`M₂` below `3·10⁶`) is `0.113 x/ln x`
+  on `(x, 2x]`: exact to 0.5% at `10⁹` and `10¹⁰`
+  (`runs/13_static_Q3e6_checkpoints.txt`), where the sieve bound is 11.0 and
+  10.2 times the true count.
+
+**Results** (`runs/16d_selberg_projection.txt`). "Loss" means the bound divided by
+`0.113 x/ln x`.
+
+| `x` | `10¹⁰` | `10¹²` | `10¹⁴` | `10¹⁶` | `10¹⁸` | `10²⁰` |
+|---|---|---|---|---|---|---|
+| loss, `|λ_d| ≤ 1` | 10.2 | 8.8 | 7.7 | 6.9 | 6.1 | 5.6 |
+| loss, sharper `|λ_d|` | 7.7 | 6.7 | 5.9 | 5.3 | 4.8 | 5.2 (`ξ` capped at `10⁸`) |
+
+Carried forward from `ln A(10¹²)`:
+* crude weights: **`q ≳ 1.4·10¹²`**;
+* sharper weights: **`q ≳ 7.4·10¹²`**, at `z ≈ 5·10¹⁴`.
+
+So the gain is about 60 times the brute-force `1.2·10¹¹`, and about 300 times the
+paper's `2.3·10¹⁰`. **It is not the orders of magnitude hoped for.**
+
+**Why: the result is exponentially sensitive to the loss `L`.**
+
+| `L` | 8 | 6 | 5 | 4 | 3 | 2 |
+|---|---|---|---|---|---|---|
+| `q ≳` | `1.7·10¹²` | `9.2·10¹²` | `4.2·10¹³` | `4.9·10¹⁴` | `5.2·10¹⁶` | `5.1·10²¹` |
+
+The loss has two parts. First, the level: the remainder term limits `ξ` to about
+`x^{0.35–0.45}`, which costs a factor `ln x/ln ξ ≈ 2.2–2.9`. Second, `G(ξ)` is still
+far below its asymptote `∏(q−1)/(q−3) · ln ξ`. The `ω = 3` primes are dense, and
+`G` only captures products of them below `ξ`. That costs roughly another factor
+of 2–2.5. An upper-bound sieve also cannot see the primes of `M₂` between `ξ` and
+`x`, which the real survivors do avoid. That is why the true survival rate (about 7%
+at `10¹²`) sits below the static rate (11.3%).
+
+**Verdict.** This is a qualified negative. The elementary Selberg route is sound in
+principle, and it would give about `q ≥ 7·10¹²` once made rigorous. It cannot give
+the `10¹⁵–10²⁰` range. That needs a loss near 2–3, which by the table is worth 3 to
+9 more orders of magnitude. Getting there needs stronger analytic input than an
+elementary sieve at these scales: an explicit large sieve, or an explicit
+Brun–Titchmarsh with constant near 2, for the prime condition. Under the repo's rules
+that needs a specific paper, which the user would supply.
+
+**Options.**
+* **(a)** Make the `≈ 7·10¹²` rigorous. That means writing the Selberg inequality
+  and the `λ_d` bound in full, outward rounding, and an independent audit. It is
+  moderate work for about a 60-fold gain.
+* **(b)** Import stronger explicit sieve results from a named paper, to cut `L`.
+* **(c)** More brute force: linear, poor value.
+
 ## 4c. Verification of `3p2.txt`
 
 `3p2.txt` backs the claim that, with 3 ordinary, every prime `≤ 1000` other
@@ -515,6 +592,7 @@ transcription.
 | the `59083` line | **not a defect** — the authors' `tree.txt` lists no 19 either |
 | `loopless.cpp` as released | **64-bit overflow past `r = 2^32`**, confirmed in the original file; the paper's reported `k, A` show the wrap's signature (§4b, `restrained/11`) |
 | `tree.txt`'s claim (primes `11 … 3·10⁶` ruled out) | **confirmed independently** (§4e): all 216,812; two need `checkfacts.txt` factors, which were verified; all 460 entries verify |
+| Upper-bound (Selberg) sieve beyond `10¹²`, pilot | **qualified negative** (§4g): about `q ≳ 7·10¹²` in principle (60 times the brute-force bound), not orders of magnitude; the loss factor of 5–7 is the obstacle |
 | Algorithm 1, corrected, to `z = 10¹²` | `k + K_max = 240,019,297,934`, so **`q ≥ 120,009,648,968`** inside their framework (§4f) |
 | Algorithm 1, overflow-free re-run to `z` | **`q ≥ 23·10⁹` confirmed** (margin `6.79·10⁹` primes); the same method gives `q ≥ 26,392,853,446`; true `k = 599,351,328`, `A = 1.047357816316` (§4d) |
 

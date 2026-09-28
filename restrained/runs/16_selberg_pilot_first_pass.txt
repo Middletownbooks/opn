@@ -1,0 +1,25 @@
+|S| = 108339 primes q = 1 (mod 3) in [7, 3e6);  prod_S (1-1/q) = 0.363405
+prod_S (1 + g(q)) = 24.0188;  prod_S (q-1)/(q-3) = 8.7286  (the constant C in G(xi) ~ C ln xi)
+
+(1a) exact G(xi) >= the lower bound G_low(xi):
+     xi =    1,000:  G =    17.0073   G_low =     5.9002   ok = True
+     xi =   10,000:  G =    25.8837   G_low =    10.1681   ok = True
+     xi =  100,000:  G =    36.5267   G_low =    15.8127   ok = True
+     xi = 1,000,000:  G =    48.9108   G_low =    22.9441   ok = True
+     b-terms below B = 1e+08: 3,363,176; sum g(b) = 13.0424 of the full product 24.0188
+
+(1b) brute force on a small instance: n in (x, 2x], x = 2e6, sieving to xi
+     xi =    50: sifted count 115,001  <=  Selberg bound 249,214 ?  True
+     xi =   200: sifted count 65,587  <=  Selberg bound 239,321 ?  True
+     xi =  1000: sifted count 37,659  <=  Selberg bound 2,582,497 ?  True
+
+(2) bound versus the TRUE count of T on (x, 2x]
+     x = 1e+09: true 5,479,447   bound 331,222,784 (xi = 182)   ratio 60.45
+     x = 2e+09: true 10,601,524   bound 612,887,688 (xi = 227)   ratio 57.81
+     x = 5e+09: true 25,341,735   bound 1,378,924,348 (xi = 284)   ratio 54.41
+     x = 1e+10: true 49,042,549   bound 2,559,127,628 (xi = 355)   ratio 52.18
+
+(3) PROJECTION from z0 = 1e12
+              z    bound/x  ratio to ~2c/ln x  ln A_up(z)     K_max ~     q >= ~
+
+     best projected bound: q >= ~7.494e+10 at z ~ 2.00e+12 (ln A_up = 0.2127, c = 0.2877)

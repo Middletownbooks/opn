@@ -411,6 +411,34 @@ remaining inputs are
 * Lemma 8 and the theorems it cites (Bugeaud–Mihăilescu, Ochem–Rao Lemma 3,
   Bennett–Levin via Lemma 3).
 
+## 4f. The corrected sieve run further: `z = 10¹²` (`restrained/13`, `14`)
+
+The same program ran to `10¹²` with the same cutoff `Q = 2³⁵`. It is still exact
+below `3.44·10¹⁰` and a provable superset above. One change was made first: the
+survivor lookup for `(r+1)/2` became a forward-only queue, because a bitset to
+`z/2` would not fit. Both `2·10⁸` regression runs reproduce exactly, and **every
+checkpoint up to the paper's `z` is identical** to the §4d run. The run took
+13,530 s at 5.8 GB (`runs/13_1e12_Q2e35_*`, `runs/14_bound_1e12_Q2e35.txt`).
+
+| `z` | `k(z)` | `A(z)` | `k + K_max` | `q ≥` |
+|---|---|---|---|---|
+| `2.16·10¹¹` (paper's) | 599,351,328 | 1.047357816316 | 52,785,706,892 | 26,392,853,446 |
+| `5·10¹¹` | 1,356,573,080 | 1.049706090471 | 120,942,420,398 | 60,471,210,198 |
+| `10¹²` | 2,670,032,132 | 1.051620849343 | 240,019,297,934 | **120,009,648,966** |
+
+* **Within the paper's framework, the corrected method gives `q ≥ 1.2·10¹¹`,**
+  about 5.2 times its published `23·10⁹`. The bound grows about linearly in `z`,
+  roughly `0.12 z`, so more compute buys more. The cost is about 3.8 h per
+  `10¹²` at the current rate, growing slowly.
+* **It is conservative.** Of the 17.4·10⁹ primes that end in `M₂`, 16.7·10⁹ are
+  `≥ Q` and were not used to exclude anything. An exact run would give a larger
+  bound, but it needs a different memory design.
+* **Inputs.** Everything in §4d still applies. With §4e, the only unrecomputed
+  inputs are the hand arguments (5, 7, `p > 6·10⁶`), `σ₋₁(3^q) < 3/2`, and Lemma 8
+  with its cited theorems.
+* **Attribution.** This is Ochem–Zelinsky's method, run correctly and further.
+  It is offered to them, not claimed as a new result.
+
 ## 4c. Verification of `3p2.txt`
 
 `3p2.txt` backs the claim that, with 3 ordinary, every prime `≤ 1000` other
@@ -482,6 +510,7 @@ transcription.
 | the `59083` line | **not a defect** — the authors' `tree.txt` lists no 19 either |
 | `loopless.cpp` as released | **64-bit overflow past `r = 2^32`**, confirmed in the original file; the paper's reported `k, A` show the wrap's signature (§4b, `restrained/11`) |
 | `tree.txt`'s claim (primes `11 … 3·10⁶` ruled out) | **confirmed independently** (§4e): all 216,812; two need `checkfacts.txt` factors, which were verified; all 460 entries verify |
+| Algorithm 1, corrected, to `z = 10¹²` | `k + K_max = 240,019,297,934`, so **`q ≥ 120,009,648,966`** inside their framework (§4f) |
 | Algorithm 1, overflow-free re-run to `z` | **`q ≥ 23·10⁹` confirmed** (margin `6.79·10⁹` primes); the same method gives `q ≥ 26,392,853,446`; true `k = 599,351,328`, `A = 1.047357816316` (§4d) |
 
 Honest summary: Lemma A and Corollary B are real structural additions, and the

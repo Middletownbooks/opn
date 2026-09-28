@@ -1,7 +1,8 @@
 # Research brief: new ideas for ruling out restrained odd perfect numbers
 
-*Self-contained. You need no files, tools or internet. Everything you need is
-below. Take as long as you need.*
+*Self-contained: everything you need to think about the problem is below. If you
+have tools (code execution, and possibly this repository), read §8 as well. It
+says how to test ideas rather than only propose them. Take as long as you need.*
 
 You are being asked for **new ideas**, not a literature review and not a polished
 proof. A computational project has reached a point where a heuristic says a famous
@@ -218,3 +219,59 @@ why no approach of a given kind can work.
   so. We can compute it.
 * Brevity is not required; clarity is. Separate the ideas cleanly so each can be
   assessed on its own.
+
+## 8. If you have tools
+
+**Test before you rank.** With code execution, an idea's quickest falsification
+test (§6, item 1(d)) should be **run**, not just described. Report what you ran,
+the output, and what it changed about your ranking. An idea that survives a cheap
+test is worth far more than one that is only argued.
+
+**Environment rules** (from the project's standing rules; please follow them):
+* **Bare CPython, standard library only.** `gcc` for C is allowed, with the C
+  standard library only. No sympy, PARI, Sage, Magma, numpy or GMP bindings. If an
+  idea truly needs a computer algebra system, say so; do not fake the result with
+  a bounded search.
+* **Estimate an enumeration's size before launching it.** Run anything over a few
+  minutes with `nohup … &` and poll it.
+* **Never use `pkill -f <pattern>` or `pgrep -f <pattern>`** in a command or loop
+  whose own command line contains the pattern. It matches your own shell and kills
+  the session. Stop processes by explicit PID.
+* The machine this project uses has 4 cores and 15 GB of RAM. Assume nothing more.
+
+**If you are in the repository** (`middletownbooks/opn`, branch
+`claude/odd-perfect-number-audit-h2mlf9`):
+* **Put everything you write under a new directory `ideas_tail/`:** scripts
+  numbered `01_…`, `02_…`, and your report as `ideas_tail/RESULT.md` (sections as
+  in §6). **Do not modify existing files.** Commit and push early and often, since
+  the container can be reclaimed. Commit messages must not name the AI model.
+* **Useful existing tools** (read their headers; do not trust their claims — they
+  are why this brief exists, and an independent eye is the point):
+  * `restrained/13_sieve.c`: exact Algorithm 1 in C, never forming `r² + r + 1`.
+    `./sieve Z Q 0` runs to `Z` using `M₂` primes below `Q`; it is exact for
+    `r < Q` and a superset above. Build with `gcc -O3 -o sieve 13_sieve.c -lm`. It
+    prints checkpoints `CP x=… k=… lnA=…`. To `2·10¹¹` takes about 45–55 minutes
+    and 6 GB.
+  * `restrained/12_algorithm1_reference.py`: a slow Python reference, which agrees
+    with `13` line for line.
+  * `restrained/16b_m2_dump.py`: the exact `M₂` below `Y`, as a byte map
+    (`Y = 10⁸` takes about 20 s).
+  * `restrained/16c_selberg_tables.c` and `16d_selberg_projection.py`: the Selberg
+    tables and projections of §4, item 2.
+  * `restrained/16f_bootstrap_pilot.py`: the 12.6 / 8.8 comparison of §4, item 3.
+  * `restrained/17_lookahead_sample.py`: the look-ahead measurement of §3.
+  * Run records: `restrained/runs/`.
+* Background, if you want it: `NOTES_RESTRAINED.md` §§4b–4i, and the paper's full
+  text in `sources/ochem_zelinsky_2607.19746_transcript.txt`.
+
+**If you are not in the repository,** everything in §§2–3 can be rebuilt from the
+descriptions. Algorithm 1 fits in about 40 lines of Python for ranges up to about
+`10⁸`: mark `r ≡ ρ, ρ² (mod q)` for each `q ∈ M₂` with `ρ` a cube root of unity,
+and handle joining `M₂` as in §2. The `M₁` test for `r ≡ 1 (mod 12)` reduces to
+"is `(r+1)/2` a survivor?". That holds while `(r+1)/2 < 9·10¹²`, because then
+`(r+1)/2` either has a prime factor below `3·10⁶` or is itself a prime. Check your
+rebuild against the table in §3 before relying on it.
+
+**Worth measuring early,** if your ideas touch it: how the look-ahead's removal
+rate (82.9% near `10⁸`) changes with `r`, and with iterated look-ahead (the large
+factor of `P² + P + 1`, and so on). Every lead in §5 depends on how that behaves.

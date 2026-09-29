@@ -609,6 +609,57 @@ This is recorded as a lead in `PROMPT_IDEAS_RESTRAINED_TAIL.md`. **Status:** a s
 at one scale. Soundness is argued above; the rate at larger `r` has not been
 measured.
 
+## 4j. The new-ideas session (`ideas_tail/`): results, and what was verified here
+
+The session answering `PROMPT_IDEAS_RESTRAINED_TAIL.md` reported in
+`ideas_tail/RESULT.md`. Its main points, and their status here:
+
+1. **Greedy fill (Lemma G0): verified.** The candidate set in the count may be *any*
+   set of primes containing every possible ordinary prime up to `z`. That includes
+   the survivors below `10¹²` together with **all primes** in `(10¹², z]`. `|U| + K`
+   keeps growing until the abundancy sum reaches `c`, at about `z = 1.6·10¹⁵`.
+   * The proof was checked line by line here.
+   * An independent recomputation gives `q ≥ 22,554,050,674,652`, against their more
+     conservative `22,545,419,762,710`. **This alone improves `q ≥ 1.2·10¹¹` about
+     190-fold, with no new computation.**
+2. **Look-ahead without the special branch (Lemma U): verified.** The special prime
+   is unique. So at most two ordinary `r` can have the special prime as the large
+   factor `P` of `r² + r + 1`; for every other `r`, `P` must be ordinary. The session
+   applied this to **every** exact survivor below `3.4·10¹⁰` (`ideas_tail/05`, in C).
+   * `restrained/18` re-checks the range below `10⁸` by full factorisation, sharing
+     no method with `05`. The results are **identical**: 502,588 survivors, 502,357
+     with `P > r`, 71,897 kept, kept `ln A = 0.002856582268385`.
+   * With this base, `|T'| ≥ 2,581,995,994` and `Λ₀ ≤ 0.015124`. Lemma G0 then gives
+     **`q ≥ 76,398,309,880,154`**; recomputed independently here,
+     `76,424,568,283,424`.
+3. **The main question: negative, with a sharper test than §4h.** With the primes as
+   the sequence and no error term, the ideal Selberg bound is 5.4 times the truth at
+   the Bombieri–Vinogradov level, against at most about 3.1–4.5 allowed. It is 3.15
+   times at an Elliott–Halberstam level. About 95% of survivors are Bateman–Horn prime
+   pairs, `r` and `(r²+r+1)/3^a` both prime.
+4. **Smaller results, from their report, not re-checked here:**
+   * `q + 1` has no prime factor below 199 (`ideas_tail/08`);
+   * Lemma E: `e = Σ_{s ∈ O} v_p(s²+s+1) + v_p(σ(3^q))`;
+   * a bootstrap seed for proving that the survival rate tends to 0 (a pilot; no
+     contradiction).
+
+**A correction to my own pilots (§4g).** Those projections were under-accounted.
+* They used `q ≈ K_max/2`, dropping the `|U|` term of the count.
+* They bounded `Σ 1/r` on `(x, 2x]` by `(count)/x`, which is 1.44 times too large.
+
+Corrected, the same tables give `q ≈ 3.1·10¹⁴`, and about `2.8·10¹⁵` with the
+look-ahead base. That is still a pilot. The "qualified negative" of §4g applies to a
+proof of nonexistence, not to the size of `q`.
+
+**Outstanding before the `7.6·10¹³` is relied on or sent out.**
+* **One outside input.** The rigorous bound uses the explicit estimates of Rosser and
+  Schoenfeld (*Illinois J. Math.* 6, 1962), for `Σ_{p≤x} 1/p` above and below and for
+  `π(x) > x/ln x`, plus the table value `π(10¹²) = 37,607,912,018`. They were quoted
+  from memory. By the repo's rules the paper should be obtained, and the exact
+  inequalities and ranges confirmed.
+* **An independent audit** of `ideas_tail/`, as for the note. The session that
+  produced it and this one are the same AI.
+
 ## 4c. Verification of `3p2.txt`
 
 `3p2.txt` backs the claim that, with 3 ordinary, every prime `≤ 1000` other
@@ -680,6 +731,7 @@ transcription.
 | the `59083` line | **not a defect** — the authors' `tree.txt` lists no 19 either |
 | `loopless.cpp` as released | **64-bit overflow past `r = 2^32`**, confirmed in the original file; the paper's reported `k, A` show the wrap's signature (§4b, `restrained/11`) |
 | `tree.txt`'s claim (primes `11 … 3·10⁶` ruled out) | **confirmed independently** (§4e): all 216,812; two need `checkfacts.txt` factors, which were verified; all 460 entries verify |
+| New-ideas session (`ideas_tail/`) | **`q ≥ 7.6·10¹³`** by greedy fill plus the look-ahead base: the look-ahead counts are verified independently below `10⁸`; it still needs the Rosser–Schoenfeld paper and an audit (§4j) |
 | Bootstrap sieve toward a full proof, pilot | **negative** (§4h): the sieve bound is at least about 8.8 times the true survivors (12.6 as measured); a proof needs at most about 3.1–3.4 |
 | Upper-bound (Selberg) sieve beyond `10¹²`, pilot | **qualified negative** (§4g): about `q ≳ 7·10¹²` in principle (60 times the brute-force bound), not orders of magnitude; the loss factor of 5–7 is the obstacle |
 | Algorithm 1, corrected, to `z = 10¹²` | `k + K_max = 240,019,297,934`, so **`q ≥ 120,009,648,968`** inside their framework (§4f) |

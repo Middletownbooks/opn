@@ -32,3 +32,4 @@ authors' file; it is kept only so `06` is reproducible.
 | `16e_tail_heuristic.py` | heuristic: the survivors' abundancy appears to converge (`ln A(∞) ≈ 0.12 < 0.2877`); a proof needs a tail bound within a factor of about 3.1 |
 | `16f_bootstrap_pilot.py` | the Selberg bound against the true survivors: about 12.6 times (idealised 8.8), against the 3.1 needed; negative (§4h) |
 | `17_lookahead_sample.py` | one-step look-ahead: a survivor whose large factor `P > r` of `r²+r+1` can be neither ordinary nor special is removed. It removes 82.9% of a 3,000-survivor sample in `(5·10⁷, 10⁸]` (`runs/17_*`, §4i) |
+| `18_verify_lookahead.py` | independent check of `ideas_tail/05` below `10⁸` by full factorisation: identical counts and `ln A` (§4j) |

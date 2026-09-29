@@ -1,0 +1,3 @@
+[3e6, 1e+08): survivors 502,588; with P > r 502,357; kept 71,897; ln A kept 0.002856582268385
+
+[exited with code 0]

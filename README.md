@@ -176,6 +176,12 @@ tractability; what blocks each is stated.
    * **`q ≥ 23·10⁹` is confirmed; the same method gives `q ≥ 26,392,853,446`.**
    * **Extended (§4f):** at `z = 10¹²`, `q ≥ 120,009,648,968`. `tree.txt`'s claim is
      independently confirmed (§4e).
+   * **New-ideas session (`ideas_tail/RESULT.md`, §4j):** greedy fill plus the
+     look-ahead give **`q ≥ 7.6·10¹³`** (about 600 times `1.2·10¹¹`). The look-ahead is
+     verified independently below `10⁸`. **Still to do:** obtain Rosser–Schoenfeld
+     (1962) to confirm the explicit prime estimates, and audit `ideas_tail/`. The
+     full-proof route is judged closed (ideal Selberg 5.4 times the truth, against at
+     most 3.1–4.5 allowed).
    * **Look-ahead (§4i):** a sound strengthening of Algorithm 1 that removes 83% of
      survivors in a sample near `10⁸`. **Brief for new ideas:**
      `PROMPT_IDEAS_RESTRAINED_TAIL.md` (heuristic `ln A(∞) ≈ 0.12 < 0.288`).

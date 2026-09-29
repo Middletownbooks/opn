@@ -6,7 +6,7 @@ per-interval loss of the weighted bound vs the trivial prime sum ln(rho)/ln x:
    x = 1e18:  V/trivial = 0.563
    x = 1e20:  V/trivial = 0.592
 
-16d as run (unweighted, K_max/2):   q ~ 5.130e+12 at z ~ 2.56e+14
+16d as run (unweighted, K_max/2):   q ~ 7.375e+12 at z ~ 5.12e+14
 weighted only (K_max/2):            q ~ 1.538e+14 at z ~ 1.64e+16
 weighted + greedy fill (Lemma G):   q ~ 3.149e+14 at z ~ 3.28e+16
 no sieve at all, same Lemma G:      q ~ 1.751e+13 at z ~ 1.02e+15  (cf. 01: 2.25e13)

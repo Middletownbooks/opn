@@ -19,7 +19,7 @@ input sequence, so primality costs nothing, and ignore every error term. Even th
 best Selberg bound for Algorithm-1 survivors is **5.4× the true count at the
 Bombieri–Vinogradov level** and **3.15× at an Elliott–Halberstam level**. A proof needs
 **≤ 3.1–3.9×**. So no sieve of this kind closes the gap unconditionally, whatever the
-explicit constants. Under an explicit EH-type hypothesis it might just close (§3). The
+explicit constants. Under an explicit EH-type hypothesis it might just close (Idea 5). The
 look-ahead's large gain is carried entirely by the largest prime factor of `r²+r+1`.
 Sieves cannot see that factor without raising the dimension from about 2 to about 6.6,
 which costs about 10⁴ times more than it gains.
@@ -39,7 +39,7 @@ tested:
 | brief | `K_max(10¹²)/2` | `1.2·10¹¹` | rigorous |
 | **Idea 1** | greedy-fill count (Lemma G0), all primes beyond 10¹² | **`2.25·10¹³`** | **rigorous** (explicit prime estimates only) |
 | **Idea 2** | plus the look-ahead base, with the special branch dropped (the special prime is unique) | **{{A_LA}}** | **rigorous** (exact C run below 3.4·10¹⁰, cross-checked) |
-| **Idea 3** | Selberg pilot re-accounted (weighted main term + Lemma G) | `≈ 5.5·10¹⁴` (old base), **`≈ {{B_LA}}`** (look-ahead base) | pilot; sound in principle |
+| **Idea 3** | Selberg pilot re-accounted (weighted main term + Lemma G) | `≈ 3.1·10¹⁴` (old base), **`≈ {{B_LA}}`** (look-ahead base) | pilot; sound in principle |
 
 Idea 3's bound becomes rigorous once `16c`'s tables are recomputed with outward rounding.
 That needs no new mathematics. The brief's own Selberg projection (`7.4·10¹²`) lies
@@ -198,10 +198,10 @@ no prime factor below `r`. Since `C ≤ r²+r+1 < (r+1)²`, `C` is 1 or a prime.
 main term by `1/ln 2 = 1.44`. It also used `q ≈ K_max/2`.
 
 **(b) Barriers.** This runs straight into the level and dimension barriers. The bound
-is still `0.55–0.77` of the trivial prime sum (`02`, table at the top of its output), and
+is still `0.56–0.81` of the trivial prime sum (`02`, table at the top of its output), and
 it has a ceiling. With a sieve bound at `θ` of the prime density, the greedy fill gives
 `z* ≈ z₀^{exp((c−Λ₀)/θ)}`. For `θ ≥ 0.5` and `z₀ = 10¹²` that is at most about
-`10^{20}`, so `q ≲ 10^{18}`. **`q ~ 10⁴⁹` (the brief's L5 example) is out of reach.**
+`10^{21}`, so `q ≲ 10^{19}` (for θ = 0.6 instead: `q ≲ 10^{17}`). **`q ~ 10⁴⁹` (the brief's L5 example) is out of reach.**
 
 **(c) Computation.**
 * Recompute `16c`'s tables (`G`, `E₁`) in exact or interval arithmetic: minutes.
@@ -209,7 +209,7 @@ it has a ceiling. With a sieve bound at `θ` of the prime density, the greedy fi
   about 13 GB, so it needs a leaner design.
 
 **(d) Test run** (`02`, `09`).
-* Old base: `q ≈ 5.5·10¹⁴`, against `16d`'s `7.4·10¹²`.
+* Old base: `q ≈ 3.1·10¹⁴`, against `16d`'s `7.4·10¹²`.
 * Look-ahead base: `q ≈` {{B_LA}}.
 
 The sensitivity table in `02.out` shows how strongly `Λ₀` matters.
@@ -571,7 +571,7 @@ problem is decades old and well studied, which makes the difficulty concrete.
 **How far `q` can be pushed with this framework.**
 * {{QNOW}} rigorously now.
 * About `10^{15.5}–10^{16}` once Idea 3 is made rigorous.
-* A ceiling of about `10^{17}–10^{18}`: the greedy fill gives
+* A ceiling of about `10^{17}–10^{19}`: the greedy fill gives
   `z* ≈ z₀^{exp((c−Λ₀)/θ)}`, and unconditional sieves keep `θ ≳ 0.5`.
 
 Brute force past `10¹²` is almost worthless for `q`. The no-sieve extension already
@@ -594,7 +594,7 @@ lowering `Λ₀`, as Idea 2 does.
      overstates the main term by `1/ln 2`;
    * it uses `K_max/2` instead of the greedy fill.
 
-   Corrected, the same tables give `q ≈ 5.5·10¹⁴`. The large-sieve figure
+   Corrected, the same tables give `q ≈ 3.1·10¹⁴`. The large-sieve figure
    (`q ≳ 10¹³`) presumably has the same two issues. I did not recompute it.
 3. **§3, look-ahead: "special needs `P ≡ 1 (mod 12)` and …".** This is correct, but
    because the special prime is unique, the special branch can rescue at most two `r`

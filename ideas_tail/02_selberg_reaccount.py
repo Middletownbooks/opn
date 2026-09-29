@@ -2,7 +2,7 @@
 """
 ideas_tail/02 -- the Selberg pilot of restrained/16c-16d, re-accounted.
 
-Two bookkeeping changes, both sound (proofs in RESULT.md, Idea 2):
+Two bookkeeping changes, both sound (RESULT.md, Idea 3 and section 2):
 
  (i) WEIGHTED main term.  16d bounds sum_{r in S n (x,2x]} 1/r by (count bound)/x,
      i.e. by 1/G(xi) + E1^2/x.  Sieving with weights a_n = x/n on (x, rho*x] instead
@@ -32,8 +32,9 @@ T, LNA0 = 2_670_032_132, 0.0503326399823567378172
 
 def V(x, rho, weighted=True):
     """upper bound for sum of ln(r/(r-1)) over possible ordinary r in (x, rho x]"""
-    main = math.log(rho) if weighted else (rho - 1)       # 16d used count/x with rho = 2
-    best = min(main / G + 2 * (1 + E1 * E1) / x for t, G, W, E1 in tab if t < x)
+    if not weighted:                                       # 16d exactly as run: (x/G + E1^2)/x
+        return min(1 / G + E1 * E1 / x for t, G, W, E1 in tab if t * t < x)
+    best = min(math.log(rho) / G + 2 * (1 + E1 * E1) / x for t, G, W, E1 in tab if t < x)
     return best * (1 + 1 / x)                              # ln(r/(r-1)) <= (1/r)(1 + 1/(r-1))
 
 def greedy(lna0, vfun, rho, y0=1e12):

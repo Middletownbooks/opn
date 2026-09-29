@@ -316,7 +316,8 @@ exceeds it.
 * **Unconditionally, the survivor-tail route cannot close.** Sieving the integers for
   primality costs a further factor of about 2.8 (`16f`'s ideal 8.8 against 3.15).
   Sieving the primes needs a level of distribution, and even a perfectly explicit
-  Bombieri–Vinogradov at level `√x` leaves 5.4 > 3.9.
+  Bombieri–Vinogradov at level `√x` leaves 5.4. That exceeds the 3.1–4.5 allowed under
+  either tail model.
 * **Conditionally**, an explicit Elliott–Halberstam-type hypothesis for primes in the
   root progressions of `x² + x + 1` might suffice. It would need moduli up to
   `x^{1−ε}` and small explicit error. Then the ratio 3.15–3.2 sits below the ~3.9
@@ -396,7 +397,7 @@ no size contradiction is possible.
   `t = 14425532687 ≡ 2 (mod 3)` has `109 | t² + t + 1`, so `t ∤ N`.
 * The run was stopped by hand after `ℓ = 163`, which is also excluded (by the factor
   `8882811705390167`). It was then running ECM on a 95-digit cofactor for `ℓ = 199`. So
-  among the odd primes below 164, every one is excluded as a divisor of `q + 1`.
+  every odd prime `ℓ < 199` is excluded as a divisor of `q + 1`: `q + 1` has no prime factor below 199.
 
 **(e) Probability** of a contradiction: < 0.01. Value: congruence information on `q`.
 

@@ -6,8 +6,8 @@ Two bookkeeping changes, both sound (proofs in RESULT.md, Idea 2):
 
  (i) WEIGHTED main term.  16d bounds sum_{r in S n (x,2x]} 1/r by (count bound)/x,
      i.e. by 1/G(xi) + E1^2/x.  Sieving with weights a_n = x/n on (x, rho*x] instead
-     gives   sum 1/r <= ln(rho)/G(xi) + (1 + E1(xi)^2)/x
-     (the remainder per class is still at most max a_n = 1).  For rho = 2 the main
+     gives   sum 1/r <= ln(rho)/G(xi) + 2 (1 + E1(xi)^2)/x
+     (the remainder per class is at most 2 max a_n = 2; RESULT.md, Lemma S).  For rho = 2 the main
      term drops by the factor ln 2 = 0.693.
 
  (ii) GREEDY FILL instead of q ~ K_max/2 (LEMMA G, RESULT.md).  With intervals
@@ -33,7 +33,7 @@ T, LNA0 = 2_670_032_132, 0.0503326399823567378172
 def V(x, rho, weighted=True):
     """upper bound for sum of ln(r/(r-1)) over possible ordinary r in (x, rho x]"""
     main = math.log(rho) if weighted else (rho - 1)       # 16d used count/x with rho = 2
-    best = min(main / G + (1 + E1 * E1) / x for t, G, W, E1 in tab if t < x)
+    best = min(main / G + 2 * (1 + E1 * E1) / x for t, G, W, E1 in tab if t < x)
     return best * (1 + 1 / x)                              # ln(r/(r-1)) <= (1/r)(1 + 1/(r-1))
 
 def greedy(lna0, vfun, rho, y0=1e12):

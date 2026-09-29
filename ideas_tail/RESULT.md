@@ -1,7 +1,7 @@
 # New ideas for the restrained-OPN tail: what was tested, and what it showed
 
 Answer to `PROMPT_IDEAS_RESTRAINED_TAIL.md`. Scripts are in this directory, numbered
-`00`–`10`; each has a header saying what it computes and how to run it, and outputs
+`00`–`11`; each has a header saying what it computes and how to run it, and outputs
 are saved beside them (`*.out`, `runs/`). Existing files were not modified.
 
 Labels: **proved** (proof given here), **standard** (a textbook or published result,
@@ -23,6 +23,13 @@ explicit constants. Under an explicit EH-type hypothesis it might just close (§
 look-ahead's large gain is carried entirely by the largest prime factor of `r²+r+1`.
 Sieves cannot see that factor without raising the dimension from about 2 to about 6.6,
 which costs about 10⁴ times more than it gains.
+
+A reformulation makes the difficulty concrete (`11`). **94–98% of Algorithm-1
+survivors are Bateman–Horn prime pairs**: primes `r` with `(r²+r+1)/3^{[r≡1 (3)]}`
+also prime. So the main question is, up to a few percent, an *explicit Brun-constant
+bound* for a 2-dimensional prime-pair problem, within about 3–4.5 times the true tail.
+For the best-studied analogue, twin primes, the best known upper bound I know of is
+about 3.4 times the Hardy–Littlewood prediction (Wu 2004), and it is not explicit.
 
 **Secondary question (a), a much larger rigorous `q`.** Three sound improvements, each
 tested:
@@ -46,8 +53,15 @@ restrictions on `q + 1` (`08`). Both are negative for a contradiction (Ideas 7�
 
 **Secondary question (c).** A bootstrap proof that the survivors' reciprocal sum
 *converges*, i.e. that the survival rate provably tends to 0, looks feasible. The
-seed pilot (`10`) finds a positive share for `M₂` from about `10¹⁴` on. It explains the
-falling rate but cannot give `< c` (Idea 4).
+seed pilot (`10`) finds a positive share for `M₂` from about `10¹⁴` on. It cannot give
+`< c` (Idea 4).
+
+The falling rate itself has a simple explanation, measured in `11`. Survivors are
+mostly Bateman–Horn pairs, whose density among primes falls like `1/ln r`: 8.84%, 7.30%,
+7.07% at `r ~ 3·10⁷`, `1.4·10⁹`, `2.8·10⁹`, the ratios `1/ln r` predicts. The non-pair
+survivors, those with a factor from the sparse allowed set `D`, add a share that grows
+slowly: 2.4% below `10⁸`, 5.2–5.6% at `10⁹`. This is why the fitted exponent is about
+0.86–0.9 rather than 1.
 
 **New sound strengthening, measured.** With the special branch removed (Lemma U), the
 look-ahead removes **85–89%** of survivors at depth 1, against the brief's 82.9%. At
@@ -260,6 +274,42 @@ by the heuristic Algorithm-1 tail beyond `z₀`:
 * {{ALLOW}} at `10¹²` with the look-ahead base of Idea 2.
 
 **Conjecture (heuristic).** These ratios persist, rising slowly, at larger `x`.
+
+**(a′) The same barrier, seen as a prime-pair problem** (`11_bh_pairs.c`, measured).
+Call `r` a *Bateman–Horn pair* if `r` and `n = (r²+r+1)/3^{[r≡1 (3)]}` are both prime.
+
+*Lemma (proved).* Every pair is an Algorithm-1 survivor, and every other survivor has a
+D-prime factor. For a pair, `n` is a prime `> r`, so no `M₂` prime below `r` divides
+`r²+r+1`. For a non-pair survivor, the cofactor of Lemma P is `< n`, so some D-prime was
+divided out.
+
+Measured shares of the survivors:
+
+| range | pairs / survivors | share of `Σ w` |
+|---|---|---|
+| `(3·10⁶, 10⁸]` | 490,328 / 502,588 = 97.6% | 98.5% |
+| `(10⁹, 2·10⁹]` | 3,459,577 / 3,649,303 = 94.8% | 94.8% |
+| `(2·10⁹, 4·10⁹]` | 6,487,863 / 6,869,861 = 94.4% | 94.5% |
+
+So a proof of `ln A(∞) < c` needs, for the pairs alone, an explicit bound on
+`Σ_{pairs, r > z₀} 1/r` within a factor of about 3–4.5 of the truth. That is an explicit
+"Brun constant" for a 2-dimensional prime-pair problem.
+
+The best-studied analogue is the twin primes. The best upper bound I know for
+`π₂(x)` is about 3.4 times the Hardy–Littlewood prediction (J. Wu, *Acta Arith.* 114,
+2004; I am fairly confident of the constant 3.3996, but please check). It rests on Chen's
+switching principle and Bombieri–Vinogradov, and it is **not explicit**. Explicit
+bounds for Brun's constant itself (Riesel–Vaughan 1983, `B₂ < 2.347`, and later small
+improvements) are, as far as I know, well above the true value. That supports the same
+conclusion; I have not reconstructed their tail overshoot, so treat this as a pointer
+rather than evidence.
+
+*A second tail model* (heuristic). The pair density fits `1.54/ln r`, the Bateman–Horn
+shape (8.84%, 7.30%, 7.07% at `r ~ 3·10⁷`, `1.4·10⁹`, `2.8·10⁹`). Adding the non-pair
+share of 6–10% puts the Algorithm-1 tail beyond `10¹²` at about 0.060, against the
+brief's fitted 0.0704. The allowed overshoot then rises to about 4.0 (old base) or
+{{ALLOW2}} (look-ahead base). The verdict is unchanged: the BV-level ideal of 5.4 still
+exceeds it.
 
 **Consequences.**
 * **Unconditionally, the survivor-tail route cannot close.** Sieving the integers for
@@ -492,7 +542,13 @@ the primes of `M₂` below `D^{1/2}`, where `D` is the level of distribution:
 * sieving the integers for primality instead costs the parity factor.
 
 `07` measures the best such bound *with no error term*: 5.4× the truth at level `√x`,
-3.15× at level `x`. The budget is 3.1–3.9×.
+3.15× at level `x`. The budget is 3.1–3.9× (about 4–4.5× under the Bateman–Horn tail
+model of Idea 5).
+
+Put differently, since 94–98% of survivors are prime pairs `(r, (r²+r+1)/3^a)`, the
+programme needs an *explicit* upper bound for a Brun-type constant that beats the best
+*non-explicit* twin-prime upper bound constant known to me (about 3.4, Wu 2004). That
+problem is decades old and well studied, which makes the difficulty concrete.
 
 **What each strengthening does and does not change.**
 * **The look-ahead** changes the *truth* by a factor of about 8 at depth 1 and about
@@ -590,4 +646,5 @@ survival-rate fit.
 | `08_q_plus_1.py` | Lemma Q: which small `ℓ` can divide `q+1` | minutes |
 | `09_combine.py` | the `q` bound with the look-ahead base (rigorous + pilot) | 2 s |
 | `10_bootstrap_seed.py` | seed for Idea 4 (pilot) | 4 s |
+| `11_bh_pairs.c` | Bateman–Horn pairs vs survivors | 1 min |
 | `runs/` | raw outputs of `04`, `05` | — |

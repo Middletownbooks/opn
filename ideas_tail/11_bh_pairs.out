@@ -1,0 +1,7 @@
+# ./bh A B   (11_bh_pairs.c); exact survivor counts from 03 (below 1e8) and restrained/runs/13_z_Q2e35_checkpoints.txt
+(3000000, 100000000]: primes 5544639  pairs 490328 (0.0884 of primes)  sum 1/r over pairs 0.019714779674
+   survivors (3e6,1e8]: 502,588, sum w = 0.020012  -> pairs are 97.56% of survivors, 98.5% of the weight
+(1000000000, 2000000000]: primes 47374753  pairs 3459577 (0.0730 of primes)  sum 1/r over pairs 0.002407198344
+   survivors (1e9,2e9]: 3,649,303 -> pairs are 94.80%
+(2000000000, 4000000000]: primes 91739525  pairs 6487863 (0.0707 of primes)  sum 1/r over pairs 0.002256804226
+   survivors (2e9,4e9]: 6,869,861 -> pairs are 94.44%

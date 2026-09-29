@@ -549,7 +549,8 @@ Sift `n ∈ (x, ρx]` (with `x ≥ ξ`) by the classes `Ω_p = {0, ρ_p, ρ_p²}
   `2 (Σ_{d<ξ} ω(d)|λ_d|)² = 2 E₁(ξ)²`, using the standard `|λ_d| ≤ 1` or the sharper
   `|λ_d| ≤ h(d) G(ξ/d)/G(ξ)` that `16c` uses.
 
-Hence `Σ_{r ∈ S ∩ (x, ρx]} 1/r ≤ ln ρ / G(ξ) + 2 E₁(ξ)²/x`, and `w(r) ≤ (1/r)(1 + 1/(r−1))`.
+Hence `Σ_{r ∈ S ∩ (x, ρx]} 1/r ≤ ln ρ / G(ξ) + 2(1 + E₁(ξ)²)/x`, and
+`w(r) ≤ (1/r)(1 + 1/(r−1))`. The extra `1` covers `|Σ a_n − x ln ρ| ≤ 1`.
 
 **What is still needed for rigour** (as `16g` notes): write out the λ-bound, use
 outward rounding in `G` and `E₁`, and have an independent check. The `M₂` table below
@@ -561,7 +562,7 @@ outward rounding in `G` and `E₁`, and have an independent check. The `M₂` ta
 
 **Is "`ln A(∞) < c`" plausibly provable with current methods? No.**
 
-**Strongest reason: it needs about 3.9× precision where the best conceivable
+**Strongest reason: it needs 3.1–4.5× precision, and the best conceivable
 unconditional sieve gives 5.4×.** The contradiction must come from the sparsity, at
 *every* scale beyond any computation, of a set defined by the full factorisation of
 `r² + r + 1`. Past the computed range only upper-bound sieves certify anything. They see
@@ -629,7 +630,8 @@ lowering `Λ₀`, as Idea 2 does.
 3. **§3, look-ahead: "special needs `P ≡ 1 (mod 12)` and …".** This is correct, but
    because the special prime is unique, the special branch can rescue at most two `r`
    (Lemma U). The look-ahead is therefore stronger than measured: 85–89% at depth 1,
-   94–98% at depth 2, flat in `r` (`04`).
+   94–98% at depth 2, flat in `r` (`04`). The exact run below `3.4·10¹⁰` removes
+   84.7–85.7% with cheaper static lists (`05`).
 4. **§4, last paragraph: "the allowed factor grows to perhaps 10–20".** That holds only
    for a sieve that sees the look-ahead in the *tail*. For the Algorithm-1 tail sieve,
    the look-ahead acts through the base `Λ₀` alone, and the allowed factor rises only

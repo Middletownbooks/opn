@@ -18,7 +18,7 @@ does not change that.** The decisive test was cheap (`07`). Take the primes as t
 input sequence, so primality costs nothing, and ignore every error term. Even then, the
 best Selberg bound for Algorithm-1 survivors is **5.4× the true count at the
 Bombieri–Vinogradov level** and **3.15× at an Elliott–Halberstam level**. A proof needs
-**≤ 3.1–3.9×**. So no sieve of this kind closes the gap unconditionally, whatever the
+**≤ 3.1–4.5×** (depending on the base and the tail model). So no sieve of this kind closes the gap unconditionally, whatever the
 explicit constants. Under an explicit EH-type hypothesis it might just close (Idea 5). The
 look-ahead's large gain is carried entirely by the largest prime factor of `r²+r+1`.
 Sieves cannot see that factor without raising the dimension from about 2 to about 6.6,
@@ -38,8 +38,8 @@ tested:
 |---|---|---|---|
 | brief | `K_max(10¹²)/2` | `1.2·10¹¹` | rigorous |
 | **Idea 1** | greedy-fill count (Lemma G0), all primes beyond 10¹² | **`2.25·10¹³`** | **rigorous** (explicit prime estimates only) |
-| **Idea 2** | plus the look-ahead base, with the special branch dropped (the special prime is unique) | **{{A_LA}}** | **rigorous** (exact C run below 3.4·10¹⁰, cross-checked) |
-| **Idea 3** | Selberg pilot re-accounted (weighted main term + Lemma G) | `≈ 3.1·10¹⁴` (old base), **`≈ {{B_LA}}`** (look-ahead base) | pilot; sound in principle |
+| **Idea 2** | plus the look-ahead base, with the special branch dropped (the special prime is unique) | **`7.6·10¹³`** | **rigorous** (exact C run below 3.4·10¹⁰, cross-checked) |
+| **Idea 3** | Selberg pilot re-accounted (weighted main term + Lemma G) | `≈ 3.1·10¹⁴` (old base), **`≈ 2.8·10¹⁵`** (look-ahead base) | pilot; sound in principle |
 
 Idea 3's bound becomes rigorous once `16c`'s tables are recomputed with outward rounding.
 That needs no new mathematics. The brief's own Selberg projection (`7.4·10¹²`) lies
@@ -64,8 +64,10 @@ slowly: 2.4% below `10⁸`, 5.2–5.6% at `10⁹`. This is why the fitted expone
 0.86–0.9 rather than 1.
 
 **New sound strengthening, measured.** With the special branch removed (Lemma U), the
-look-ahead removes **85–89%** of survivors at depth 1, against the brief's 82.9%. At
-depth 2 it removes **94–98%**, at every scale from `3·10⁶` to `10¹²`. So in
+look-ahead removes **85–89%** of survivors at depth 1 (samples, static `M₂` below `10⁸`),
+against the brief's 82.9%. The exact run over every survivor below `3.4·10¹⁰` removes
+84.7–85.7% with the cheaper lists below `3·10⁶` or `10⁷`. At depth 2 it removes
+**94–98%**, at every scale from `3·10⁶` to `10¹²`. So in
 the heuristic picture only about 2–5% of Algorithm-1 survivors can be ordinary.
 
 ---
@@ -75,8 +77,8 @@ the heuristic picture only about 2–5% of Algorithm-1 survivors can be ordinary
 | rank | idea | serves | P(works) | value |
 |---|---|---|---|---|
 | 1 | Greedy-fill count (Lemma G0/G) | (a) | 0.97 (done) | ×190 in `q`, free |
-| 2 | Unique special prime ⇒ stronger look-ahead; exact look-ahead base | (a) | 0.95 (done) | ×{{X2}} more |
-| 3 | Weighted Selberg + Lemma G, made rigorous | (a) | 0.85 | `q ~ 10^{15.5}–10^{16}` |
+| 2 | Unique special prime ⇒ stronger look-ahead; exact look-ahead base | (a) | 0.95 (done) | ×3.4 more (rigorous); ×9 in the Selberg pilot |
+| 3 | Weighted Selberg + Lemma G, made rigorous | (a) | 0.85 | `q ≈ 3·10¹⁵` |
 | 4 | Bootstrap: provable convergence of the survivors' sum | (c) | 0.4 | explains the falling rate; no contradiction |
 | 5 | The level barrier, and conditional closure under EH | main (verdict) | 0.3 (conditional theorem) | settles what is needed |
 | 6 | Iterated look-ahead / chain forest (L1, L4) | main, (a) | 0.01 (main); 0.9 (base) | small for (a) |
@@ -152,7 +154,7 @@ no prime factor below `r`. Since `C ≤ r²+r+1 < (r+1)²`, `C` is 1 or a prime.
 
 **(c) Computation.**
 * `05_lookahead_base.c` is `13_sieve.c` plus D-prime tracking and the test, in exact
-  mode. It covers `[3·10⁶, 3.4·10¹⁰)` in four pieces, about {{T05}} on 4 cores, with at
+  mode. It covers `[3·10⁶, 3.4·10¹⁰)` in four pieces, about about 4 core-hours (the slowest piece took 49 min) on 4 cores, with at
   most 6 GB for the largest piece.
 * The static `M₂` list is below `10⁷` for `r < 10⁹` and below `3·10⁶` above. A list
   below `10⁸` adds about 2 points of removal at 10–60 times the cost.
@@ -185,10 +187,33 @@ no prime factor below `r`. Since `C ≤ r²+r+1 < (r+1)²`, `C` is 1 or a prime.
   include `r` that `M₂` primes in `[10⁸, r)` would remove.
 * **Exact base** (`09_combine.py`):
 
-  {{TABLE09}}
+  | look-ahead range | survivors | removed | kept | `ln A` kept |
+  |---|---|---|---|---|
+  | `[3·10⁶, 5·10⁸)` (list below 10⁷) | 2,210,628 | 1,894,046 | 14.3% | 0.003863 |
+  | `[5·10⁸, 10⁹)` (list below 10⁷) | 1,943,288 | 1,665,404 | 14.3% | 0.000387 |
+  | `[10⁹, 2·10⁹)` | 3,649,303 | 3,090,720 | 15.3% | 0.000389 |
+  | `[2·10⁹, 10¹⁰)` | 26,064,080 | 22,080,808 | 15.3% | 0.000816 |
+  | `[10¹⁰, 1.1·10¹⁰)` | 3,083,537 | 2,612,483 | 15.3% | 0.000045 |
+  | `[1.1·10¹⁰, 2·10¹⁰)` | 26,906,448 | 22,796,107 | 15.3% | 0.000274 |
+  | `[2·10¹⁰, 2.2·10¹⁰)` | 5,825,045 | 4,934,544 | 15.3% | 0.000042 |
+  | `[2.2·10¹⁰, 3.4·10¹⁰)` | 34,184,207 | 28,962,026 | 15.3% | 0.000190 |
+
+  Below `3.4·10¹⁰`, Algorithm 1 has `k = 103,866,536` and `ln A = 0.041215`. The
+  look-ahead keeps `k = 15,830,398` with `ln A = 0.006005`.
+
+  With the `Q = 2³⁵` superset for `[3.4·10¹⁰, 10¹²]` and the two exceptions, the base
+  below `10¹²` becomes `|T'| ≥ 2,581,995,994` and `Λ₀ ≤ 0.015124` (was 0.050333).
+  Then Lemma G0 gives, **rigorously, `q ≥ 76,398,309,880,154`** (`z* ≈ 5.5·10¹⁵`).
+  The Selberg pilot on the same base gives `q ≈ 2.8·10¹⁵` (`z* ≈ 5.2·10¹⁷`).
+
+  The pieces ending at `5·10⁸`, `2·10⁹`, `1.1·10¹⁰` and `2.2·10¹⁰` come from the first,
+  slower runs, stopped at those checkpoints. The rest come from reruns with the faster
+  remainder (`05`: Lemire–Kaser–Kurz). The reruns were checked against the division-based
+  test on every call on `[10⁹, 1.01·10⁹)` and `[3·10⁶, 5·10⁶)`, with identical results.
+  Raw outputs are in `runs/`.
 
 **(e) Probability: 0.95.** Done. The value is moderate: it shrinks `Λ₀` by about
-{{LAMRED}}, and `q` grows exponentially in `c − Λ₀`.
+0.035 (from 0.0503 to 0.0151), and `q` grows exponentially in `c − Λ₀`.
 
 ### Idea 3 — The Selberg pilot, re-accounted, and made rigorous
 
@@ -211,7 +236,7 @@ it has a ceiling. With a sieve bound at `θ` of the prime density, the greedy fi
 
 **(d) Test run** (`02`, `09`).
 * Old base: `q ≈ 3.1·10¹⁴`, against `16d`'s `7.4·10¹²`.
-* Look-ahead base: `q ≈` {{B_LA}}.
+* Look-ahead base: `q ≈` `2.8·10¹⁵`.
 
 The sensitivity table in `02.out` shows how strongly `Λ₀` matters.
 
@@ -272,7 +297,7 @@ For comparison, **the overshoot a proof can afford** is the budget `c − Λ₀(
 by the heuristic Algorithm-1 tail beyond `z₀`:
 * 3.1 at `z₀ = 3.4·10¹⁰`;
 * 3.4 at `10¹²`;
-* {{ALLOW}} at `10¹²` with the look-ahead base of Idea 2.
+* 3.9 at `10¹²` with the look-ahead base of Idea 2.
 
 **Conjecture (heuristic).** These ratios persist, rising slowly, at larger `x`.
 
@@ -309,7 +334,7 @@ rather than evidence.
 shape (8.84%, 7.30%, 7.07% at `r ~ 3·10⁷`, `1.4·10⁹`, `2.8·10⁹`). Adding the non-pair
 share of 6–10% puts the Algorithm-1 tail beyond `10¹²` at about 0.060, against the
 brief's fitted 0.0704. The allowed overshoot then rises to about 4.0 (old base) or
-{{ALLOW2}} (look-ahead base). The verdict is unchanged: the BV-level ideal of 5.4 still
+4.5 (look-ahead base). The verdict is unchanged: the BV-level ideal of 5.4 still
 exceeds it.
 
 **Consequences.**
@@ -321,7 +346,7 @@ exceeds it.
 * **Conditionally**, an explicit Elliott–Halberstam-type hypothesis for primes in the
   root progressions of `x² + x + 1` might suffice. It would need moduli up to
   `x^{1−ε}` and small explicit error. Then the ratio 3.15–3.2 sits below the ~3.9
-  allowed, and heuristically `Λ₀ + 3.2 × 0.0704 ≈ {{EHSUM}} < c`. The margin is small.
+  allowed, and heuristically `Λ₀ + 3.2 × 0.0704 ≈ 0.24 < c`. The margin is small.
 
 **(b)** This *is* the barrier. The parity factor the brief cites is part of it: with the
 primes as the input sequence, parity shows up as the level restriction.
@@ -573,8 +598,8 @@ problem is decades old and well studied, which makes the difficulty concrete.
    `e`, the Wieferich conditions, mod-4 and mod-8 parities (§5) — yields one.
 
 **How far `q` can be pushed with this framework.**
-* {{QNOW}} rigorously now.
-* About `10^{15.5}–10^{16}` once Idea 3 is made rigorous.
+* `q ≥ 7.6·10¹³` rigorously now.
+* About `3·10¹⁵` once Idea 3 is made rigorous.
 * A ceiling of about `10^{17}–10^{19}`: the greedy fill gives
   `z* ≈ z₀^{exp((c−Λ₀)/θ)}`, and unconditional sieves keep `θ ≳ 0.5`.
 
@@ -587,7 +612,8 @@ lowering `Λ₀`, as Idea 2 does.
 ## 4. Things in the brief I believe are wrong or misleading
 
 1. **"`q ≥ 1.2·10¹¹` rigorously … the `q` bound grows only linearly in `z`".** The
-   rigorous bound from the *same* data is `q ≥ 2.25·10¹³` (Lemma G0, `01`). The
+   rigorous bound from the *same* data is `q ≥ 2.25·10¹³` (Lemma G0, `01`). With the
+   look-ahead base of Idea 2 it is `q ≥ 7.6·10¹³` (`09`). The
    `K_max/2` accounting stops at the last computed `z` and leaves out that any superset
    may be counted. With all primes in `(10¹², z]`, `|U| + K` keeps growing until
    `Λ(z) = c` at `z ≈ 1.6·10¹⁵`. For the same reason, brute force beyond `10¹²` buys
@@ -607,7 +633,7 @@ lowering `Λ₀`, as Idea 2 does.
 4. **§4, last paragraph: "the allowed factor grows to perhaps 10–20".** That holds only
    for a sieve that sees the look-ahead in the *tail*. For the Algorithm-1 tail sieve,
    the look-ahead acts through the base `Λ₀` alone, and the allowed factor rises only
-   from 3.4 to about {{ALLOW}}.
+   from 3.4 to about 3.9.
 5. **§4 item 3: "a factor of about 2 is forced by the parity barrier".** True, but it
    hides the larger loss. With the primes as input, and so no parity loss from sieving
    for primality, the ideal ratio is still 5.4 at the BV level (`07`). The level is the
@@ -644,7 +670,7 @@ survival-rate fit.
 | `02_selberg_reaccount.py` | weighted Selberg + Lemma G from `16c` tables (pilot) | 1 s |
 | `03_state.py` | exact Algorithm-1 state below `10⁸` (status byte map) | 3 min |
 | `04_lookahead_scaling.py` | look-ahead rates by scale: old, new (Lemma U), depth 2 | ~1 h |
-| `05_lookahead_base.c` | exact Algorithm 1 + depth-1 look-ahead (Lemmas U, P) | {{T05}} |
+| `05_lookahead_base.c` | exact Algorithm 1 + depth-1 look-ahead (Lemmas U, P) | about 4 core-hours (the slowest piece took 49 min) |
 | `06_check_05.py` | independent factoring check of `05` | 20 s |
 | `07_level_ideal.py` | ideal Selberg at BV / EH level vs truth | 0.4 s |
 | `08_q_plus_1.py` | Lemma Q: which small `ℓ` can divide `q+1` | minutes |

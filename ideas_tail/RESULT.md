@@ -394,7 +394,9 @@ no size contradiction is possible.
 * 16 remain open after that pass. The first are `59, 79, 101`.
 * Factoring `(3^ℓ−1)/2` settles `59, 79, 101` too. For `ℓ = 59`,
   `t = 14425532687 ≡ 2 (mod 3)` has `109 | t² + t + 1`, so `t ∤ N`.
-* {{Q08}}
+* The run was stopped by hand after `ℓ = 163`, which is also excluded (by the factor
+  `8882811705390167`). It was then running ECM on a 95-digit cofactor for `ℓ = 199`. So
+  among the odd primes below 164, every one is excluded as a divisor of `q + 1`.
 
 **(e) Probability** of a contradiction: < 0.01. Value: congruence information on `q`.
 

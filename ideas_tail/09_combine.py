@@ -2,9 +2,10 @@
 """
 ideas_tail/09 -- the q bound with the look-ahead base (Ideas 1-3 of RESULT.md combined).
 
-Inputs: the SUMMARY lines of the 05 runs covering [3e6, 3.4e10) in disjoint look-ahead
-ranges.  Each run is first checked against restrained/13's exact checkpoints (its k and
-ln A at Z_END must agree to every printed digit).
+Inputs: pieces FILE:LO:X of 05 outputs covering [3e6, 3.4e10) in disjoint look-ahead
+ranges [LO, X): X is the "CP x=X" line of a run stopped early, or "end" for a run's
+SUMMARY.  Where restrained/13 has a checkpoint at X, the piece's Algorithm-1 k and ln A
+must agree with it to every printed digit.
 
 Base set T' below 1e12 (sound superset of O n (3e6, 1e12], up to the exceptions E):
   * survivors in (3e6, 3.4e10) kept by the depth-1 look-ahead (05);
@@ -13,7 +14,7 @@ Base set T' below 1e12 (sound superset of O n (3e6, 1e12], up to the exceptions 
 Then:
   (A) RIGOROUS, no sieve beyond 1e12 (Lemma G0, the method of 01);
   (B) PILOT, the weighted Selberg bound of 02 with remainder 2 E1^2 (Lemma G).
-Run:  python3 09_combine.py OUT_a OUT_b OUT_c OUT_d
+Run:  python3 09_combine.py FILE:LO:X ...   (see RESULT.md for the exact command)
 """
 import sys, re, math, os
 from decimal import Decimal as D, getcontext
@@ -24,16 +25,23 @@ for l in open(os.path.join(HERE, "..", "restrained", "runs", "13_1e12_Q2e35_chec
     m = re.match(r"CP x=(\d+) k=(\d+) lnA=(\S+)", l)
     if m: ref[int(m[1])] = (int(m[2]), m[3])
 kla, lna, ranges = 0, D(0), []
-for fn in sys.argv[1:]:
-    s = [l for l in open(fn) if l.startswith("SUMMARY")][0]
-    g = dict(re.findall(r"(\w+)=(\S+)", s))
-    z = int(g["ZEND"]); lo, hi = re.match(r"\[(\d+),(\d+)\)", g["LA"]).groups()
-    assert int(g["k"]) == ref[z][0] and g["lnA"] == ref[z][1], f"{fn}: mismatch with restrained/13 at {z}"
+for spec in sys.argv[1:]:                      # FILE:LO:X  (X = a CP x, or "end" for SUMMARY)
+    fn, lo, x = spec.split(":"); lo = int(lo)
+    if x == "end":
+        line = [l for l in open(fn) if l.startswith("SUMMARY")][0]
+        g = dict(re.findall(r"(\w+)=(\S+)", line)); hi = int(g["ZEND"])
+        assert int(re.match(r"\[(\d+),", g["LA"]).group(1)) == lo
+    else:
+        hi = int(x)
+        line = [l for l in open(fn) if l.startswith(f"CP x={hi} ")][0]
+        g = dict(re.findall(r"(\w+)=(\S+)", line))
+    if hi in ref:
+        assert int(g["k"]) == ref[hi][0] and g["lnA"] == ref[hi][1], f"{fn}: mismatch with restrained/13 at {hi}"
     kla += int(g["kLA"]); lna += D(g["lnALA"]) + D("1e-15")
-    ranges.append((int(lo), int(hi), int(g["nsurv"]), int(g["nP"]), int(g["nfail"]), int(g["kLA"]), g["lnALA"]))
+    ranges.append((lo, hi, int(g["nsurv"]), int(g["nP"]), int(g["nfail"]), int(g["kLA"]), g["lnALA"]))
 ranges.sort()
 assert ranges[0][0] == 3_000_000 and all(a[1] == b[0] for a, b in zip(ranges, ranges[1:])) and ranges[-1][1] == 34 * 10**9
-print("look-ahead ranges (each run agrees with restrained/13 at its Z_END):")
+print("look-ahead ranges (k, ln A checked against restrained/13 wherever it has a checkpoint):")
 print(f"{'range':>26} {'survivors':>11} {'with P':>11} {'removed':>11} {'kept %':>7} {'ln A kept':>12}")
 for lo, hi, ns, nP, nf, k, l in ranges:
     print(f"[{lo:.2e}, {hi:.2e}) {ns:11,d} {nP:11,d} {nf:11,d} {100*(ns-nf)/ns:7.2f} {float(l):12.6f}")

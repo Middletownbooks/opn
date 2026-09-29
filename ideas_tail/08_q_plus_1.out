@@ -4,3 +4,4 @@ NOT excluded (16): 59 (cofactor 28 digits), 79 (cofactor 38 digits), 101 (cofact
    l = 79: excluded by the factor 432853009
    l = 101: excluded by the factor 50316775668019759306202964023
    l = 163: excluded by the factor 8882811705390167
+# (run stopped by hand after l = 163, during ECM on the 95-digit cofactor for l = 199)

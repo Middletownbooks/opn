@@ -126,9 +126,18 @@ static inline void bpushd(u64 chunk, u64 q, u64 off) {   /* a D-prime entry */
 }
 static u128 gcd128(u128 a, u128 b) { while (b) { u128 t = a % b; a = b; b = t; } return a; }
 
-/* static M2 list for the look-ahead test: q, rho_q, 2^64 mod q */
-static u64 *tq, *trho, *t64; static size_t ntq;
-static int la_fails(u128 P) {                /* 1 if some listed q divides P^2+P+1 */
+/* static M2 list for the look-ahead test: q, rho_q, 2^64 mod q, and Lemire-Kaser-Kurz
+   "direct remainder" multipliers (Software: Practice and Experience 49, 2019):
+   for d < 2^32,  a mod d = floor(((M*a mod 2^F) * d) / 2^F)  with M = floor((2^F-1)/d) + 1,
+   exact for all a < 2^(F/2).  F = 128 for 64-bit a, F = 64 for 32-bit a. */
+static u64 *tq, *trho, *t64, *tm32; static u128 *tm64; static size_t ntq;
+static inline u64 fmod64(u64 a, u128 M, u64 d) {
+    u128 low = M * a; u64 lo = (u64)low, hi = (u64)(low >> 64);
+    u128 t = (u128)lo * d; u128 u = (u128)hi * d + (t >> 64);
+    return (u64)(u >> 64);
+}
+static inline u64 fmod32(u64 a, u64 M, u64 d) { return (u64)(((u128)(M * a) * d) >> 64); }
+static int la_fails_slow(u128 P) {           /* reference: plain division */
     u64 hi = (u64)(P >> 64), lo = (u64)P;
     for (size_t j = 0; j < ntq; j++) {
         u64 q = tq[j];
@@ -137,6 +146,17 @@ static int la_fails(u128 P) {                /* 1 if some listed q divides P^2+P
     }
     return 0;
 }
+static int la_fails(u128 P) {                /* 1 if some listed q divides P^2+P+1 */
+    u64 hi = (u64)(P >> 64), lo = (u64)P;    /* P < 2^70, q < 2^24: hi*t64 + r1 < 2^31 */
+    for (size_t j = 0; j < ntq; j++) {
+        u64 q = tq[j];
+        u64 r = fmod32(hi * t64[j] + fmod64(lo, tm64[j], q), tm32[j], q);
+        if (r == trho[j] || r == q - 1 - trho[j]) return 1;
+    }
+    return 0;
+}
+static int LA_CHECK;
+
 /* next hit of q after the hit n (n = c mod q for one root c) */
 static inline u64 advance(u64 n, u64 q) {
     u64 rho = n % q, other = q - 1 - rho;
@@ -144,11 +164,12 @@ static inline u64 advance(u64 n, u64 q) {
     return a < b ? a : b;
 }
 
+
 int main(int argc, char **argv) {
     if (argc < 4) { fprintf(stderr, "usage: %s Z_END LA_LO LA_HI [M2FILE YS]\n", argv[0]); return 1; }
     ZEND = strtoull(argv[1], 0, 10); QLIM = ZEND + 1;          /* exact mode only */
     u64 LA_LO = strtoull(argv[2], 0, 10), LA_HI = strtoull(argv[3], 0, 10);
-    PROGRESS = 0;
+    PROGRESS = 0; LA_CHECK = getenv("LA_CHECK") != 0;
     if (QLIM > (1ULL << (63 - CHLOG)) - 1) { fprintf(stderr, "Z_END too large for packing\n"); return 1; }
     if (ZEND > 4000000000000ULL) { fprintf(stderr, "Z_END too large: P must stay below 2^128\n"); return 1; }
     time_t t0 = time(0);
@@ -174,12 +195,15 @@ int main(int argc, char **argv) {
             st = malloc(YS); if (fread(st, 1, YS, f) != YS) { fprintf(stderr, "short M2 file\n"); return 1; }
             fclose(f);
         }
+        if (YS > (1ULL << 24)) { fprintf(stderr, "YS must be below 2^24 for the fast remainder\n"); return 1; }
         tq = malloc(YS / 3 * 8 + 64); trho = malloc(YS / 3 * 8 + 64); t64 = malloc(YS / 3 * 8 + 64);
+        tm32 = malloc(YS / 3 * 8 + 64); tm64 = malloc(YS / 3 * 16 + 64);
         for (u64 q = 7; q < YS; q++) {
             if (q % 3 != 1) continue;
             int in = st ? (st[q] == 4 || st[q] == 1) : (q < LO && ip[q]);
             if (!in) continue;
-            tq[ntq] = q; trho[ntq] = cube_root(q); t64[ntq] = (u64)(((u128)1 << 64) % q); ntq++;
+            tq[ntq] = q; trho[ntq] = cube_root(q); t64[ntq] = (u64)(((u128)1 << 64) % q);
+            tm32[ntq] = UINT64_MAX / q + 1; tm64[ntq] = (~(u128)0) / q + 1; ntq++;
         }
         free(st);
         fprintf(stderr, "static M2 test list: %zu primes below %llu\n", ntq, (unsigned long long)YS);
@@ -279,7 +303,10 @@ int main(int argc, char **argv) {
                     if (N > 1) {
                         if (N <= n) { fprintf(stderr, "cofactor <= r at r=%llu\n", (unsigned long long)n); return 4; }
                         nP++;
-                        if (la_fails(N)) { keep = 0; nfail++; }
+                        if (N >> 70) { fprintf(stderr, "P too large at r=%llu\n", (unsigned long long)n); return 4; }
+                        int f = la_fails(N);
+                        if (LA_CHECK && f != la_fails_slow(N)) { fprintf(stderr, "fast/slow mismatch at r=%llu\n", (unsigned long long)n); return 5; }
+                        if (f) { keep = 0; nfail++; }
                     }
                     if (keep) { kla++; ADDLOG(la, lcmp, term); }
                 }

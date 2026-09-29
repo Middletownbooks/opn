@@ -1,0 +1,6 @@
+odd primes l < 400: excluded via a factor below 1e+08: 59, via a prime cofactor: 2
+NOT excluded (16): 59 (cofactor 28 digits), 79 (cofactor 38 digits), 101 (cofactor 41 digits), 163 (cofactor 78 digits), 199 (cofactor 95 digits), 223 (cofactor 107 digits), 227 (cofactor 109 digits), 229 (cofactor 109 digits), 241 (cofactor 115 digits), 283 (cofactor 135 digits), 307 (cofactor 147 digits), 317 (cofactor 151 digits), 331 (cofactor 158 digits), 349 (cofactor 167 digits), 373 (cofactor 178 digits), 379 (cofactor 181 digits)
+   l = 59: excluded by the factor 14425532687
+   l = 79: excluded by the factor 432853009
+   l = 101: excluded by the factor 50316775668019759306202964023
+   l = 163: excluded by the factor 8882811705390167

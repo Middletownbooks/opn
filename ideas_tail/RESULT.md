@@ -65,7 +65,7 @@ slowly: 2.4% below `10⁸`, 5.2–5.6% at `10⁹`. This is why the fitted expone
 
 **New sound strengthening, measured.** With the special branch removed (Lemma U), the
 look-ahead removes **85–89%** of survivors at depth 1, against the brief's 82.9%. At
-depth 2 it removes **94–98%**, at every scale from `3·10⁶` to `10¹⁰`. So in
+depth 2 it removes **94–98%**, at every scale from `3·10⁶` to `10¹²`. So in
 the heuristic picture only about 2–5% of Algorithm-1 survivors can be ordinary.
 
 ---
@@ -177,7 +177,8 @@ no prime factor below `r`. Since `C ≤ r²+r+1 < (r+1)²`, `C` is 1 or a prime.
   | `5·10⁷` | 100.0% | 83.5% | **88.9%** | **97.8%** | 0 |
   | `10⁹` (static) | 97.2% | 80.0% | 85.3% | 94.5% | 42 |
   | `10¹⁰` (static) | 98.4% | 82.5% | 87.3% | 96.1% | 24 |
-  {{ROWS04}}
+  | `10¹¹` (static) | 98.5% | 81.3% | 86.3% | 96.0% | 22 |
+  | `10¹²` (static) | 98.9% | 81.5% | 85.6% | 96.5% | 16 |
 
   The "old" column reproduces the brief's 82.9%. **The rates do not decay with `r`.**
   The "terminal" counts above `10⁸` are inflated by the static superset: its members

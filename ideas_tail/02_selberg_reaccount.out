@@ -1,0 +1,20 @@
+rho = 2.0;  c = 0.287682
+per-interval loss of the weighted bound vs the trivial prime sum ln(rho)/ln x:
+   x = 1e12:  V/trivial = 0.774
+   x = 1e14:  V/trivial = 0.679
+   x = 1e16:  V/trivial = 0.605
+   x = 1e18:  V/trivial = 0.548
+   x = 1e20:  V/trivial = 0.592
+
+16d as run (unweighted, K_max/2):   q ~ 7.375e+12 at z ~ 5.12e+14
+weighted only (K_max/2):            q ~ 2.706e+14 at z ~ 3.28e+16
+weighted + greedy fill (Lemma G):   q ~ 5.542e+14 at z ~ 6.55e+16
+no sieve at all, same Lemma G:      q ~ 1.751e+13 at z ~ 1.02e+15  (cf. 01: 2.25e13)
+
+sensitivity to the base Lambda_0 = ln A(1e12) (what a look-ahead at the base buys):
+   Lambda_0 = 0.0503:  Selberg q ~ 5.55e+14 (z ~ 6.6e+16);  no-sieve q ~ 1.75e+13
+   Lambda_0 = 0.0300:  Selberg q ~ 2.11e+15 (z ~ 2.6e+17);  no-sieve q ~ 3.51e+13
+   Lambda_0 = 0.0200:  Selberg q ~ 4.21e+15 (z ~ 5.2e+17);  no-sieve q ~ 5.00e+13
+   Lambda_0 = 0.0100:  Selberg q ~ 8.57e+15 (z ~ 1.0e+18);  no-sieve q ~ 7.04e+13
+   Lambda_0 = 0.0050:  Selberg q ~ 1.25e+16 (z ~ 2.1e+18);  no-sieve q ~ 8.16e+13
+   Lambda_0 = 0.0010:  Selberg q ~ 1.67e+16 (z ~ 2.1e+18);  no-sieve q ~ 9.79e+13

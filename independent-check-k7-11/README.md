@@ -170,6 +170,19 @@ to antisum ≤ 223. Case C's levels: 2,711,298 (level 9) → 4 (level 10) → 1
 * Positive controls: every Zarankiewicz multiset has t = 0. The τ-pruned
   search keeps 460,618 orbits at (7,7)/81. The (11,7) top-225 τ = 0 control
   is in the section below.
+* Two more completion mechanisms agree with breadth-first de-duplication on
+  the final survivor sets:
+  * depth-first expansion with de-duplication only at the top (460,618
+    identical orbits at (7,7)/81);
+  * canonical augmentation, where each orbit is accepted only from its
+    canonical parent (460,618 at (7,7)/81; 0 at (9,7)/142).
+
+  Their *intermediate* counts can be lower than the breadth-first ones. A
+  node that is a subset of no target may have a canonical parent that was
+  cut while another max-contribution deletion survived. I checked this
+  explanation directly: at (9,7)/142, exactly 806,098 of the 807,358
+  breadth-first level-5 orbits have their canonical parent in level 4, which
+  is the augmentation count (`logs/check_augment_9_142.txt`).
 
 ## Positive control at top 225 for (11,7)
 

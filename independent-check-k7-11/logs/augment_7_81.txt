@@ -1,0 +1,4 @@
+levels 5..7 by canonical augmentation from the 19340 stored level-4 orbits: orbits per level [221983, 143921, 460618]  [3.8s]
+SURVIVORS (orbits with Abar + 2 tau <= 81, tau <= 1): 460618
+   Abar  81  : 460618 orbits
+sample of 94 survivors re-verified with the direct PT test (exact tau): 0 inconsistent

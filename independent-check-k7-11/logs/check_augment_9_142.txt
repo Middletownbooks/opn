@@ -1,0 +1,1 @@
+BFS level 5: 807358 orbits; of these, 806098 have their canonical parent in BFS level 4 (19315 orbits)

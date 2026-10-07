@@ -1,0 +1,2 @@
+levels 5..9 by canonical augmentation from the 19315 stored level-4 orbits: orbits per level [806098, 1207283, 1844856, 0, 0]  [22.2s]
+SURVIVORS (orbits with Abar + 2 tau <= 142, tau <= 1): 0

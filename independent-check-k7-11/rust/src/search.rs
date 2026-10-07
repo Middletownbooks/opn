@@ -1128,3 +1128,102 @@ pub fn stream_to_top(gen: &ChildGen, parents: &[u128], k: usize, nthreads: usize
     all.dedup();
     (all, nodes.iter().map(|a| a.load(Ordering::Relaxed)).collect())
 }
+
+/// Canonical parent of a canonical multiset c (sorted, canonical form): c
+/// minus one copy of its max-contribution element of largest vertex index,
+/// canonicalised.  A function of the orbit only (c is the orbit's canonical
+/// form and the choice depends only on c).
+pub fn canonical_parent(ctx: &Ctx, c: &[u16]) -> Vec<u16> {
+    let nv = ctx.co.nv;
+    let k = c.len();
+    let mut best_i = 0usize;
+    let mut best_c = 0u32;
+    for i in 0..k {
+        let mut s = 0u32;
+        for j in 0..k {
+            if j != i {
+                s += ctx.dbar[c[i] as usize * nv + c[j] as usize] as u32;
+            }
+        }
+        if s > best_c || (s == best_c && c[i] >= c[best_i]) {
+            best_c = s;
+            best_i = i;
+        }
+    }
+    let p: Vec<u16> = c.iter().enumerate().filter(|&(i, _)| i != best_i).map(|(_, &v)| v).collect();
+    let mut out = vec![0u16; k - 1];
+    ctx.sym.canon(&p, &mut out);
+    out
+}
+
+/// Depth-first completion by canonical augmentation: from each stored
+/// (canonical) orbit at level k, a child orbit C is accepted iff its
+/// canonical parent equals the node it was generated from; accepted children
+/// of one node are de-duplicated locally.  Every orbit passing the cuts is
+/// then visited exactly once: its canonical parent passes the same cuts (it
+/// is a max-contribution deletion, and every cut is inherited by subsets of a
+/// target), so by induction the parent is visited once and generates it.
+/// No global de-duplication is needed.  Returns per-level orbit counts and,
+/// at the top level, a histogram by antisum plus (optionally) a sample.
+pub fn augment_to_top(gen: &ChildGen, parents: &[u128], k: usize, nthreads: usize, sample_every: u64) -> (Vec<u64>, std::collections::BTreeMap<u32, u64>, Vec<u128>) {
+    let m = gen.m;
+    let next = AtomicUsize::new(0);
+    let counts: Vec<AtomicU64> = (0..=m).map(|_| AtomicU64::new(0)).collect();
+    let res: Mutex<(std::collections::BTreeMap<u32, u64>, Vec<u128>)> = Mutex::new((Default::default(), Vec::new()));
+    fn rec(gen: &ChildGen, node: &[u16], cnt: &mut Vec<u64>, hist: &mut std::collections::BTreeMap<u32, u64>, sample: &mut Vec<u128>, every: u64) {
+        let mut ch = Vec::new();
+        gen.children(node, &mut ch);
+        let mut acc: Vec<Vec<u16>> = Vec::new();
+        for c in ch {
+            let mut cf = vec![0u16; c.len()];
+            gen.ctx.sym.canon(&c, &mut cf);
+            if canonical_parent(gen.ctx, &cf) == node {
+                acc.push(cf);
+            }
+        }
+        acc.sort_unstable();
+        acc.dedup();
+        for cf in acc {
+            let l = cf.len();
+            cnt[l] += 1;
+            if l == gen.m {
+                *hist.entry(antisum(gen.ctx, &cf)).or_default() += 1;
+                if every > 0 && cnt[l] % every == 1 {
+                    sample.push(pack(&cf));
+                }
+            } else {
+                rec(gen, &cf, cnt, hist, sample, every);
+            }
+        }
+    }
+    std::thread::scope(|s| {
+        for _ in 0..nthreads {
+            s.spawn(|| {
+                let mut cnt = vec![0u64; m + 1];
+                let mut hist = std::collections::BTreeMap::new();
+                let mut sample = Vec::new();
+                let mut x = [0u16; 16];
+                loop {
+                    let start = next.fetch_add(16, Ordering::Relaxed);
+                    if start >= parents.len() {
+                        break;
+                    }
+                    for pi in start..(start + 16).min(parents.len()) {
+                        unpack(parents[pi], k, &mut x);
+                        rec(gen, &x[..k], &mut cnt, &mut hist, &mut sample, sample_every);
+                    }
+                }
+                for i in 0..=m {
+                    counts[i].fetch_add(cnt[i], Ordering::Relaxed);
+                }
+                let mut r = res.lock().unwrap();
+                for (a, n) in hist {
+                    *r.0.entry(a).or_default() += n;
+                }
+                r.1.extend(sample);
+            });
+        }
+    });
+    let (hist, sample) = res.into_inner().unwrap();
+    (counts.iter().map(|a| a.load(Ordering::Relaxed)).collect(), hist, sample)
+}

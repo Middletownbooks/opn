@@ -73,6 +73,8 @@ fn main() {
         "coresearch" => coresearch(&args),
         "enumtau2" => enumtau2(&args),
         "equivariance" => equivariance(),
+        "check-augment" => check_augment(&args),
+        "trace" => trace(&args),
         "pttable-check" => pttable_check(&args),
         _ => eprintln!("usage: selfcheck | enumerate M T TARGET [--fam F] [--threads N] [--taucap C] [--dump FILE] | brute4 T | dumpquads COUNT SEED | pt4"),
     }
@@ -1023,8 +1025,32 @@ fn enumtau2(args: &[String]) {
     println!("PT table built in {:.1}s", tl.elapsed().as_secs_f64());
     let t0 = Instant::now();
     let stream_from: usize = arg_val(args, "--stream-from", m);
+    let augment_from: usize = arg_val(args, "--augment-from", m);
+    let sample_every: u64 = arg_val(args, "--sample-every", 0);
     let mut level: Vec<u128> = vec![pack(&[0])];
     for k in 2..=m {
+        if k > augment_from {
+            let gen = ChildGen::new(&ctx, &tab, m, t, abmax, tau_stop, &astar);
+            let tl = Instant::now();
+            let (cnt, hist, sample) = augment_to_top(&gen, &level, augment_from, nthreads, sample_every);
+            println!("levels {}..{} by canonical augmentation from the {} stored level-{} orbits: orbits per level {:?}  [{:.1}s]", augment_from + 1, m, level.len(), augment_from, &cnt[augment_from + 1..], tl.elapsed().as_secs_f64());
+            println!("search wall time {:.1}s", t0.elapsed().as_secs_f64());
+            println!("SURVIVORS (orbits with Abar + 2 tau <= {}, tau <= {}): {}", t, tau_stop - 1, cnt[m]);
+            for (ab, n) in &hist {
+                println!("   Abar {:3}  : {} orbits", ab, n);
+            }
+            // re-verify the sample with the direct PT test, and report it
+            let info = analyze(&ctx, &sample, m, 64, nthreads);
+            let bad = info.iter().filter(|o| o.abar + 2 * o.tau > t || o.tau > tau_stop - 1).count();
+            println!("sample of {} survivors re-verified with the direct PT test (exact tau): {} inconsistent", sample.len(), bad);
+            let mut ms = [0u16; 16];
+            for (i, &x) in sample.iter().enumerate().take(20) {
+                unpack(x, m, &mut ms);
+                let names: Vec<String> = ms[..m].iter().map(|&v| ctx.co.name(v as usize)).collect();
+                println!("   sample {}: {} Abar {} t {} tau {}", i, names.join(","), info[i].abar, info[i].t, info[i].tau);
+            }
+            return;
+        }
         if k > stream_from {
             let gen = ChildGen::new(&ctx, &tab, m, t, abmax, tau_stop, &astar);
             let tl = Instant::now();
@@ -1148,4 +1174,90 @@ fn equivariance() {
         nb,
         t0.elapsed().as_secs_f64()
     );
+}
+
+/// Diagnostic: run the BFS tau search to level K+1 and count the level-(K+1)
+/// orbits whose canonical parent lies in the stored level K.  Canonical
+/// augmentation from level K must visit exactly that many orbits at K+1.
+fn check_augment(args: &[String]) {
+    let m: usize = args[2].parse().unwrap();
+    let t: u32 = args[3].parse().unwrap();
+    let kk: usize = args[4].parse().unwrap();
+    let taumax: u32 = arg_val(args, "--taumax", 3);
+    let astar_arg: String = arg_val(args, "--astar", String::new());
+    let ctx = build_ctx(7, Family::Arbitrary);
+    let exact: Vec<u32> = astar_arg.split(',').map(|x| x.parse().unwrap()).collect();
+    let astar = extend_astar(&exact, m);
+    let mut kill = 0u32;
+    while t >= 2 * kill && t - 2 * kill >= astar[m] {
+        kill += 1;
+    }
+    let tau_stop = kill.min(taumax + 1);
+    let tab = PtTable::build(&ctx, 4);
+    let mut level: Vec<u128> = vec![pack(&[0])];
+    let mut prev: Vec<u128> = Vec::new();
+    for k in 2..=kk + 1 {
+        prev = level.clone();
+        level = extend_level_tau_cap(&ctx, &tab, &level, k - 1, m, t, u32::MAX, tau_stop, &astar, 4).0;
+    }
+    let mut ms = [0u16; 16];
+    let mut hit = 0;
+    for &x in &level {
+        unpack(x, kk + 1, &mut ms);
+        let p = canonical_parent(&ctx, &ms[..kk + 1]);
+        if prev.binary_search(&pack(&p)).is_ok() {
+            hit += 1;
+        }
+    }
+    println!("BFS level {}: {} orbits; of these, {} have their canonical parent in BFS level {} ({} orbits)", kk + 1, level.len(), hit, kk, prev.len());
+}
+
+/// Follow the canonical-parent chain of a given multiset (comma-separated
+/// cyclic orders) and check that the search's own child generator produces
+/// every link, i.e. that this set survives every cut of the (m, T, taumax,
+/// abmax) search.
+fn trace(args: &[String]) {
+    let set = &args[2];
+    let t: u32 = args[3].parse().unwrap();
+    let taumax: u32 = arg_val(args, "--taumax", 3);
+    let abmax: u32 = arg_val(args, "--abmax", u32::MAX);
+    let astar_arg: String = arg_val(args, "--astar", String::new());
+    let ctx = build_ctx(7, Family::Arbitrary);
+    let mut ms: Vec<u16> = set.split(',').map(|s| ctx.co.parse(s) as u16).collect();
+    ms.sort();
+    let m = ms.len();
+    let exact: Vec<u32> = astar_arg.split(',').map(|x| x.parse().unwrap()).collect();
+    let astar = extend_astar(&exact, m);
+    let mut kill = 0u32;
+    while t >= 2 * kill && t - 2 * kill >= astar[m] {
+        kill += 1;
+    }
+    let tau_stop = kill.min(taumax + 1);
+    let tab = PtTable::build(&ctx, 4);
+    let gen = ChildGen::new(&ctx, &tab, m, t, abmax, tau_stop, &astar);
+    let mut chain = Vec::new();
+    let mut c = vec![0u16; m];
+    ctx.sym.canon(&ms, &mut c);
+    while !c.is_empty() {
+        chain.push(c.clone());
+        if c.len() == 1 {
+            break;
+        }
+        c = canonical_parent(&ctx, &c);
+    }
+    chain.reverse();
+    let mut all_ok = true;
+    for w in chain.windows(2) {
+        let mut ch = Vec::new();
+        gen.children(&w[0], &mut ch);
+        let found = ch.iter().any(|x| {
+            let mut cf = vec![0u16; x.len()];
+            ctx.sym.canon(x, &mut cf);
+            cf == w[1]
+        });
+        all_ok &= found;
+        let names: Vec<String> = w[1].iter().map(|&v| ctx.co.name(v as usize)).collect();
+        println!("  size {:2}: Abar {:3}  generated from previous link: {}   {}", w[1].len(), antisum(&ctx, &w[1]), found, names.join(","));
+    }
+    println!("[{}] the set passes every cut of the search (m = {}, T = {}, tau <= {}, abmax {})", if all_ok { "REACHED" } else { "NOT REACHED" }, m, t, tau_stop - 1, if abmax == u32::MAX { "none".to_string() } else { abmax.to_string() });
 }

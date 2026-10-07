@@ -1,0 +1,11 @@
+  size  2: Abar   0  generated from previous link: true   0123456,0654321
+  size  3: Abar   9  generated from previous link: true   0123456,0123456,0654321
+  size  4: Abar  18  generated from previous link: true   0123456,0123456,0654321,0654321
+  size  5: Abar  36  generated from previous link: true   0123456,0123456,0123456,0654321,0654321
+  size  6: Abar  54  generated from previous link: true   0123456,0123456,0123456,0654321,0654321,0654321
+  size  7: Abar  81  generated from previous link: true   0123456,0123456,0123456,0123456,0654321,0654321,0654321
+  size  8: Abar 108  generated from previous link: true   0123456,0123456,0123456,0123456,0654321,0654321,0654321,0654321
+  size  9: Abar 144  generated from previous link: true   0123456,0123456,0123456,0123456,0123456,0654321,0654321,0654321,0654321
+  size 10: Abar 180  generated from previous link: true   0123456,0123456,0123456,0123456,0123456,0654321,0654321,0654321,0654321,0654321
+  size 11: Abar 225  generated from previous link: true   0123456,0123456,0123456,0123456,0123456,0123456,0654321,0654321,0654321,0654321,0654321
+[REACHED] the set passes every cut of the search (m = 11, T = 225, tau <= 0, abmax none)

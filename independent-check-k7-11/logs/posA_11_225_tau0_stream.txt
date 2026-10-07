@@ -1,5 +1,0 @@
-[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.64s
-tau-pruned cascade (per-candidate cuts, PT lookup table): (m,n) = (11,7)
-survivors = orbits with Abar + 2 tau <= 225 and tau <= 0 (tau >= 1 cut; A*(11) >= 219 alone would cut tau >= 4)
-A*(r) lower bounds, r = 0..11: [0, 0, 0, 9, 18, 36, 54, 79, 107, 140, 178, 219]
-thresholds for tau = 0: [0, 4, 12, 24, 40, 60, 85, 114, 147, 184, 225]

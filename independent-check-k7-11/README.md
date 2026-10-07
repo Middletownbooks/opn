@@ -186,7 +186,24 @@ to antisum ≤ 223. Case C's levels: 2,711,298 (level 9) → 4 (level 10) → 1
 
 ## Positive control at top 225 for (11,7)
 
-(Run in progress at the time of this commit; see the next commit.)
+I ran case A's search with the top raised from 223 to 225 (τ = 0, all
+Abar ≤ 225). It keeps **124,368,968 orbits, all at antisum 225**. None are at
+≤ 223, consistent with case A.
+
+* Levels 2–8 are breadth-first and identical to case A's code path. The
+  level-8 count is 77,038,754.
+* Levels 9–11 used canonical augmentation, visiting 95,992,501 /
+  159,701,116 / 124,368,968 orbits. That took 63 min wall and 4.1 core-hours.
+* 64 sampled survivors were re-checked with the direct (non-table) PT test:
+  all have t = 0 and τ = 0.
+* The Zarankiewicz multiset 5a + 6·rev(a) is traced link by link through
+  every cut of this search (`logs/trace_zarankiewicz_225.txt`). The same
+  trace at T = 223 stops only at the last link, because its antisum is 225.
+
+Two earlier attempts to store the whole top level ran out of memory
+(`logs/posA_*aborted*`; one restarted the container). This is only the τ = 0
+part of the full top-225 survivor set. I did not run the parts with
+Abar 223/τ ≤ 1 and Abar 221/τ ≤ 2 at top 225.
 
 ## Is the "2·τ" sharpening sound?
 
@@ -215,6 +232,7 @@ is done on positions, which is what the code does.
   brute force; the enumeration was checked against counts that don't depend
   on the canonical form (13,448; 1 orbit of 5040) and against a second
   canonical form.
+* The top-225 positive control covers only its τ = 0 part (above).
 * I did not compare against the original program's own node/leaf counts or
   survivor counts (I was not given them). Its tree differs from mine, so only
   the orbit-level counts reported here are comparable.

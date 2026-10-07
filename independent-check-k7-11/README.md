@@ -58,8 +58,9 @@ complete search:
 | **B** Abar = 221 ⇒ τ ≤ 1 | every orbit with Abar ≤ 221 and τ ≤ 1 | **0** | 9 min 44 s wall, 37.5 core-min |
 | **A** Abar = 223 ⇒ τ = 0 | every orbit with Abar ≤ 223 and τ = 0 | **0** | 2 min wall, 7.6 core-min |
 
-Total for the claim: about 15 minutes wall and under one core-hour on 4 cores.
-The figure the task gives for the original route is about 9 core-hours.
+Total for the three cases: about 14 minutes wall and 52 core-minutes on 4
+cores. The A*(k) values add about 7 more single-thread minutes. The figure
+the task gives for the original route is about 9 core-hours.
 
 ### Enumeration method: a cascade, not a prefix tree
 

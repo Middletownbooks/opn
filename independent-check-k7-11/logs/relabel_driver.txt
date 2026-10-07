@@ -1,0 +1,7 @@
++ cd /home/user/opn/independent-check-k7-11
++ B=/tmp/claude-0/-home-user-opn/cd428d1c-6eca-5193-b0c0-ec4e3f0b2bac/scratchpad/target4/release/cokcheck
++ L=/tmp/claude-0/-home-user-opn/cd428d1c-6eca-5193-b0c0-ec4e3f0b2bac/scratchpad/levels
++ R=987654321
++ A=0,0,0,9,18,36,54,79,107,140,178,219
++ echo ALLDONE
+ALLDONE

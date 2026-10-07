@@ -1,0 +1,23 @@
++ /tmp/claude-0/-home-user-opn/cd428d1c-6eca-5193-b0c0-ec4e3f0b2bac/scratchpad/target4/release/cokcheck enumerate 7 80 81 --relabel 987654321
+[ctx] vertex indices relabelled with seed 987654321; vertex 0 is now 0165342
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.65s
+canonical form: lex-min under vertex relabelling seed 987654321 (vertex 0 = 0165342)
+(m,n) = (7,7), top threshold T = 80, target = 81, family Arbitrary
+thresholds T_k: [0, 3, 11, 22, 38, 57, 80]
+level  1: T =   0  orbits            1
+level  2: T =   3  parents            1  candidates(Abar<=T)            113  after max-contribution filter            113  lookahead-cut            0  orbits           11  [0.0s]
+level  3: T =  11  parents           11  candidates(Abar<=T)           3958  after max-contribution filter           3501  lookahead-cut            0  orbits          912  [0.0s]
+level  4: T =  22  parents          912  candidates(Abar<=T)          64895  after max-contribution filter          36878  lookahead-cut            0  orbits        19537  [0.0s]
+level  5: T =  38  parents        19537  candidates(Abar<=T)        2481445  after max-contribution filter        1420751  lookahead-cut            0  orbits       982548  [1.2s]
+level  6: T =  57  parents       982548  candidates(Abar<=T)       13720138  after max-contribution filter        6181439  lookahead-cut            0  orbits      2950593  [8.1s]
+level  7: T =  80  parents      2950593  candidates(Abar<=T)          76429  after max-contribution filter          22416  lookahead-cut            0  orbits        13448  [0.8s]
+enumeration wall time 10.1s
+top-level orbits by antisum: {79: 13448}
+analysis wall time 0.1s
+antisum  79: G-orbits      13448  S_7-orbits      26770  labelled multisets      134920800  t in [10, 29]  min(Abar+2tau) 85  tau histogram {3: 7051, 4: 6325, 5: 72}  below target: 0
+TOTAL counterexamples (Abar + 2 tau < 81): 0
+total wall time 10.2s
+
+real	0m10.848s
+user	0m37.935s
+sys	0m0.748s

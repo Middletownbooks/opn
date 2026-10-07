@@ -1022,8 +1022,20 @@ fn enumtau2(args: &[String]) {
     let tab = PtTable::build(&ctx, nthreads);
     println!("PT table built in {:.1}s", tl.elapsed().as_secs_f64());
     let t0 = Instant::now();
+    let stream_from: usize = arg_val(args, "--stream-from", m);
     let mut level: Vec<u128> = vec![pack(&[0])];
     for k in 2..=m {
+        if k > stream_from {
+            let gen = ChildGen::new(&ctx, &tab, m, t, abmax, tau_stop, &astar);
+            let tl = Instant::now();
+            let (top, nodes) = stream_to_top(&gen, &level, stream_from, nthreads);
+            println!(
+                "levels {}..{} expanded depth-first from the {} stored level-{} orbits (no intermediate de-duplication): nodes visited per size {:?}; distinct top-level orbits {}  [{:.1}s]",
+                stream_from + 1, m, level.len(), stream_from, &nodes[stream_from + 1..], top.len(), tl.elapsed().as_secs_f64()
+            );
+            level = top;
+            break;
+        }
         let tl = Instant::now();
         let (next, st) = extend_level_tau_cap(&ctx, &tab, &level, k - 1, m, t, abmax, tau_stop, &astar, nthreads);
         println!(
@@ -1035,7 +1047,8 @@ fn enumtau2(args: &[String]) {
     }
     println!("search wall time {:.1}s", t0.elapsed().as_secs_f64());
     // re-verify survivors with the direct PT test (not the table)
-    let info = analyze(&ctx, &level, m, 64, nthreads);
+    let taucap_an: u32 = arg_val(args, "--analyze-taucap", 64);
+    let info = analyze(&ctx, &level, m, taucap_an, nthreads);
     let mut hist: BTreeMap<(u32, u32), usize> = BTreeMap::new();
     let mut viol = 0;
     for o in &info {

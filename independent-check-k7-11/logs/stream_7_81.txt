@@ -1,0 +1,10 @@
+level  2: parents           1  cand(Abar<=T_k)           113  max-contrib           113  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [113, 0]  orbits          11  [0.0s]
+level  3: parents          11  cand(Abar<=T_k)          3958  max-contrib          3501  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [3501, 0]  orbits         912  [0.0s]
+level  4: parents         912  cand(Abar<=T_k)         64895  max-contrib         36878  lookahead-cut           29  tau/threshold-cut          257  kept cand by tau [18431, 18161]  orbits       19340  [0.1s]
+levels 5..7 expanded depth-first from the 19340 stored level-4 orbits (no intermediate de-duplication): nodes visited per size [333110, 637867, 5065354]; distinct top-level orbits 460618  [18.0s]
+SURVIVORS (orbits with Abar + 2 tau <= 81, tau <= 1): 460618   (re-verified with direct PT test; inconsistent: 0)
+   Abar  81  tau 0  : 460618 orbits
+mode: text (text = both dumps must use the same canonical form; orbit = recanonicalised in Python)
+dumps/full_7_81_below81.txt: 460618 orbits; dumps/stream_7_81.txt: 460618 orbits
+only in A: 0  only in B: 0
+common orbits with different (Abar, t): 0

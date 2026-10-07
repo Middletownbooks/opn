@@ -947,3 +947,184 @@ pub fn extend_level_tau_cap(ctx: &Ctx, tab: &PtTable, parents: &[u128], k: usize
     };
     (all, st)
 }
+
+/// Filtered children of one (sorted) multiset x of size k, with exactly the
+/// cuts of extend_level_tau_cap (averaging threshold, max-contribution,
+/// lookahead, tau and tau-dependent threshold/lookahead).  Children are
+/// returned as sorted multisets, not canonicalised.
+pub struct ChildGen<'a> {
+    pub ctx: &'a Ctx,
+    pub tab: &'a PtTable,
+    pub m: usize,
+    pub t: u32,
+    pub abmax: u32,
+    pub tau_stop: u32,
+    pub astar: &'a [u32],
+    pub ths: Vec<Vec<u32>>,
+    pub pair_of: Vec<Vec<usize>>,
+}
+
+impl<'a> ChildGen<'a> {
+    pub fn new(ctx: &'a Ctx, tab: &'a PtTable, m: usize, t: u32, abmax: u32, tau_stop: u32, astar: &'a [u32]) -> Self {
+        let ths = (0..tau_stop).map(|tau| thresholds(m, (t - 2 * tau).min(abmax))).collect();
+        let pair_of = Quads::new(m.max(4)).pair_of;
+        ChildGen { ctx, tab, m, t, abmax, tau_stop, astar, ths, pair_of }
+    }
+
+    pub fn children(&self, x: &[u16], out: &mut Vec<Vec<u16>>) {
+        let ctx = self.ctx;
+        let nv = ctx.co.nv;
+        let dbar = &ctx.dbar;
+        let act = &ctx.sym.act;
+        let k = x.len();
+        let kc = k + 1;
+        let m = self.m;
+        let tl = self.t.min(self.abmax);
+        let mut ab = 0u32;
+        for i in 0..k {
+            for j in i + 1..k {
+                ab += dbar[x[i] as usize * nv + x[j] as usize] as u32;
+            }
+        }
+        if ab > self.ths[0][kc] {
+            return;
+        }
+        let mut c = vec![0u16; nv];
+        for i in 0..k {
+            let row = &dbar[x[i] as usize * nv..(x[i] as usize + 1) * nv];
+            for (cv, &d) in c.iter_mut().zip(row.iter()) {
+                *cv += d as u16;
+            }
+        }
+        let cx: Vec<u16> = (0..k).map(|i| c[x[i] as usize] - dbar[x[i] as usize * nv + x[i] as usize] as u16).collect();
+        let mask_of = |q: [usize; 4]| -> u64 {
+            let mut pm = 0u64;
+            for i in 0..4 {
+                for j in i + 1..4 {
+                    pm |= 1u64 << self.pair_of[q[i]][q[j]];
+                }
+            }
+            pm
+        };
+        let mut pedges = Vec::new();
+        if k >= 4 {
+            for a in 0..k {
+                for b in a + 1..k {
+                    for cc in b + 1..k {
+                        for d in cc + 1..k {
+                            if !self.tab.pt(act, x[a] as usize, x[b] as usize, x[cc] as usize, x[d] as usize) {
+                                pedges.push(mask_of([a, b, cc, d]));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        let mut edges = Vec::new();
+        for v in 0..nv {
+            let cv = c[v];
+            let abc = ab + cv as u32;
+            if abc > self.ths[0][kc] {
+                continue;
+            }
+            if (0..k).any(|i| cx[i] + dbar[x[i] as usize * nv + v] as u16 > cv) {
+                continue;
+            }
+            let r = m - kc;
+            let mut mu = 0u32;
+            if r > 0 {
+                let row = &dbar[v * nv..(v + 1) * nv];
+                mu = c.iter().zip(row.iter()).map(|(cw, &d)| *cw as u32 + d as u32).min().unwrap();
+                if abc + r as u32 * mu + self.astar[r] > tl {
+                    continue;
+                }
+            }
+            let mut tau = 0u32;
+            if kc >= 4 {
+                edges.clear();
+                edges.extend_from_slice(&pedges);
+                for a in 0..k {
+                    for b in a + 1..k {
+                        for cc in b + 1..k {
+                            if !self.tab.pt(act, x[a] as usize, x[b] as usize, x[cc] as usize, v) {
+                                edges.push(mask_of([a, b, cc, k]));
+                            }
+                        }
+                    }
+                }
+                tau = min_transversal(&edges, self.tau_stop);
+            }
+            if tau >= self.tau_stop {
+                continue;
+            }
+            let teff = (self.t - 2 * tau).min(self.abmax);
+            if abc > self.ths[tau as usize][kc] || (r > 0 && abc + r as u32 * mu + self.astar[r] > teff) {
+                continue;
+            }
+            let mut ch = x.to_vec();
+            let pos = ch.partition_point(|&e| e <= v as u16);
+            ch.insert(pos, v as u16);
+            out.push(ch);
+        }
+    }
+}
+
+/// Depth-first completion from a stored level: every parent is expanded to
+/// size m without intermediate de-duplication; only the final sets are
+/// canonicalised and de-duplicated.  Returns (sorted unique canonical forms,
+/// number of nodes visited per depth).
+pub fn stream_to_top(gen: &ChildGen, parents: &[u128], k: usize, nthreads: usize) -> (Vec<u128>, Vec<u64>) {
+    let m = gen.m;
+    let next = AtomicUsize::new(0);
+    let nodes: Vec<AtomicU64> = (0..=m).map(|_| AtomicU64::new(0)).collect();
+    let results: Mutex<Vec<Vec<u128>>> = Mutex::new(Vec::new());
+    fn rec(gen: &ChildGen, x: &[u16], out: &mut Vec<u128>, cnt: &mut Vec<u64>) {
+        let mut ch = Vec::new();
+        gen.children(x, &mut ch);
+        for c in ch {
+            cnt[c.len()] += 1;
+            if c.len() == gen.m {
+                let mut best = vec![0u16; c.len()];
+                gen.ctx.sym.canon(&c, &mut best);
+                out.push(pack(&best));
+            } else {
+                rec(gen, &c, out, cnt);
+            }
+        }
+    }
+    std::thread::scope(|s| {
+        for _ in 0..nthreads {
+            s.spawn(|| {
+                let mut out = Vec::new();
+                let mut cnt = vec![0u64; m + 1];
+                let mut x = [0u16; 16];
+                let mut limit = 1usize << 22;
+                loop {
+                    let start = next.fetch_add(16, Ordering::Relaxed);
+                    if start >= parents.len() {
+                        break;
+                    }
+                    for pi in start..(start + 16).min(parents.len()) {
+                        unpack(parents[pi], k, &mut x);
+                        rec(gen, &x[..k], &mut out, &mut cnt);
+                    }
+                    if out.len() > limit {
+                        out.sort_unstable();
+                        out.dedup();
+                        limit = limit.max(2 * out.len());
+                    }
+                }
+                out.sort_unstable();
+                out.dedup();
+                for i in 0..=m {
+                    nodes[i].fetch_add(cnt[i], Ordering::Relaxed);
+                }
+                results.lock().unwrap().push(out);
+            });
+        }
+    });
+    let mut all: Vec<u128> = results.into_inner().unwrap().into_iter().flatten().collect();
+    all.sort_unstable();
+    all.dedup();
+    (all, nodes.iter().map(|a| a.load(Ordering::Relaxed)).collect())
+}

@@ -1,0 +1,23 @@
++ /tmp/claude-0/-home-user-opn/cd428d1c-6eca-5193-b0c0-ec4e3f0b2bac/scratchpad/target4/release/cokcheck enumerate 9 142 144 --relabel 987654321 --astar 0,0,0,9,18,36,54,79,107 --noanalyze --save-level 9 --save-file /tmp/claude-0/-home-user-opn/cd428d1c-6eca-5193-b0c0-ec4e3f0b2bac/scratchpad/levels/L9_142_relabel.bin
+[ctx] vertex indices relabelled with seed 987654321; vertex 0 is now 0165342
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.59s
+canonical form: lex-min under vertex relabelling seed 987654321 (vertex 0 = 0165342)
+(m,n) = (9,7), top threshold T = 142, target = 144, family Arbitrary
+thresholds T_k: [0, 3, 11, 22, 38, 58, 82, 110, 142]
+lookahead ON, A*(r) lower bounds used for r = 0..9: [0, 0, 0, 9, 18, 36, 54, 79, 107, 138]
+level  1: T =   0  orbits            1
+level  2: T =   3  parents            1  candidates(Abar<=T)            113  after max-contribution filter            113  lookahead-cut            0  orbits           11  [0.0s]
+level  3: T =  11  parents           11  candidates(Abar<=T)           3958  after max-contribution filter           3501  lookahead-cut            0  orbits          912  [0.0s]
+level  4: T =  22  parents          912  candidates(Abar<=T)          64895  after max-contribution filter          36878  lookahead-cut          118  orbits        19455  [0.0s]
+level  5: T =  38  parents        19455  candidates(Abar<=T)        2442570  after max-contribution filter        1381886  lookahead-cut            0  orbits       970169  [1.3s]
+level  6: T =  58  parents       970169  candidates(Abar<=T)       39618873  after max-contribution filter       19934757  lookahead-cut       409880  orbits      9946347  [27.8s]
+level  7: T =  82  parents      9946347  candidates(Abar<=T)      114932376  after max-contribution filter       37490249  lookahead-cut            0  orbits     24422093  [93.6s]
+level  8: T = 110  parents     24422093  candidates(Abar<=T)      340894523  after max-contribution filter      338577997  lookahead-cut    326241432  orbits      3741660  [35.2s]
+level  9: T = 142  parents      3741660  candidates(Abar<=T)       12289737  after max-contribution filter        4689176  lookahead-cut            0  orbits      2711298  [11.7s]
+saved level 9 (2711298 orbits) to /tmp/claude-0/-home-user-opn/cd428d1c-6eca-5193-b0c0-ec4e3f0b2bac/scratchpad/levels/L9_142_relabel.bin
+enumeration wall time 169.8s
+top-level orbits by antisum: {140: 82, 142: 2711216}
+
+real	2m50.524s
+user	9m6.867s
+sys	0m7.876s

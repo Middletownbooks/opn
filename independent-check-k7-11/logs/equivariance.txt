@@ -1,0 +1,2 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.64s
+[PASS] FA/FO equivariance under all 10080 group elements x 518400 ordered pairs: 0 violations  [4.2s]

@@ -1,0 +1,10 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.52s
+(m,n) = (11,7), top threshold T = 219, target = 225, family Arbitrary
+thresholds T_k: [0, 3, 11, 23, 39, 59, 83, 111, 143, 179, 219]
+lookahead ON, A*(r) lower bounds used for r = 0..11: [0, 0, 0, 9, 18, 36, 54, 79, 107, 140, 175, 214]
+level  1: T =   0  orbits            1
+level  2: T =   3  parents            1  candidates(Abar<=T)            113  after max-contribution filter            113  lookahead-cut            1  orbits           10  [0.0s]
+level  3: T =  11  parents           10  candidates(Abar<=T)           3242  after max-contribution filter           2785  lookahead-cut            0  orbits          875  [0.0s]
+level  4: T =  23  parents          875  candidates(Abar<=T)         129331  after max-contribution filter          79253  lookahead-cut          367  orbits        43175  [0.0s]
+level  5: T =  39  parents        43175  candidates(Abar<=T)        3235718  after max-contribution filter        1301656  lookahead-cut            0  orbits       918555  [0.8s]
+level  6: T =  59  parents       918555  candidates(Abar<=T)       86756453  after max-contribution filter       54766707  lookahead-cut      1430210  orbits     27578448  [52.9s]

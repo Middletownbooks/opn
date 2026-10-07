@@ -1,0 +1,23 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.63s
+(m,n) = (9,7), top threshold T = 142, target = 144, family Arbitrary
+thresholds T_k: [0, 3, 11, 22, 38, 58, 82, 110, 142]
+level  1: T =   0  orbits            1
+level  2: T =   3  parents            1  candidates(Abar<=T)            113  after max-contribution filter            113  orbits           11  [0.0s]
+level  3: T =  11  parents           11  candidates(Abar<=T)           3958  after max-contribution filter           3501  orbits          912  [0.0s]
+level  4: T =  22  parents          912  candidates(Abar<=T)          64895  after max-contribution filter          36878  orbits        19537  [0.0s]
+level  5: T =  38  parents        19537  candidates(Abar<=T)        2481445  after max-contribution filter        1420751  orbits       982548  [1.0s]
+level  6: T =  58  parents       982548  candidates(Abar<=T)       40589794  after max-contribution filter       20826654  orbits     10500795  [22.1s]
+level  7: T =  82  parents     10500795  candidates(Abar<=T)      119741983  after max-contribution filter       39485282  orbits     25818316  [56.1s]
+level  8: T = 110  parents     25818316  candidates(Abar<=T)      365241938  after max-contribution filter      362922670  orbits    111052634  [766.3s]
+level  9: T = 142  parents    111052634  candidates(Abar<=T)       12289737  after max-contribution filter        4689176  orbits      2711298  [35.8s]
+enumeration wall time 881.6s
+top-level orbits by antisum: {140: 82, 142: 2711216}
+analysis wall time 540.5s
+antisum 140: G-orbits         82  S_7-orbits        154  labelled multisets         776160  t in [37, 76]  min(Abar+2tau) 150  tau histogram {5: 32, 6: 35, 7: 12, 8: 3}  below target: 0
+antisum 142: G-orbits    2711216  S_7-orbits    5420339  labelled multisets    27318486960  t in [15, 89]  min(Abar+2tau) 148  tau histogram {3: 87659, 4: 361853, 5: 781604, 6: 965469, 7: 464989, 8: 49448, 9: 194}  below target: 0
+TOTAL counterexamples (Abar + 2 tau < 144): 0
+total wall time 1422.3s
+
+real	23m42.966s
+user	73m28.598s
+sys	0m49.671s

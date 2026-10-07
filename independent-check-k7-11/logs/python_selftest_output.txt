@@ -1,0 +1,10 @@
+CO_4 family sizes: {'both': 234, 'walk': 282, 'path': 594, 'arbitrary': 1758}
+(4,6) antidistances: [3, 4, 2, 3, 2, 1]
+(4,6) #label sets: [1, 3, 1, 1, 1, 1]
+(4,6) pseudo-tight under both : True
+(4,6) pseudo-tight under walk : True
+(4,6) pseudo-tight under path : True
+(4,6) pseudo-tight under arbitrary : True
+219 representative: antisum 219
+219 representative: t = 103  tau = 8
+Zarankiewicz 5a+6rev(a), a=0123456: antisum 225  t = 0

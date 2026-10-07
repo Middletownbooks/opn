@@ -1,0 +1,16 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.54s
+(m,n) = (7,7), top threshold T = 80, target = 81, family Arbitrary
+thresholds T_k: [0, 3, 11, 22, 38, 57, 80]
+level  1: T =   0  orbits            1
+level  2: T =   3  parents            1  candidates(Abar<=T)            113  after max-contribution filter            113  orbits           11  [0.0s]
+level  3: T =  11  parents           11  candidates(Abar<=T)           3958  after max-contribution filter           3501  orbits          912  [0.0s]
+level  4: T =  22  parents          912  candidates(Abar<=T)          64895  after max-contribution filter          36878  orbits        19537  [0.0s]
+level  5: T =  38  parents        19537  candidates(Abar<=T)        2481445  after max-contribution filter        1420751  orbits       982548  [1.0s]
+level  6: T =  57  parents       982548  candidates(Abar<=T)       13720138  after max-contribution filter        6181439  orbits      2950593  [7.0s]
+level  7: T =  80  parents      2950593  candidates(Abar<=T)          76429  after max-contribution filter          22416  orbits        13448  [0.6s]
+enumeration wall time 8.6s
+top-level orbits by antisum: {79: 13448}
+analysis wall time 0.1s
+antisum  79: G-orbits      13448  S_7-orbits      26770  labelled multisets      134920800  t in [10, 29]  min(Abar+2tau) 85  tau histogram {3: 7051, 4: 6325, 5: 72}  below target: 0
+TOTAL counterexamples (Abar + 2 tau < 81): 0
+total wall time 8.7s

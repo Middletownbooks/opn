@@ -1,0 +1,17 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.59s
+core search: (m,n) = (7,7), survivors = orbits with Abar + 2 tau <= 81, family Arbitrary
+A*(r) lower bounds, r = 0..7: [0, 0, 0, 9, 18, 36, 54, 79]  (exact input [0, 0, 0, 9, 18, 36, 54, 79])
+cases tau(M) = j for j = 0..1 (tau >= 2 would need Abar <= 77 < A*(7) = 79)
+--- case j = 0: cores of size 7, Abar(M) <= 81, loose core thresholds [0, 3, 11, 22, 38, 57, 81]
+  level  2: parents           1  cand           113  max-contrib           113  t>0 cut            0  lookahead cut            0  orbits          11  kept          11  [0.0s]
+  level  3: parents          11  cand          3958  max-contrib          3501  t>0 cut            0  lookahead cut            0  orbits         912  kept         912  [0.0s]
+  level  4: parents         912  cand         64895  max-contrib         36878  t>0 cut        18432  lookahead cut           15  orbits        9653  kept        9653  [0.1s]
+  level  5: parents        9653  cand       1203126  max-contrib        639368  t>0 cut       398949  lookahead cut            0  orbits      161600  kept      161600  [1.4s]
+  level  6: parents      161600  cand       2511392  max-contrib       1007976  t>0 cut       691199  lookahead cut         9376  orbits      140556  kept      140556  [3.1s]
+  level  7: parents      140556  cand       4519460  max-contrib       2532610  t>0 cut      1803933  lookahead cut            0  orbits      460618  kept      460618  [10.4s]
+  cores of size 7: 460618; full sets M tested: 460618; orbits with Abar + 2 tau <= 81 found: 460618  [case 20.4s]
+--- case j = 1: cores of size 6, Abar(M) <= 79, loose core thresholds [0, 5, 15, 31, 52, 79]
+  level  2: parents           1  cand           484  max-contrib           484  t>0 cut            0  lookahead cut            1  orbits          34  kept          28  [0.0s]
+  level  3: parents          28  cand         18087  max-contrib         12178  t>0 cut            0  lookahead cut            0  orbits        4731  kept        2608  [0.0s]
+  level  4: parents        2608  cand       1847698  max-contrib       1277757  t>0 cut       278348  lookahead cut        40286  orbits      609134  kept      153529  [2.6s]
+  level  5: parents      153529  cand     110527631  max-contrib      57021850  t>0 cut     21628030  lookahead cut     10450383  orbits    21002421  kept     1517655  [157.4s]

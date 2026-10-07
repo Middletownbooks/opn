@@ -1,0 +1,7 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.52s
+extendfrom: level-9 file with all orbits of Abar <= 142; target (m,T) = (10,178); thresholds [0, 3, 11, 22, 38, 58, 82, 110, 142, 178]; level 9 needs Abar <= 142 (parity floor of 142)
+loaded 2711298 orbits
+level  9: 2711298 orbits with Abar <= 142
+level 10: T = 178  parents      2711298  candidates(Abar<=T)           1500  after max-contribution filter           1403  lookahead-cut            0  orbits          267
+extension wall time 0.7s
+top-level orbits by antisum: {178: 267}

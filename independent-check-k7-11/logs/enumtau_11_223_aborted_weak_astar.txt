@@ -1,0 +1,9 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.54s
+tau-pruned cascade: (m,n) = (11,7), survivors = orbits with Abar + 2 tau <= 223, family Arbitrary
+A*(r) lower bounds used, r = 0..11: [0, 0, 0, 9, 18, 36, 54, 79, 107, 140, 175, 214]  (exact input: [0, 0, 0, 9, 18, 36, 54, 79, 107, 140]; rest derived by A*(r) >= ceil(r A*(r-1)/(r-2)))
+tau = 0 thresholds T_k: [0, 4, 12, 24, 40, 60, 84, 112, 145, 182, 223]
+level  2: parents           1  cand(Abar<=T_k)           267  max-contrib           267  lookahead-cut            0  orbits          21  tau-hist [21, 0, 0, 0, 0, 0]  kept          21  [gen 0.0s, tau 0.0s]
+level  3: parents          21  cand(Abar<=T_k)          5184  max-contrib          3501  lookahead-cut            0  orbits         912  tau-hist [912, 0, 0, 0, 0, 0]  kept         912  [gen 0.0s, tau 0.0s]
+level  4: parents         912  cand(Abar<=T_k)        242414  max-contrib        172584  lookahead-cut           30  orbits       92591  tau-hist [56085, 36506, 0, 0, 0, 0]  kept       92555  [gen 0.1s, tau 0.0s]
+level  5: parents       92555  cand(Abar<=T_k)      16598783  max-contrib       6677399  lookahead-cut            0  orbits     4869358  tau-hist [935682, 3334050, 599626, 0, 0, 0]  kept     4426453  [gen 4.5s, tau 3.3s]
+level  6: parents     4426453  cand(Abar<=T_k)     316529798  max-contrib     132662599  lookahead-cut       903178  orbits    71841210  tau-hist [3444625, 23887430, 38294523, 6214632, 0, 0]  kept    42872562  [gen 134.5s, tau 126.4s]

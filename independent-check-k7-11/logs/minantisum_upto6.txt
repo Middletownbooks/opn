@@ -1,0 +1,7 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.70s
+k =  2: T = 9 Z(k) =   0; level sizes [1]; orbits by antisum {0: 1}; A*(2) = 0  [0.0s]
+k =  3: T = 9 Z(k) =   9; level sizes [11, 159]; orbits by antisum {9: 159}; A*(3) = 9  [0.0s]
+k =  4: T = 9 Z(k) =  18; level sizes [11, 89, 61]; orbits by antisum {18: 61}; A*(4) = 18  [0.0s]
+k =  5: T = 9 Z(k) =  36; level sizes [11, 159, 6185, 96821]; orbits by antisum {36: 96821}; A*(5) = 36  [0.4s]
+k =  6: T = 9 Z(k) =  54; level sizes [11, 159, 6185, 33012, 6045]; orbits by antisum {54: 6045}; A*(6) = 54  [0.4s]
+A* = [0, 0, 0, 9, 18, 36, 54]

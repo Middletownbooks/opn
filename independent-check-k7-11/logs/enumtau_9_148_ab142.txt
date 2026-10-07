@@ -1,0 +1,9 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.58s
+tau-pruned cascade: (m,n) = (9,7), survivors = orbits with Abar + 2 tau <= 148, family Arbitrary
+A*(r) lower bounds used, r = 0..9: [0, 0, 0, 9, 18, 36, 54, 79, 107, 140]  (exact input: [0, 0, 0, 9, 18, 36, 54, 79, 107, 140]; rest derived by A*(r) >= ceil(r A*(r-1)/(r-2)))
+additional cap: Abar <= 142
+tau = 0 thresholds T_k: [0, 3, 11, 22, 38, 58, 82, 110, 142]
+level  2: parents           1  cand(Abar<=T_k)           113  max-contrib           113  lookahead-cut            0  orbits          11  tau-hist [11, 0, 0, 0, 0, 0]  kept          11  [gen 0.0s, tau 0.0s]
+level  3: parents          11  cand(Abar<=T_k)          3958  max-contrib          3501  lookahead-cut            0  orbits         912  tau-hist [912, 0, 0, 0, 0, 0]  kept         912  [gen 0.0s, tau 0.0s]
+level  4: parents         912  cand(Abar<=T_k)         64895  max-contrib         36878  lookahead-cut          118  orbits       19455  tau-hist [9628, 9827, 0, 0, 0, 0]  kept       19455  [gen 0.0s, tau 0.0s]
+level  5: parents       19455  cand(Abar<=T_k)       2442570  max-contrib       1381886  lookahead-cut            0  orbits      970169  tau-hist [158677, 654782, 156710, 0, 0, 0]  kept      970169  [gen 1.4s, tau 1.0s]

@@ -1,0 +1,17 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.53s
+tau-pruned cascade (per-candidate cuts, PT lookup table): (m,n) = (9,7)
+survivors = orbits with Abar + 2 tau <= 142 and tau <= 1 (tau >= 2 cut; A*(9) >= 140 alone would cut tau >= 2)
+A*(r) lower bounds, r = 0..9: [0, 0, 0, 9, 18, 36, 54, 79, 107, 140]
+thresholds for tau = 0: [0, 3, 11, 22, 38, 58, 82, 110, 142]
+thresholds for tau = 1: [0, 3, 11, 22, 38, 57, 81, 108, 140]
+PT table built in 7.2s
+level  2: parents           1  cand(Abar<=T_k)           113  max-contrib           113  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [113, 0]  orbits          11  [0.0s]
+level  3: parents          11  cand(Abar<=T_k)          3958  max-contrib          3501  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [3501, 0]  orbits         912  [0.0s]
+level  4: parents         912  cand(Abar<=T_k)         64895  max-contrib         36878  lookahead-cut          118  tau/threshold-cut          199  kept cand by tau [18400, 18161]  orbits       19315  [0.0s]
+level  5: parents       19315  cand(Abar<=T_k)       2421468  max-contrib       1364687  lookahead-cut            0  tau/threshold-cut       223322  kept cand by tau [227761, 913604]  orbits      807358  [0.8s]
+level  6: parents      807358  cand(Abar<=T_k)      33332717  max-contrib      16379899  lookahead-cut       322878  tau/threshold-cut     13566980  kept cand by tau [925621, 1564420]  orbits     1255407  [4.6s]
+level  7: parents     1255407  cand(Abar<=T_k)      27547501  max-contrib      11984200  lookahead-cut            0  tau/threshold-cut      8403155  kept cand by tau [659331, 2921714]  orbits     2216998  [6.5s]
+level  8: parents     2216998  cand(Abar<=T_k)      33468633  max-contrib      33363207  lookahead-cut     32211821  tau/threshold-cut      1151386  kept cand by tau [0, 0]  orbits           0  [1.9s]
+level  9: parents           0  cand(Abar<=T_k)             0  max-contrib             0  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [0, 0]  orbits           0  [0.0s]
+search wall time 13.9s
+SURVIVORS (orbits with Abar + 2 tau <= 142, tau <= 1): 0   (re-verified with direct PT test; inconsistent: 0)

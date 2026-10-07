@@ -1,0 +1,2 @@
+search wall time 0.0s
+SURVIVORS (orbits with Abar + 2 tau <= 79, tau <= 0): 0   (re-verified with direct PT test; inconsistent: 0)

@@ -1,0 +1,14 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.50s
+tau-pruned cascade (per-candidate cuts, PT lookup table): (m,n) = (11,7)
+survivors = orbits with Abar + 2 tau <= 225 and tau <= 0 (tau >= 1 cut; A*(11) >= 219 alone would cut tau >= 4)
+A*(r) lower bounds, r = 0..11: [0, 0, 0, 9, 18, 36, 54, 79, 107, 140, 178, 219]
+thresholds for tau = 0: [0, 4, 12, 24, 40, 60, 85, 114, 147, 184, 225]
+PT table built in 6.3s
+level  2: parents           1  cand(Abar<=T_k)           267  max-contrib           267  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [267]  orbits          21  [0.0s]
+level  3: parents          21  cand(Abar<=T_k)          5184  max-contrib          3501  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [3501]  orbits         912  [0.0s]
+level  4: parents         912  cand(Abar<=T_k)        242414  max-contrib        172584  lookahead-cut           27  tau/threshold-cut        70777  kept cand by tau [101780]  orbits       56085  [0.1s]
+level  5: parents       56085  cand(Abar<=T_k)       9474125  max-contrib       3236112  lookahead-cut            0  tau/threshold-cut      1954501  kept cand by tau [1281611]  orbits      935682  [0.9s]
+level  6: parents      935682  cand(Abar<=T_k)      64863733  max-contrib      21707712  lookahead-cut         6017  tau/threshold-cut     15417035  kept cand by tau [6284660]  orbits     3454251  [6.8s]
+level  7: parents     3454251  cand(Abar<=T_k)     446739331  max-contrib     157620370  lookahead-cut            0  tau/threshold-cut    117444419  kept cand by tau [40175951]  orbits    29441440  [55.5s]
+level  8: parents    29441440  cand(Abar<=T_k)    1718361060  max-contrib     610675088  lookahead-cut      3714690  tau/threshold-cut    455910877  kept cand by tau [151049521]  orbits    77038754  [266.9s]
+level  9: parents    77038754  cand(Abar<=T_k)    2145020594  max-contrib     550466280  lookahead-cut            2  tau/threshold-cut    408076199  kept cand by tau [142390079]  orbits    95993333  [335.1s]

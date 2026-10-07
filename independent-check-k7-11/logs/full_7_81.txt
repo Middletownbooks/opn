@@ -1,0 +1,22 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.61s
+(m,n) = (7,7), top threshold T = 81, target = 81, family Arbitrary
+thresholds T_k: [0, 3, 11, 22, 38, 57, 81]
+level  1: T =   0  orbits            1
+level  2: T =   3  parents            1  candidates(Abar<=T)            113  after max-contribution filter            113  lookahead-cut            0  orbits           11  [0.0s]
+level  3: T =  11  parents           11  candidates(Abar<=T)           3958  after max-contribution filter           3501  lookahead-cut            0  orbits          912  [0.0s]
+level  4: T =  22  parents          912  candidates(Abar<=T)          64895  after max-contribution filter          36878  lookahead-cut            0  orbits        19537  [0.1s]
+level  5: T =  38  parents        19537  candidates(Abar<=T)        2481445  after max-contribution filter        1420751  lookahead-cut            0  orbits       982548  [3.8s]
+level  6: T =  57  parents       982548  candidates(Abar<=T)       13720138  after max-contribution filter        6181439  lookahead-cut            0  orbits      2950593  [24.7s]
+level  7: T =  81  parents      2950593  candidates(Abar<=T)       74031344  after max-contribution filter       39485282  lookahead-cut            0  orbits     25818316  [202.0s]
+enumeration wall time 230.6s
+top-level orbits by antisum: {79: 13448, 81: 25804868}
+analysis wall time 421.5s
+antisum  79: G-orbits      13448  S_7-orbits      26770  labelled multisets      134920800  t in [10, 29]  min(Abar+2tau) 83  tau histogram (capped at 2) {2: 13448}  below target: 0
+antisum  81: G-orbits   25804868  S_7-orbits   51589713  labelled multisets   260012149200  t in [0, 32]  min(Abar+2tau) 81  tau histogram (capped at 2) {0: 460618, 1: 2411125, 2: 22933125}  below target: 0
+TOTAL counterexamples (Abar + 2 tau < 81): 0
+dumped 460618 orbits to dumps/full_7_81_below81.txt
+total wall time 654.1s
+
+real	10m54.800s
+user	10m43.054s
+sys	0m3.195s

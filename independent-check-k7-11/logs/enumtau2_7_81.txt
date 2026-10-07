@@ -1,0 +1,14 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.55s
+tau-pruned cascade (per-candidate cuts, PT lookup table): (m,n) = (7,7)
+survivors = orbits with Abar + 2 tau <= 81 and tau <= 1 (tau >= 2 cut; A*(7) >= 79 alone would cut tau >= 2)
+PT table built in 7.0s
+level  2: parents           1  cand(Abar<=T_k)           113  max-contrib           113  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [113, 0]  orbits          11  [0.0s]
+level  3: parents          11  cand(Abar<=T_k)          3958  max-contrib          3501  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [3501, 0]  orbits         912  [0.0s]
+level  4: parents         912  cand(Abar<=T_k)         64895  max-contrib         36878  lookahead-cut           29  tau/threshold-cut          257  kept cand by tau [18431, 18161]  orbits       19340  [0.0s]
+level  5: parents       19340  cand(Abar<=T_k)       2436720  max-contrib       1379939  lookahead-cut            0  tau/threshold-cut      1046829  kept cand by tau [240419, 92691]  orbits      221983  [0.3s]
+level  6: parents      221983  cand(Abar<=T_k)       6102721  max-contrib       4599305  lookahead-cut       242315  tau/threshold-cut      4039298  kept cand by tau [307401, 10291]  orbits      143921  [0.8s]
+level  7: parents      143921  cand(Abar<=T_k)       4787468  max-contrib       2772889  lookahead-cut            0  tau/threshold-cut      2044212  kept cand by tau [728677, 0]  orbits      460618  [1.1s]
+search wall time 2.2s
+SURVIVORS (orbits with Abar + 2 tau <= 81, tau <= 1): 460618   (re-verified with direct PT test; inconsistent: 0)
+   Abar  81  tau 0  : 460618 orbits
+dumped 460618 orbits to dumps/enumtau2_7_81.txt

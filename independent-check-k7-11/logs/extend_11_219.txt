@@ -1,0 +1,9 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.54s
+extendfrom: level-9 file with all orbits of Abar <= 142; target (m,T) = (11,219); thresholds [0, 3, 11, 23, 39, 59, 83, 111, 143, 179, 219]; level 9 needs Abar <= 142 (parity floor of 143)
+loaded 2711298 orbits
+level  9: 2711298 orbits with Abar <= 143
+level 10: T = 179  parents      2711298  candidates(Abar<=T)         927505  after max-contribution filter         926186  lookahead-cut       926177  orbits            4
+level 11: T = 219  parents            4  candidates(Abar<=T)              4  after max-contribution filter              1  lookahead-cut            0  orbits            1
+extension wall time 0.7s
+top-level orbits by antisum: {219: 1}
+antisum 219: G-orbits 1  labelled multisets 5040  t in [103, 103]  tau histogram {8: 1}  below 225: 0

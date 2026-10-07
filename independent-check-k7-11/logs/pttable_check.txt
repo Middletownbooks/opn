@@ -1,0 +1,3 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.57s
+PT table built in 7.1s; 315928794 of 373248000 ordered triples (b,c,d) give PT(0,b,c,d)
+random 4-multisets: 2000000 checked, 230558 non-PT, 0 disagreements between table and direct test

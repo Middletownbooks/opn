@@ -1,0 +1,4 @@
+rust/target/
+*.bin
+# large survivor dumps (regenerable; 29 MB each)
+dumps/*_7_81*.txt

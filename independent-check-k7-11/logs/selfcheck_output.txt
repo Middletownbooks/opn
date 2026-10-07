@@ -1,0 +1,74 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.58s
+== Check 1: CO_7 basics ==
+[PASS] CO_7 vertex count -- 720
+[PASS] CO_7 7-regular, 7 distinct neighbours per vertex -- 
+[PASS] edge relation symmetric with matching labels -- 
+[PASS] connected, diameter 9 -- diameter 9
+[PASS] dbar(a,a) = 9 for all a -- 
+[PASS] dbar(a,rev a) = 0 for all a -- 
+[PASS] rev(a) is the unique vertex at distance 9 -- 
+[PASS] rev is an involution -- 
+[PASS] CO_7 bipartite -- 
+[PASS] rev swaps the colour classes -- 
+[PASS] dbar(a,b) = 1 + col a + col b (mod 2) for all a,b -- 
+[PASS] dbar symmetric -- 
+== Group S_7 x <rev> ==
+[PASS] every g in G (10080) is a bijection preserving dbar on all 720^2 pairs -- |G| = 10080
+[PASS] |{g : g(v) = 0}| = 14 for every v -- 
+== Shortest-antipath label sets: AND/OR DP vs explicit enumeration ==
+[PASS] DP masks equal AND/OR of explicitly enumerated label sets (3000 pairs incl. all (a,a)), and pair-symmetric -- max #distinct label sets seen for one pair: 7
+[PASS] same on all 120^2 pairs of CO_6 -- 
+[PASS] FORCED/POSS masks are equivariant under G (sampled) -- 
+== Check 2: CO_4 route families ==
+    Both: 234 (endpoint, label-set) pairs; u->rev(v) vs v->rev(u) symmetric: true
+    Walk: 282 (endpoint, label-set) pairs; u->rev(v) vs v->rev(u) symmetric: true
+    Path: 594 (endpoint, label-set) pairs; u->rev(v) vs v->rev(u) symmetric: true
+    Arbitrary: 1758 (endpoint, label-set) pairs; u->rev(v) vs v->rev(u) symmetric: true
+[PASS] CO_4 family sizes both/walk/path/arbitrary = 234/282/594/1758 -- [234, 282, 594, 1758]
+[PASS] families nested: both <= walk, path <= arbitrary -- 
+    CO_4 vertices: ["0123", "0132", "0213", "0231", "0312", "0321"]
+== Check 3: Woodall's (4,6) example ==
+[PASS] antidistances (3,4,2,3,2,1), antisum 15 -- [3, 4, 2, 3, 2, 1] sum 15
+[PASS] #distinct shortest-antipath label sets per pair (1,3,1,1,1,1) -- [1, 3, 1, 1, 1, 1]
+[PASS] (4,6) example pseudo-tight under Both -- backtrack true brute true
+[PASS] (4,6) example pseudo-tight under Walk -- backtrack true brute true
+[PASS] (4,6) example pseudo-tight under Path -- backtrack true brute true
+[PASS] (4,6) example pseudo-tight under Arbitrary -- backtrack true brute true
+    pair a0a1 dbar 3: {01,34,35}
+    pair a0a2 dbar 4: {02,03,12,13} | {04,05,14,15} | {24,25,34,35}
+    pair a0a3 dbar 2: {23,45}
+    pair a1a2 dbar 3: {03,13,45}
+    pair a1a3 dbar 2: {24,25}
+    pair a2a3 dbar 1: {01}
+== PT solver cross-checks ==
+[PASS] backtracking PT == exhaustive 6^7 PT on 400 random 4-sets -- agree 400 disagree 0 (non-PT among them: 51)
+[PASS] PT invariant under reordering the 4 elements -- 
+[PASS] PT invariant under G -- 
+[PASS] compatibility tables symmetric in (N[x],N[y]) -- 
+[PASS] min_transversal == brute force on 300 random hypergraphs -- 
+== Check 6a: Zarankiewicz multisets 5a + 6rev(a) ==
+[PASS] for all 720 a: antisum 225 and t = 0 -- max t over a: 0
+== Check 7: the antisum-219 representative ==
+     9  9  5  5  4  4  3  3  4  2  2
+     9  9  5  5  4  4  3  3  4  2  2
+     5  5  9  7  2  2  5  5  4  2  2
+     5  5  7  9  2  4  5  5  2  2  2
+     4  4  2  2  9  5  2  2  5  7  7
+     4  4  2  4  5  9  4  4  3  5  5
+     3  3  5  5  2  4  9  5  4  4  4
+     3  3  5  5  2  4  5  9  4  4  4
+     4  4  4  2  5  3  4  4  9  5  5
+     2  2  2  2  7  5  4  4  5  9  7
+     2  2  2  2  7  5  4  4  5  7  9
+[PASS] antidistance matrix matches the stated one -- 
+[PASS] antisum 219 -- 219
+    my numbers: t = 103, tau = 8
+[PASS] t = 103 (arbitrary walks) -- 103
+[PASS] tau = 8 -- 8
+    (info) t under Both = 104
+    (info) t under Walk = 103
+    (info) t under Path = 104
+    (info) t under Arbitrary = 103
+    canonical form: ["0123456", "0123456", "0125463", "0152436", "0163452", "0452136", "0543621", "0625431", "0634125", "0635421", "0643521"]
+[PASS] orbit of the representative has 5040 distinct multisets -- |Stab| = 2, contains a rev-element: true
+== selfcheck ALL PASSED in 8.5s ==

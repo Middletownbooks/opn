@@ -204,6 +204,8 @@ pub fn extend_level_ex(ctx: &Ctx, parents: &[u128], k: usize, t_child: u32, nthr
                 let mut child = [0u16; 16];
                 let mut best = [0u16; 16];
                 let mut cx = [0u16; 16];
+                let exact2_plain = env_flag("COK_EXACT2");
+                let mut order_plain: Vec<u16> = Vec::new();
                 let (mut lc, mut lf, mut ll, mut lt0) = (0u64, 0u64, 0u64, 0u64);
                 loop {
                     let start = next.fetch_add(256, Ordering::Relaxed);
@@ -282,6 +284,13 @@ pub fn extend_level_ex(ctx: &Ctx, parents: &[u128], k: usize, t_child: u32, nthr
                                     if ab + cv as u32 + r as u32 * mu as u32 + lk.astar[r] > lk.t {
                                         ll += 1;
                                         continue;
+                                    }
+                                    if r == 2 && exact2_plain {
+                                        let cc2: Vec<u16> = c.iter().zip(row.iter()).map(|(a, &b)| a + b as u16).collect();
+                                        if ab + cv as u32 + exact_lb2(&cc2, dbar, nv, &mut order_plain) > lk.t {
+                                            ll += 1;
+                                            continue;
+                                        }
                                     }
                                 }
                             }
@@ -1101,6 +1110,8 @@ pub struct ChildGen<'a> {
     pub astar: &'a [u32],
     pub ths: Vec<Vec<u32>>,
     pub pair_of: Vec<Vec<usize>>,
+    /// plain mode: no tau computation and no tau cuts (a census of antisum only)
+    pub plain: bool,
 }
 
 impl<'a> ChildGen<'a> {
@@ -1109,7 +1120,14 @@ impl<'a> ChildGen<'a> {
         // pair masks are u64: valid for multisets of at most 11 elements
         // (C(11,2) = 55 <= 64).  children() asserts this.
         let pair_of = Quads::new(m.min(11).max(4)).pair_of;
-        ChildGen { ctx, tab, m, t, abmax, tau_stop, astar, ths, pair_of }
+        ChildGen { ctx, tab, m, t, abmax, tau_stop, astar, ths, pair_of, plain: false }
+    }
+
+    /// Census generator: every cut except the tau ones (top value T).
+    pub fn new_plain(ctx: &'a Ctx, tab: &'a PtTable, m: usize, t: u32, astar: &'a [u32]) -> Self {
+        let mut g = ChildGen::new(ctx, tab, m, t, u32::MAX, 1, astar);
+        g.plain = true;
+        g
     }
 
     pub fn children(&self, x: &[u16], out: &mut Vec<Vec<u16>>) {
@@ -1149,7 +1167,7 @@ impl<'a> ChildGen<'a> {
             pm
         };
         let mut pedges = Vec::new();
-        if k >= 4 {
+        if k >= 4 && !self.plain {
             for a in 0..k {
                 for b in a + 1..k {
                     for cc in b + 1..k {
@@ -1182,7 +1200,7 @@ impl<'a> ChildGen<'a> {
                 }
             }
             let mut tau = 0u32;
-            if kc >= 4 {
+            if kc >= 4 && !self.plain {
                 edges.clear();
                 edges.extend_from_slice(&pedges);
                 for a in 0..k {
@@ -1351,7 +1369,7 @@ pub fn augment_to(gen: &ChildGen, parents: &[u128], k: usize, stop_len: usize, n
             cnt[l] += 1;
             if l == stop_len {
                 *hist.entry(antisum(gen.ctx, &cf)).or_default() += 1;
-                if every > 0 && cnt[l] % every == 1 {
+                if every > 0 && (every == 1 || cnt[l] % every == 1) {
                     sample.push(pack(&cf));
                 }
             } else {

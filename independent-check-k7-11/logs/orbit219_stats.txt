@@ -1,0 +1,5 @@
+orbit size (distinct multisets): 5040
+distinct vertices per member: 10
+members containing 0123456: 70  (by multiplicity of 0123456: {1: 63, 2: 7})
+|Stab(0123456)| = 14; those members form 6 Stab-orbits (by multiplicity of 0123456: {1: 5, 2: 1})
+wrote the 70 members containing 0123456 to dumps/orbit219_members_containing_identity.txt

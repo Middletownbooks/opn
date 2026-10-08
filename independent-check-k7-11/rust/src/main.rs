@@ -77,6 +77,8 @@ fn main() {
         "trace" => trace(&args),
         "localsearch" => localsearch(&args),
         "tightcheck" => tightcheck(&args),
+        "orbitstats" => orbitstats(&args),
+        "census" => census(&args),
         "pttable-check" => pttable_check(&args),
         _ => eprintln!("usage: selfcheck | enumerate M T TARGET [--fam F] [--threads N] [--taucap C] [--dump FILE] | brute4 T | dumpquads COUNT SEED | pt4"),
     }
@@ -1426,4 +1428,129 @@ fn tightcheck(args: &[String]) {
     println!("total non-PT 4-subsets {}, total non-tight 4-subsets {}", tsum.0, tsum.1);
     let raised: usize = summary.iter().filter(|(k, _)| k.4 > k.2).map(|(_, c)| c).sum();
     println!("sets whose tau increases under tightness: {} of {}", raised, n);
+}
+
+/// Row-convention-independent statistics of one orbit: its size, how many of
+/// its members contain a fixed vertex v0 (the identity order 0123456), with
+/// what multiplicity, and how those members split into orbits of Stab(v0)
+/// (the 14 group elements fixing v0).  Writes the members containing v0.
+fn orbitstats(args: &[String]) {
+    let set = &args[2];
+    let out = arg_val(args, "--out", String::new());
+    let ctx = build_ctx(7, Family::Arbitrary);
+    let nv = ctx.co.nv;
+    let v0 = ctx.co.parse("0123456");
+    let ms: Vec<usize> = set.split(',').map(|s| ctx.co.parse(s)).collect();
+    let mut orbit: Vec<Vec<u16>> = (0..ctx.sym.ng).map(|g| {
+        let mut img: Vec<u16> = ms.iter().map(|&x| ctx.sym.act[g * nv + x]).collect();
+        img.sort();
+        img
+    }).collect();
+    orbit.sort();
+    orbit.dedup();
+    let with_v0: Vec<&Vec<u16>> = orbit.iter().filter(|m| m.contains(&(v0 as u16))).collect();
+    let mut mult: BTreeMap<usize, usize> = BTreeMap::new();
+    for m in &with_v0 {
+        *mult.entry(m.iter().filter(|&&x| x as usize == v0).count()).or_default() += 1;
+    }
+    let stab: Vec<usize> = (0..ctx.sym.ng).filter(|&g| ctx.sym.act[g * nv + v0] as usize == v0).collect();
+    let mut seen = std::collections::HashSet::new();
+    let mut nstab = 0;
+    let mut stab_mult: BTreeMap<usize, usize> = BTreeMap::new();
+    for m in &with_v0 {
+        if seen.contains(*m) { continue; }
+        nstab += 1;
+        *stab_mult.entry(m.iter().filter(|&&x| x as usize == v0).count()).or_default() += 1;
+        for &g in &stab {
+            let mut img: Vec<u16> = m.iter().map(|&x| ctx.sym.act[g * nv + x as usize]).collect();
+            img.sort();
+            seen.insert(img);
+        }
+    }
+    let distinct = { let mut d = ms.clone(); d.sort(); d.dedup(); d.len() };
+    println!("orbit size (distinct multisets): {}", orbit.len());
+    println!("distinct vertices per member: {}", distinct);
+    println!("members containing 0123456: {}  (by multiplicity of 0123456: {:?})", with_v0.len(), mult);
+    println!("|Stab(0123456)| = {}; those members form {} Stab-orbits (by multiplicity of 0123456: {:?})", stab.len(), nstab, stab_mult);
+    if !out.is_empty() {
+        let mut f = std::io::BufWriter::new(std::fs::File::create(&out).unwrap());
+        for m in &with_v0 {
+            let names: Vec<String> = m.iter().map(|&v| ctx.co.name(v as usize)).collect();
+            writeln!(f, "{}", names.join(",")).unwrap();
+        }
+        println!("wrote the {} members containing 0123456 to {}", with_v0.len(), out);
+    }
+}
+
+/// Complete census of all orbits of (m,7)-sets with Abar <= T (no tau cuts):
+/// breadth-first to level K, then canonical augmentation (memory-free) to the
+/// top, keeping every top-level orbit; then exact t, tau, stabiliser for each.
+fn census(args: &[String]) {
+    let m: usize = args[2].parse().unwrap();
+    let t: u32 = args[3].parse().unwrap();
+    let kk: usize = arg_val(args, "--augment-from", 6);
+    let nthreads: usize = arg_val(args, "--threads", 4);
+    let dump: String = arg_val(args, "--dump", String::new());
+    let astar_arg: String = arg_val(args, "--astar", String::new());
+    let ctx = build_ctx(7, Family::Arbitrary);
+    let exact: Vec<u32> = astar_arg.split(',').map(|x| x.parse().unwrap()).collect();
+    let astar = extend_astar(&exact, m);
+    let th = thresholds(m, t);
+    println!("census of (m,7)-sets with Abar <= {} (m = {}); thresholds {:?}; A* {:?}; parity={} exact2={}", t, m, &th[1..], astar, env_flag("COK_PARITY"), env_flag("COK_EXACT2"));
+    let look = Lookahead { m, t, astar: &astar };
+    let t0 = Instant::now();
+    let mut level: Vec<u128> = vec![pack(&[0])];
+    for k in 2..=kk {
+        let (next, st) = extend_level(&ctx, &level, k - 1, th[k], nthreads, Some(&look));
+        println!("level {:2} (breadth-first): orbits {}  [{:.1}s]", k, st.orbits, t0.elapsed().as_secs_f64());
+        level = next;
+    }
+    let tab = PtTable::build(&ctx, nthreads);
+    let gen = ChildGen::new_plain(&ctx, &tab, m, t, &astar);
+    let tl = Instant::now();
+    let (cnt, hist, top) = augment_to(&gen, &level, kk, m, nthreads, 1);
+    println!("levels {}..{} by canonical augmentation: orbits visited per level {:?}  [{:.1}s]", kk + 1, m, &cnt[kk + 1..=m], tl.elapsed().as_secs_f64());
+    println!("top-level orbits by antisum: {:?}  (collected {})", hist, top.len());
+    let mut top = top;
+    top.sort_unstable();
+    let info = analyze(&ctx, &top, m, 64, nthreads);
+    let ng = ctx.sym.ng as u64;
+    let mut by_ab: BTreeMap<u32, Vec<usize>> = BTreeMap::new();
+    for (i, o) in info.iter().enumerate() {
+        by_ab.entry(o.abar).or_default().push(i);
+    }
+    for (ab, idxs) in &by_ab {
+        let labelled: u64 = idxs.iter().map(|&i| ng / info[i].stab as u64).sum();
+        // members containing a fixed vertex: |orbit| * (#distinct vertices) / 720 (double counting)
+        let with_v: u64 = idxs.iter().map(|&i| {
+            let mut ms = [0u16; 16];
+            unpack(top[i], m, &mut ms);
+            let mut d = ms[..m].to_vec();
+            d.dedup();
+            (ng / info[i].stab as u64) * d.len() as u64 / ctx.co.nv as u64
+        }).sum();
+        let sn: u64 = idxs.iter().map(|&i| if info[i].stab_has_rev { 1 } else { 2 }).sum();
+        let mut tauh: BTreeMap<u32, usize> = BTreeMap::new();
+        let mut stabh: BTreeMap<u32, usize> = BTreeMap::new();
+        for &i in idxs {
+            *tauh.entry(info[i].tau).or_default() += 1;
+            *stabh.entry(info[i].stab).or_default() += 1;
+        }
+        let tmin = idxs.iter().map(|&i| info[i].t).min().unwrap();
+        let tmax = idxs.iter().map(|&i| info[i].t).max().unwrap();
+        let minb = idxs.iter().map(|&i| info[i].abar + 2 * info[i].tau).min().unwrap();
+        println!("antisum {}: G-orbits {}  S_7-orbits {}  labelled multisets {}  members containing a fixed vertex {}  |Stab| histogram {:?}  t in [{}, {}]  tau histogram {:?}  min(Abar+2tau) {}",
+            ab, idxs.len(), sn, labelled, with_v, stabh, tmin, tmax, tauh, minb);
+    }
+    if !dump.is_empty() {
+        let mut f = std::io::BufWriter::new(std::fs::File::create(&dump).unwrap());
+        let mut ms = [0u16; 16];
+        for (i, &x) in top.iter().enumerate() {
+            unpack(x, m, &mut ms);
+            let names: Vec<String> = ms[..m].iter().map(|&v| ctx.co.name(v as usize)).collect();
+            writeln!(f, "{} {} {} {} stab={}", names.join(","), info[i].abar, info[i].t, info[i].tau, info[i].stab).unwrap();
+        }
+        println!("dumped {} orbits to {}", top.len(), dump);
+    }
+    println!("total wall time {:.1}s", t0.elapsed().as_secs_f64());
 }

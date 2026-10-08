@@ -1,0 +1,12 @@
+census of (m,7)-sets with Abar <= 219 (m = 11); thresholds [0, 3, 11, 22, 38, 57, 81, 110, 142, 179, 219]; A* [0, 0, 0, 9, 18, 36, 54, 79, 107, 140, 178, 218]; parity=true exact2=true
+level  2 (breadth-first): orbits 10  [0.0s]
+level  3 (breadth-first): orbits 875  [0.0s]
+level  4 (breadth-first): orbits 18018  [0.0s]
+level  5 (breadth-first): orbits 918555  [1.0s]
+level  6 (breadth-first): orbits 2498547  [7.0s]
+levels 7..11 by canonical augmentation: orbits visited per level [16855501, 3181344, 10, 4, 1]  [153.1s]
+top-level orbits by antisum: {219: 1}  (collected 1)
+antisum 219: G-orbits 1  S_7-orbits 1  labelled multisets 5040  members containing a fixed vertex 70  |Stab| histogram {2: 1}  t in [103, 103]  tau histogram {8: 1}  min(Abar+2tau) 235
+total wall time 166.8s
+
+real	2m47.374s

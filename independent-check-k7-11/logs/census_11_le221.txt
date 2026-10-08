@@ -1,0 +1,16 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.53s
+(m,n) = (11,7), top threshold T = 221, target = 225, family Arbitrary
+thresholds T_k: [0, 3, 11, 22, 38, 59, 83, 112, 144, 180, 221]
+lookahead ON, A*(r) lower bounds used for r = 0..11: [0, 0, 0, 9, 18, 36, 54, 79, 107, 140, 178, 218]
+level  1: T =   0  orbits            1
+level  2: T =   3  parents            1  candidates(Abar<=T)            113  after max-contribution filter            113  lookahead-cut            0  orbits           11  [0.0s]
+level  3: T =  11  parents           11  candidates(Abar<=T)           3958  after max-contribution filter           3501  lookahead-cut            0  orbits          912  [0.0s]
+level  4: T =  22  parents          912  candidates(Abar<=T)          64895  after max-contribution filter          36878  lookahead-cut          118  orbits        19455  [0.0s]
+level  5: T =  38  parents        19455  candidates(Abar<=T)        2442570  after max-contribution filter        1381886  lookahead-cut            0  orbits       970169  [1.1s]
+level  6: T =  59  parents       970169  candidates(Abar<=T)       91535438  after max-contribution filter       57439323  lookahead-cut      1236170  orbits     28612164  [67.0s]
+level  7: T =  83  parents     28612164  candidates(Abar<=T)     1339041503  after max-contribution filter      462929645  lookahead-cut            1  orbits    325109494  [768.7s]
+/bin/bash: line 2:   443 Killed                  env COK_PARITY=1 COK_EXACT2=1 $B enumerate 11 221 225 --astar 0,0,0,9,18,36,54,79,107,140,178 --threads 4 --dump dumps/census_11_le221.txt
+
+real	24m30.942s
+user	91m44.877s
+sys	2m1.943s

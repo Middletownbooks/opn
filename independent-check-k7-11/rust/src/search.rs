@@ -967,7 +967,9 @@ pub struct ChildGen<'a> {
 impl<'a> ChildGen<'a> {
     pub fn new(ctx: &'a Ctx, tab: &'a PtTable, m: usize, t: u32, abmax: u32, tau_stop: u32, astar: &'a [u32]) -> Self {
         let ths = (0..tau_stop).map(|tau| thresholds(m, (t - 2 * tau).min(abmax))).collect();
-        let pair_of = Quads::new(m.max(4)).pair_of;
+        // pair masks are u64: valid for multisets of at most 11 elements
+        // (C(11,2) = 55 <= 64).  children() asserts this.
+        let pair_of = Quads::new(m.min(11).max(4)).pair_of;
         ChildGen { ctx, tab, m, t, abmax, tau_stop, astar, ths, pair_of }
     }
 
@@ -978,6 +980,7 @@ impl<'a> ChildGen<'a> {
         let act = &ctx.sym.act;
         let k = x.len();
         let kc = k + 1;
+        assert!(kc <= 11, "pair masks are u64; children of size > 11 need u128 masks");
         let m = self.m;
         let tl = self.t.min(self.abmax);
         let mut ab = 0u32;
@@ -1166,11 +1169,16 @@ pub fn canonical_parent(ctx: &Ctx, c: &[u16]) -> Vec<u16> {
 /// No global de-duplication is needed.  Returns per-level orbit counts and,
 /// at the top level, a histogram by antisum plus (optionally) a sample.
 pub fn augment_to_top(gen: &ChildGen, parents: &[u128], k: usize, nthreads: usize, sample_every: u64) -> (Vec<u64>, std::collections::BTreeMap<u32, u64>, Vec<u128>) {
+    augment_to(gen, parents, k, gen.m, nthreads, sample_every)
+}
+
+/// As augment_to_top, but stops (only counting) at size `stop_len` <= m.
+pub fn augment_to(gen: &ChildGen, parents: &[u128], k: usize, stop_len: usize, nthreads: usize, sample_every: u64) -> (Vec<u64>, std::collections::BTreeMap<u32, u64>, Vec<u128>) {
     let m = gen.m;
     let next = AtomicUsize::new(0);
     let counts: Vec<AtomicU64> = (0..=m).map(|_| AtomicU64::new(0)).collect();
     let res: Mutex<(std::collections::BTreeMap<u32, u64>, Vec<u128>)> = Mutex::new((Default::default(), Vec::new()));
-    fn rec(gen: &ChildGen, node: &[u16], cnt: &mut Vec<u64>, hist: &mut std::collections::BTreeMap<u32, u64>, sample: &mut Vec<u128>, every: u64) {
+    fn rec(gen: &ChildGen, node: &[u16], cnt: &mut Vec<u64>, hist: &mut std::collections::BTreeMap<u32, u64>, sample: &mut Vec<u128>, every: u64, stop_len: usize) {
         let mut ch = Vec::new();
         gen.children(node, &mut ch);
         let mut acc: Vec<Vec<u16>> = Vec::new();
@@ -1186,13 +1194,13 @@ pub fn augment_to_top(gen: &ChildGen, parents: &[u128], k: usize, nthreads: usiz
         for cf in acc {
             let l = cf.len();
             cnt[l] += 1;
-            if l == gen.m {
+            if l == stop_len {
                 *hist.entry(antisum(gen.ctx, &cf)).or_default() += 1;
                 if every > 0 && cnt[l] % every == 1 {
                     sample.push(pack(&cf));
                 }
             } else {
-                rec(gen, &cf, cnt, hist, sample, every);
+                rec(gen, &cf, cnt, hist, sample, every, stop_len);
             }
         }
     }
@@ -1210,7 +1218,7 @@ pub fn augment_to_top(gen: &ChildGen, parents: &[u128], k: usize, nthreads: usiz
                     }
                     for pi in start..(start + 16).min(parents.len()) {
                         unpack(parents[pi], k, &mut x);
-                        rec(gen, &x[..k], &mut cnt, &mut hist, &mut sample, sample_every);
+                        rec(gen, &x[..k], &mut cnt, &mut hist, &mut sample, sample_every, stop_len);
                     }
                 }
                 for i in 0..=m {

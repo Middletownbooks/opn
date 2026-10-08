@@ -1,0 +1,19 @@
+m = 11: 400 restarts; best antisum found 221; histogram of per-restart best: {221: 35, 223: 351, 225: 14}
+distinct orbits found at the best value (up to 50): 50
+   t = 129, tau = 9
+   t = 121, tau = 9
+   t = 103, tau = 9
+   t = 103, tau = 8
+   t = 110, tau = 10
+   t = 95, tau = 9
+   t = 132, tau = 10
+   t = 131, tau = 10
+   t = 109, tau = 8
+   t = 102, tau = 10
+real	0m1.087s
+m = 12: 400 restarts; best antisum found 268; histogram of per-restart best: {268: 127, 269: 160, 270: 113}
+distinct orbits found at the best value (up to 50): 50
+real	0m1.137s
+m = 13: 400 restarts; best antisum found 318; histogram of per-restart best: {318: 1, 320: 116, 322: 255, 324: 28}
+distinct orbits found at the best value (up to 50): 1
+real	0m1.213s

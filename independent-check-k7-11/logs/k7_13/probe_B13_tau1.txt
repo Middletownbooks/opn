@@ -1,0 +1,12 @@
+survivors = orbits with Abar + 2 tau <= 322 and tau <= 1 (tau >= 2 cut; A*(13) >= 312 alone would cut tau >= 6)
+thresholds for tau = 0: [0, 4, 12, 24, 40, 60, 85, 114, 147, 184, 225, 270, 320]
+thresholds for tau = 1: [0, 4, 12, 24, 40, 60, 85, 114, 147, 184, 225, 270, 320]
+level  2: parents           1  cand(Abar<=T_k)           267  max-contrib           267  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [267, 0]  orbits          21  [0.0s]
+level  3: parents          21  cand(Abar<=T_k)          5184  max-contrib          3501  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [3501, 0]  orbits         912  [0.0s]
+level  4: parents         912  cand(Abar<=T_k)        242414  max-contrib        172584  lookahead-cut           30  tau/threshold-cut            0  kept cand by tau [101780, 70774]  orbits       92591  [0.1s]
+level  5: parents       92591  cand(Abar<=T_k)      16624505  max-contrib       6703121  lookahead-cut            0  tau/threshold-cut       864058  kept cand by tau [1281611, 4557452]  orbits     4278203  [4.2s]
+level  6: parents     4278203  cand(Abar<=T_k)     290406351  max-contrib     112055090  lookahead-cut        63178  tau/threshold-cut     61526233  kept cand by tau [6282260, 44183419]  orbits    27765995  [67.4s]
+level  7: parents    27765995  cand(Abar<=T_k)    3331112128  max-contrib    1168951796  lookahead-cut            1  tau/threshold-cut    836387629  kept cand by tau [40046438, 292517728]  orbits   243728286  [633.7s]
+stopped after level 7 (--stop-at); wall time 705.4s
+real	11m53.378s
+user	43m47.201s

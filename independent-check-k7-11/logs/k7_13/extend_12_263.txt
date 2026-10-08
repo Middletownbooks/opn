@@ -1,0 +1,6 @@
+extendfrom: level-9 file with all orbits of Abar <= 142; target (m,T) = (12,263); thresholds [0, 3, 11, 23, 39, 59, 83, 111, 143, 179, 219, 263]; level 9 needs Abar <= 142 (parity floor of 143)
+level  9: 2711298 orbits with Abar <= 143
+level 10: T = 179  parents      2711298  candidates(Abar<=T)         927505  after max-contribution filter         926186  lookahead-cut       882073  orbits        12531
+level 11: T = 219  parents        12531  candidates(Abar<=T)              4  after max-contribution filter              1  lookahead-cut            1  orbits            0
+level 12: T = 263  parents            0  candidates(Abar<=T)              0  after max-contribution filter              0  lookahead-cut            0  orbits            0
+top-level orbits by antisum: {}

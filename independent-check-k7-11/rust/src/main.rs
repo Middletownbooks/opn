@@ -75,6 +75,7 @@ fn main() {
         "equivariance" => equivariance(),
         "check-augment" => check_augment(&args),
         "trace" => trace(&args),
+        "localsearch" => localsearch(&args),
         "pttable-check" => pttable_check(&args),
         _ => eprintln!("usage: selfcheck | enumerate M T TARGET [--fam F] [--threads N] [--taucap C] [--dump FILE] | brute4 T | dumpquads COUNT SEED | pt4"),
     }
@@ -1026,14 +1027,24 @@ fn enumtau2(args: &[String]) {
     let t0 = Instant::now();
     let stream_from: usize = arg_val(args, "--stream-from", m);
     let augment_from: usize = arg_val(args, "--augment-from", m);
+    let stop_at: usize = arg_val(args, "--stop-at", m);
     let sample_every: u64 = arg_val(args, "--sample-every", 0);
     let mut level: Vec<u128> = vec![pack(&[0])];
     for k in 2..=m {
+        if k > stop_at && k <= augment_from {
+            println!("stopped after level {} (--stop-at); wall time {:.1}s", stop_at, t0.elapsed().as_secs_f64());
+            return;
+        }
         if k > augment_from {
             let gen = ChildGen::new(&ctx, &tab, m, t, abmax, tau_stop, &astar);
             let tl = Instant::now();
-            let (cnt, hist, sample) = augment_to_top(&gen, &level, augment_from, nthreads, sample_every);
-            println!("levels {}..{} by canonical augmentation from the {} stored level-{} orbits: orbits per level {:?}  [{:.1}s]", augment_from + 1, m, level.len(), augment_from, &cnt[augment_from + 1..], tl.elapsed().as_secs_f64());
+            let top = stop_at.min(m);
+            let (cnt, hist, sample) = augment_to(&gen, &level, augment_from, top, nthreads, sample_every);
+            println!("levels {}..{} by canonical augmentation from the {} stored level-{} orbits: orbits per level {:?}  [{:.1}s]", augment_from + 1, top, level.len(), augment_from, &cnt[augment_from + 1..=top], tl.elapsed().as_secs_f64());
+            if top < m {
+                println!("stopped at level {} (--stop-at); orbits there by antisum {:?}", top, hist);
+                return;
+            }
             println!("search wall time {:.1}s", t0.elapsed().as_secs_f64());
             println!("SURVIVORS (orbits with Abar + 2 tau <= {}, tau <= {}): {}", t, tau_stop - 1, cnt[m]);
             for (ab, n) in &hist {
@@ -1260,4 +1271,98 @@ fn trace(args: &[String]) {
         println!("  size {:2}: Abar {:3}  generated from previous link: {}   {}", w[1].len(), antisum(&ctx, &w[1]), found, names.join(","));
     }
     println!("[{}] the set passes every cut of the search (m = {}, T = {}, tau <= {}, abmax {})", if all_ok { "REACHED" } else { "NOT REACHED" }, m, t, tau_stop - 1, if abmax == u32::MAX { "none".to_string() } else { abmax.to_string() });
+}
+
+/// Iterated local search for low-antisum m-multisets (upper bounds on A*(m)).
+/// Moves: replace one element by the best vertex; perturbation: replace a few
+/// random elements.  Reports the best antisum found and, for the best sets,
+/// t and tau.
+fn localsearch(args: &[String]) {
+    let m: usize = args[2].parse().unwrap();
+    let restarts: usize = args[3].parse().unwrap();
+    let seed: u64 = args[4].parse().unwrap();
+    let ctx = build_ctx(7, Family::Arbitrary);
+    let nv = ctx.co.nv;
+    let d = &ctx.dbar;
+    let mut rng = Rng(seed | 1);
+    let mut best_overall = u32::MAX;
+    let mut hist: BTreeMap<u32, usize> = BTreeMap::new();
+    let mut best_sets: Vec<Vec<u16>> = Vec::new();
+    for _ in 0..restarts {
+        let a = rng.below(nv);
+        let ra = ctx.co.rev[a] as usize;
+        let mut ms: Vec<usize> = (0..m).map(|i| {
+            let base = if i % 2 == 0 { a } else { ra };
+            loop {
+                let y = rng.below(nv);
+                if ctx.co.d(base, y) <= 2 { break y; }
+            }
+        }).collect();
+        let mut best_local = u32::MAX;
+        for _round in 0..60 {
+            loop {
+                let mut c = vec![0u32; nv];
+                for &x in &ms {
+                    for v in 0..nv {
+                        c[v] += d[x * nv + v] as u32;
+                    }
+                }
+                let mut best_delta = 0i64;
+                let mut mv = None;
+                for i in 0..m {
+                    let x = ms[i];
+                    let cur = c[x] as i64 - d[x * nv + x] as i64;
+                    for v in 0..nv {
+                        let nw = c[v] as i64 - d[x * nv + v] as i64;
+                        if nw - cur < best_delta {
+                            best_delta = nw - cur;
+                            mv = Some((i, v));
+                        }
+                    }
+                }
+                match mv {
+                    Some((i, v)) => ms[i] = v,
+                    None => break,
+                }
+            }
+            let mut s: Vec<u16> = ms.iter().map(|&x| x as u16).collect();
+            s.sort();
+            let ab = antisum(&ctx, &s);
+            if ab < best_local {
+                best_local = ab;
+            }
+            if ab < best_overall {
+                best_overall = ab;
+                best_sets.clear();
+            }
+            if ab == best_overall && best_sets.len() < 50 {
+                let mut cf = vec![0u16; m];
+                ctx.sym.canon(&s, &mut cf);
+                if !best_sets.contains(&cf) {
+                    best_sets.push(cf);
+                }
+            }
+            // perturb 2-3 elements
+            let k = 2 + rng.below(2);
+            for _ in 0..k {
+                let i = rng.below(m);
+                let base = ms[rng.below(m)];
+                let tgt = if rng.below(2) == 0 { base } else { ctx.co.rev[base] as usize };
+                loop {
+                    let y = rng.below(nv);
+                    if ctx.co.d(tgt, y) <= 2 { ms[i] = y; break; }
+                }
+            }
+        }
+        *hist.entry(best_local).or_default() += 1;
+    }
+    println!("m = {}: {} restarts; best antisum found {}; histogram of per-restart best: {:?}", m, restarts, best_overall, hist);
+    println!("distinct orbits found at the best value (up to 50): {}", best_sets.len());
+    if m <= 11 {
+        let quads = Quads::new(m);
+        for b in best_sets.iter().take(10) {
+            let e = non_pt_edges(&ctx, &quads, b);
+            println!("   t = {}, tau = {}", e.len(), min_transversal(&e, 64));
+        }
+    }
 }

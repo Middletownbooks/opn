@@ -1,0 +1,4 @@
+s=2 (4 nodes, pairing 2x2): Lemma 3.2 injectivity True; orders tested 24 (all); singular pairings: 0
+s=3 (6 nodes, pairing 6x6): Lemma 3.2 injectivity True; orders tested 720 (all); singular pairings: 0
+s=4 (8 nodes, pairing 12x12): Lemma 3.2 injectivity True; orders tested 400 (random); singular pairings: 0
+s=5 (10 nodes, pairing 20x20): Lemma 3.2 injectivity True; orders tested 60 (random); singular pairings: 0

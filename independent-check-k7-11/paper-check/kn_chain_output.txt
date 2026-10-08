@@ -1,0 +1,24 @@
+== two-page construction (Section 5): crossing count vs Z(n)
+    [(5, 1, 1), (6, 3, 3), (7, 9, 9), (8, 18, 18), (9, 36, 36), (10, 60, 60), (11, 100, 100), (12, 150, 150), (13, 225, 225), (14, 315, 315), (15, 441, 441), (16, 588, 588), (17, 784, 784), (18, 1008, 1008), (19, 1296, 1296), (20, 1620, 1620)]
+== random straight-line drawings
+straight-line          n=5: Lemma4.1 True; dim S 1; rank E 1 (injective True); isotropic True; |T|/2 = 3 >= 1: True; c(D) = 3 >= |T|/2: True
+straight-line          n=7: Lemma4.1 True; dim S 9; rank E 9 (injective True); isotropic True; |T|/2 = 25 >= 9: True; c(D) = 25 >= |T|/2: True
+straight-line          n=9: Lemma4.1 True; dim S 36; rank E 36 (injective True); isotropic True; |T|/2 = 82 >= 36: True; c(D) = 82 >= |T|/2: True
+straight-line          n=11: Lemma4.1 True; dim S 100; rank E 100 (injective True); isotropic True; |T|/2 = 188 >= 100: True; c(D) = 188 >= |T|/2: True
+== two-page optimal drawings (tightness)
+two-page               n=5: Lemma4.1 True; dim S 1; rank E 1 (injective True); isotropic True; |T|/2 = 1 >= 1: True; c(D) = 1 >= |T|/2: True; TIGHT: c(D)==Z(n) True, |T|==2Z(n) True, rank E==|T|/2 True
+two-page               n=7: Lemma4.1 True; dim S 9; rank E 9 (injective True); isotropic True; |T|/2 = 9 >= 9: True; c(D) = 9 >= |T|/2: True; TIGHT: c(D)==Z(n) True, |T|==2Z(n) True, rank E==|T|/2 True
+two-page               n=9: Lemma4.1 True; dim S 36; rank E 36 (injective True); isotropic True; |T|/2 = 36 >= 36: True; c(D) = 36 >= |T|/2: True; TIGHT: c(D)==Z(n) True, |T|==2Z(n) True, rank E==|T|/2 True
+two-page               n=11: Lemma4.1 True; dim S 100; rank E 100 (injective True); isotropic True; |T|/2 = 100 >= 100: True; c(D) = 100 >= |T|/2: True; TIGHT: c(D)==Z(n) True, |T|==2Z(n) True, rank E==|T|/2 True
+two-page               n=13: Lemma4.1 True; dim S 225; rank E 225 (injective True); isotropic True; |T|/2 = 225 >= 225: True; c(D) = 225 >= |T|/2: True; TIGHT: c(D)==Z(n) True, |T|==2Z(n) True, rank E==|T|/2 True
+== random polyline drawings (repeated + adjacent crossings): Lemma 4.1 only
+   polyline n=5: 26 crossing points; Lemma 4.1 True
+   polyline n=7: 183 crossing points; Lemma 4.1 True
+   polyline n=5: 90 crossing points; Lemma 4.1 True
+   polyline n=7: 179 crossing points; Lemma 4.1 True
+   polyline n=7: 162 crossing points; Lemma 4.1 True
+   polyline n=7: 144 crossing points; Lemma 4.1 True
+== negative controls on one polyline drawing (each should be False)
+   shuffled spoke orders: False
+   no half terms:         False
+   flipped crossing signs: False

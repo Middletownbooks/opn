@@ -29,7 +29,7 @@ min_{w1,w2} c(w1) + c(w2) + dbar(w1,w2) is cheap: sort by c and prune.
 | run | level 9 before | level 9 with exact r = 2 | survivors |
 |---|---|---|---|
 | (11,7) case B (top 221, 4 below optimum 225) | 29,502,925 | **1,602** | 0 = 0 |
-| (11,7) case A (top 223, 2 below optimum) | 8,476,729 | **436,284** | 0 = 0 |
+| (11,7) case A (top 223, 2 below optimum) | 8,477,729 | **436,284** | 0 = 0 |
 | (11,7) top-225 control (target = optimum) | 96.0M | 84.7M | (control) |
 
 The collapse happens when the target is below the optimum, which is exactly

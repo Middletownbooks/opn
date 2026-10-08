@@ -130,6 +130,43 @@ impl PtTester {
         false
     }
 
+    /// Tightness (Woodall): choose ONE shortest-antipath label set L_p for
+    /// each of the 6 pairs; then for every ground pair g the route Q_g must
+    /// have label set exactly {p : g in L_p}.  Tight iff some choice admits N.
+    /// (Pseudo-tightness is the relaxation FORCED <= L <= POSS.)
+    pub fn is_tight(&self, sets: &[Vec<u32>; 6]) -> bool {
+        let mut idx = [0usize; 6];
+        loop {
+            let mut ex = [0u8; 21];
+            for p in 0..6 {
+                let l = sets[p][idx[p]];
+                for g in 0..self.npairs_src {
+                    ex[g] |= (((l >> g) & 1) as u8) << p;
+                }
+            }
+            let mut cons = [[0u8; 6]; 21];
+            for g in 0..self.npairs_src {
+                cons[g] = self.comp[((ex[g] as usize) << 6) | ex[g] as usize];
+            }
+            if self.solve(0, &[0x3fu8; 7], &cons) {
+                return true;
+            }
+            // next combination
+            let mut p = 0;
+            loop {
+                if p == 6 {
+                    return false;
+                }
+                idx[p] += 1;
+                if idx[p] < sets[p].len() {
+                    break;
+                }
+                idx[p] = 0;
+                p += 1;
+            }
+        }
+    }
+
     /// Exhaustive version: tries all 6^n assignments and tests each ground
     /// pair directly against the route table (no precomputed comp table, no
     /// forward checking).  Used only to cross-check is_pt.

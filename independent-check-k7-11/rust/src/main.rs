@@ -6,7 +6,7 @@ mod sym;
 use co::{Co, Family};
 use pt::PtTester;
 use search::*;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap};
 use std::io::Write;
 use std::time::Instant;
 use sym::{pack, unpack, Sym};
@@ -76,6 +76,7 @@ fn main() {
         "check-augment" => check_augment(&args),
         "trace" => trace(&args),
         "localsearch" => localsearch(&args),
+        "tightcheck" => tightcheck(&args),
         "pttable-check" => pttable_check(&args),
         _ => eprintln!("usage: selfcheck | enumerate M T TARGET [--fam F] [--threads N] [--taucap C] [--dump FILE] | brute4 T | dumpquads COUNT SEED | pt4"),
     }
@@ -1365,4 +1366,64 @@ fn localsearch(args: &[String]) {
             println!("   t = {}, tau = {}", e.len(), min_transversal(&e, 64));
         }
     }
+}
+
+/// For each multiset in FILE (first whitespace field = comma-separated cyclic
+/// orders; lines starting with "sample" use the third field), compare
+/// pseudo-tightness with tightness of all 4-subsets: t, tau vs t_T, tau_T.
+fn tightcheck(args: &[String]) {
+    let path = &args[2];
+    let limit: usize = arg_val(args, "--limit", usize::MAX);
+    let ctx = build_ctx(7, Family::Arbitrary);
+    let nv = ctx.co.nv;
+    let mut cache: HashMap<(usize, usize), Vec<u32>> = HashMap::new();
+    let text = std::fs::read_to_string(path).unwrap();
+    let mut n = 0;
+    let mut summary: BTreeMap<(u32, u32, u32, u32, u32), usize> = BTreeMap::new();
+    for line in text.lines() {
+        let f: Vec<&str> = line.split_whitespace().collect();
+        if f.is_empty() { continue; }
+        let field = if f[0] == "sample" { f[2] } else { f[0] };
+        if !field.contains(',') { continue; }
+        let mut ms: Vec<usize> = field.split(',').map(|x| ctx.co.parse(x)).collect();
+        ms.sort();
+        let m = ms.len();
+        let quads = Quads::new(m);
+        let (mut e_pt, mut e_t) = (Vec::new(), Vec::new());
+        for (qi, q) in quads.quads.iter().enumerate() {
+            let qq = [ms[q[0]], ms[q[1]], ms[q[2]], ms[q[3]]];
+            let (fa, fo) = ctx.pt.quad_masks(&qq, &ctx.fa, &ctx.fo, nv);
+            let pt = ctx.pt.is_pt(&fa, &fo);
+            let mut sets: [Vec<u32>; 6] = Default::default();
+            for p in 0..6 {
+                let (i, j) = ctx.pt.quad_pairs[p];
+                let key = (qq[i], qq[j]);
+                let e = cache.entry(key).or_insert_with(|| ctx.co.geodesic_label_sets(key.0, ctx.co.rev[key.1] as usize));
+                sets[p] = e.clone();
+            }
+            let tight = pt && ctx.pt.is_tight(&sets);
+            if !pt { e_pt.push(quads.pairmask[qi]); }
+            if !tight { e_t.push(quads.pairmask[qi]); }
+        }
+        let ms16: Vec<u16> = ms.iter().map(|&x| x as u16).collect();
+        let ab = antisum(&ctx, &ms16);
+        let tau = min_transversal(&e_pt, 64);
+        let tau_t = min_transversal(&e_t, 64);
+        *summary.entry((ab, e_pt.len() as u32, tau, e_t.len() as u32, tau_t)).or_default() += 1;
+        n += 1;
+        if n >= limit { break; }
+    }
+    println!("{} multisets from {}", n, path);
+    println!("(Abar, t_PT, tau_PT, t_tight, tau_tight): count");
+    let mut agg: BTreeMap<(u32, u32, u32), usize> = BTreeMap::new();
+    for (k, c) in &summary {
+        *agg.entry((k.0, k.2, k.4)).or_default() += c;
+    }
+    for (k, c) in &agg {
+        println!("  Abar {}  tau_PT {}  tau_tight {} : {}", k.0, k.1, k.2, c);
+    }
+    let tsum: (u64, u64) = summary.iter().fold((0, 0), |a, (k, c)| (a.0 + k.1 as u64 * *c as u64, a.1 + k.3 as u64 * *c as u64));
+    println!("total non-PT 4-subsets {}, total non-tight 4-subsets {}", tsum.0, tsum.1);
+    let raised: usize = summary.iter().filter(|(k, _)| k.4 > k.2).map(|(_, c)| c).sum();
+    println!("sets whose tau increases under tightness: {} of {}", raised, n);
 }

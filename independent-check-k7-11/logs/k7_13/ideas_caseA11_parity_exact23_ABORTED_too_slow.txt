@@ -1,0 +1,12 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.59s
+tau-pruned cascade (per-candidate cuts, PT lookup table): (m,n) = (11,7)
+survivors = orbits with Abar + 2 tau <= 223 and tau <= 0 (tau >= 1 cut; A*(11) >= 219 alone would cut tau >= 3)
+A*(r) lower bounds, r = 0..11: [0, 0, 0, 9, 18, 36, 54, 79, 107, 140, 178, 219]
+thresholds for tau = 0: [0, 3, 11, 22, 38, 59, 83, 112, 144, 182, 223]
+PT table built in 6.5s
+level  2: parents           1  cand(Abar<=T_k)           113  max-contrib           113  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [113]  orbits          11  [0.0s]
+level  3: parents          11  cand(Abar<=T_k)          3958  max-contrib          3501  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [3501]  orbits         912  [0.0s]
+level  4: parents         912  cand(Abar<=T_k)         64895  max-contrib         36878  lookahead-cut           29  tau/threshold-cut        18418  kept cand by tau [18431]  orbits        9653  [0.0s]
+level  5: parents        9653  cand(Abar<=T_k)       1203126  max-contrib        639368  lookahead-cut            0  tau/threshold-cut       398949  kept cand by tau [240419]  orbits      161600  [0.2s]
+level  6: parents      161600  cand(Abar<=T_k)      16175505  max-contrib       9632260  lookahead-cut       112661  tau/threshold-cut      6759750  kept cand by tau [2759849]  orbits     1412990  [3.2s]
+level  7: parents     1412990  cand(Abar<=T_k)      79986641  max-contrib      26912569  lookahead-cut            0  tau/threshold-cut     19633057  kept cand by tau [7279512]  orbits     5062946  [12.5s]

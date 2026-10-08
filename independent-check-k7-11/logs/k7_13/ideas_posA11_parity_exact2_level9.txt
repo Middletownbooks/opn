@@ -1,0 +1,20 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.59s
+tau-pruned cascade (per-candidate cuts, PT lookup table): (m,n) = (11,7)
+survivors = orbits with Abar + 2 tau <= 225 and tau <= 0 (tau >= 1 cut; A*(11) >= 219 alone would cut tau >= 4)
+A*(r) lower bounds, r = 0..11: [0, 0, 0, 9, 18, 36, 54, 79, 107, 140, 178, 219]
+thresholds for tau = 0: [0, 3, 11, 22, 38, 59, 83, 113, 146, 184, 225]
+PT table built in 6.4s
+level  2: parents           1  cand(Abar<=T_k)           113  max-contrib           113  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [113]  orbits          11  [0.0s]
+level  3: parents          11  cand(Abar<=T_k)          3958  max-contrib          3501  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [3501]  orbits         912  [0.0s]
+level  4: parents         912  cand(Abar<=T_k)         64895  max-contrib         36878  lookahead-cut           26  tau/threshold-cut        18421  kept cand by tau [18431]  orbits        9653  [0.0s]
+level  5: parents        9653  cand(Abar<=T_k)       1203126  max-contrib        639368  lookahead-cut            0  tau/threshold-cut       398949  kept cand by tau [240419]  orbits      161600  [0.2s]
+level  6: parents      161600  cand(Abar<=T_k)      16175505  max-contrib       9632260  lookahead-cut         5468  tau/threshold-cut      6846833  kept cand by tau [2779959]  orbits     1422616  [3.3s]
+level  7: parents     1422616  cand(Abar<=T_k)      80325846  max-contrib      27251774  lookahead-cut            0  tau/threshold-cut     19875397  kept cand by tau [7376377]  orbits     5119933  [12.5s]
+level  8: parents     5119933  cand(Abar<=T_k)     427895095  max-contrib     265972304  lookahead-cut      3660454  tau/threshold-cut    193042055  kept cand by tau [69269795]  orbits    32545681  [160.7s]
+level  9: parents    32545681  cand(Abar<=T_k)    1591820279  max-contrib     550466280  lookahead-cut     15107876  tau/threshold-cut    408076199  kept cand by tau [127282205]  orbits    84676911  [820.8s]
+stopped after level 9 (--stop-at); wall time 997.6s
+
+real	16m44.711s
+user	52m48.540s
+sys	0m14.227s
+IDEAS_DONE

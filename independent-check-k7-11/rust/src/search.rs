@@ -30,14 +30,129 @@ pub struct Ctx {
     pub pt: PtTester,
 }
 
+/// Opt-in experiment switches (environment variables, read once):
+///   COK_PARITY=1  parity-aware thresholds (see thresholds()).
+///   COK_EXACT2=1  exact lookahead for the last two elements.
+pub fn env_flag(name: &str) -> bool {
+    std::env::var(name).map(|v| v == "1").unwrap_or(false)
+}
+
+fn parity_cap(x: u32, k: usize) -> u32 {
+    // antisums of odd-size multisets are = C(k,2) (mod 2)
+    if k % 2 == 1 {
+        let p = ((k * (k - 1) / 2) % 2) as u32;
+        if x % 2 == p { x } else { x.saturating_sub(1) }
+    } else {
+        x
+    }
+}
+
+/// Cascade thresholds.  With COK_PARITY=1 each T_k is first lowered to the
+/// largest value of the right parity (sound: Abar(M_k) <= T_k and Abar(M_k)
+/// has that parity, and A -> A - ceil(2A/k) is non-decreasing).
 pub fn thresholds(m: usize, t: u32) -> Vec<u32> {
+    static PAR: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+    let par = *PAR.get_or_init(|| env_flag("COK_PARITY"));
     let mut th = vec![0u32; m + 1];
-    th[m] = t;
+    th[m] = if par { parity_cap(t, m) } else { t };
     for k in (2..=m).rev() {
         let tk = th[k];
-        th[k - 1] = tk - (2 * tk + k as u32 - 1) / k as u32;
+        let next = tk - (2 * tk + k as u32 - 1) / k as u32;
+        th[k - 1] = if par { parity_cap(next, k - 1) } else { next };
     }
     th
+}
+
+/// Exact minimum over multisets {w1, w2, w3} of cc[w1]+cc[w2]+cc[w3] +
+/// dbar(w1,w2)+dbar(w1,w3)+dbar(w2,w3): the exact cost of adding the last
+/// three elements.  Triple loop over vertices sorted by cc, pruned by the
+/// cc-sums (dbar >= 0).
+pub fn exact_lb3(cc: &[u16], dbar: &[u8], nv: usize, order: &mut Vec<u16>) -> u32 {
+    let maxv = *cc.iter().max().unwrap() as usize;
+    let mut cnt = vec![0usize; maxv + 2];
+    for &c in cc {
+        cnt[c as usize + 1] += 1;
+    }
+    for i in 1..cnt.len() {
+        cnt[i] += cnt[i - 1];
+    }
+    order.clear();
+    order.resize(nv, 0);
+    for (w, &c) in cc.iter().enumerate() {
+        order[cnt[c as usize]] = w as u16;
+        cnt[c as usize] += 1;
+    }
+    // initial upper bound: best pair + cheapest consistent third element
+    let mut best = u32::MAX;
+    for i in 0..nv {
+        let a = order[i] as usize;
+        let ca = cc[a] as u32;
+        if 3 * ca >= best {
+            break;
+        }
+        let ra = &dbar[a * nv..(a + 1) * nv];
+        for j in i..nv {
+            let b = order[j] as usize;
+            let cb = cc[b] as u32;
+            if ca + 2 * cb >= best {
+                break;
+            }
+            let ab = ca + cb + ra[b] as u32;
+            let rb = &dbar[b * nv..(b + 1) * nv];
+            for k in j..nv {
+                let c = order[k] as usize;
+                let ccv = cc[c] as u32;
+                if ab + ccv >= best {
+                    break;
+                }
+                let val = ab + ccv + ra[c] as u32 + rb[c] as u32;
+                if val < best {
+                    best = val;
+                }
+            }
+        }
+    }
+    best
+}
+
+/// Exact minimum over unordered pairs {w1, w2} (w1 = w2 allowed) of
+/// cc[w1] + cc[w2] + dbar(w1, w2): the exact cost of adding the last two
+/// elements to a multiset whose contribution vector is cc.
+pub fn exact_lb2(cc: &[u16], dbar: &[u8], nv: usize, order: &mut Vec<u16>) -> u32 {
+    let maxv = *cc.iter().max().unwrap() as usize;
+    let mut cnt = vec![0usize; maxv + 2];
+    for &c in cc {
+        cnt[c as usize + 1] += 1;
+    }
+    for i in 1..cnt.len() {
+        cnt[i] += cnt[i - 1];
+    }
+    order.clear();
+    order.resize(nv, 0);
+    for (w, &c) in cc.iter().enumerate() {
+        order[cnt[c as usize]] = w as u16;
+        cnt[c as usize] += 1;
+    }
+    let mut best = u32::MAX;
+    for i in 0..nv {
+        let a = order[i] as usize;
+        let ca = cc[a] as u32;
+        if 2 * ca >= best {
+            break;
+        }
+        for j in i..nv {
+            let b = order[j] as usize;
+            let cb = cc[b] as u32;
+            if ca + cb >= best {
+                break;
+            }
+            let val = ca + cb + dbar[a * nv + b] as u32;
+            if val < best {
+                best = val;
+            }
+        }
+    }
+    best
 }
 
 pub struct LevelStats {
@@ -784,6 +899,10 @@ pub fn extend_level_tau_cap(ctx: &Ctx, tab: &PtTable, parents: &[u128], k: usize
                 let mut pedges: Vec<u64> = Vec::new();
                 let mut edges: Vec<u64> = Vec::new();
                 let mut loc = [0u64; 8];
+                let exact2 = env_flag("COK_EXACT2");
+                let exact3 = env_flag("COK_EXACT3");
+                let mut cc2 = vec![0u16; nv];
+                let mut order2: Vec<u16> = Vec::new();
                 loop {
                     let start = next.fetch_add(64, Ordering::Relaxed);
                     if start >= parents.len() {
@@ -899,6 +1018,26 @@ pub fn extend_level_tau_cap(ctx: &Ctx, tab: &PtTable, parents: &[u128], k: usize
                             if abc > ths[tau as usize][kc] || (r > 0 && abc + r as u32 * mu + astar[r] > teff) {
                                 loc[3] += 1;
                                 continue;
+                            }
+                            if exact3 && r == 3 {
+                                let row = &dbar[v * nv..(v + 1) * nv];
+                                for w in 0..nv {
+                                    cc2[w] = c[w] + row[w] as u16;
+                                }
+                                if abc + exact_lb3(&cc2, dbar, nv, &mut order2) > teff {
+                                    loc[2] += 1;
+                                    continue;
+                                }
+                            }
+                            if exact2 && r == 2 {
+                                let row = &dbar[v * nv..(v + 1) * nv];
+                                for w in 0..nv {
+                                    cc2[w] = c[w] + row[w] as u16;
+                                }
+                                if abc + exact_lb2(&cc2, dbar, nv, &mut order2) > teff {
+                                    loc[2] += 1;
+                                    continue;
+                                }
                             }
                             loc[4 + tau as usize] += 1;
                             let mut pos = 0;
@@ -1063,6 +1202,22 @@ impl<'a> ChildGen<'a> {
             let teff = (self.t - 2 * tau).min(self.abmax);
             if abc > self.ths[tau as usize][kc] || (r > 0 && abc + r as u32 * mu + self.astar[r] > teff) {
                 continue;
+            }
+            if r == 3 && env_flag("COK_EXACT3") {
+                let row = &dbar[v * nv..(v + 1) * nv];
+                let cc3: Vec<u16> = c.iter().zip(row.iter()).map(|(a, &b)| a + b as u16).collect();
+                let mut order3 = Vec::new();
+                if abc + exact_lb3(&cc3, dbar, nv, &mut order3) > teff {
+                    continue;
+                }
+            }
+            if r == 2 && env_flag("COK_EXACT2") {
+                let row = &dbar[v * nv..(v + 1) * nv];
+                let cc2: Vec<u16> = c.iter().zip(row.iter()).map(|(a, &b)| a + b as u16).collect();
+                let mut order2 = Vec::new();
+                if abc + exact_lb2(&cc2, dbar, nv, &mut order2) > teff {
+                    continue;
+                }
             }
             let mut ch = x.to_vec();
             let pos = ch.partition_point(|&e| e <= v as u16);

@@ -1,0 +1,24 @@
+[ctx] CO_7 built: 720 vertices, |G| = 10080, family Arbitrary, 0.58s
+tau-pruned cascade (per-candidate cuts, PT lookup table): (m,n) = (11,7)
+survivors = orbits with Abar + 2 tau <= 223 and tau <= 1 (tau >= 2 cut; A*(11) >= 219 alone would cut tau >= 3)
+A*(r) lower bounds, r = 0..11: [0, 0, 0, 9, 18, 36, 54, 79, 107, 140, 178, 219]
+additional cap: Abar <= 221
+thresholds for tau = 0: [0, 3, 11, 22, 38, 59, 83, 112, 144, 180, 221]
+thresholds for tau = 1: [0, 3, 11, 22, 38, 59, 83, 112, 144, 180, 221]
+PT table built in 6.8s
+level  2: parents           1  cand(Abar<=T_k)           113  max-contrib           113  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [113, 0]  orbits          11  [0.0s]
+level  3: parents          11  cand(Abar<=T_k)          3958  max-contrib          3501  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [3501, 0]  orbits         912  [0.0s]
+level  4: parents         912  cand(Abar<=T_k)         64895  max-contrib         36878  lookahead-cut          118  tau/threshold-cut            0  kept cand by tau [18400, 18360]  orbits       19455  [0.0s]
+level  5: parents       19455  cand(Abar<=T_k)       2442570  max-contrib       1381886  lookahead-cut            0  tau/threshold-cut       228535  kept cand by tau [227761, 925590]  orbits      813459  [0.9s]
+level  6: parents      813459  cand(Abar<=T_k)      77019931  max-contrib      47564143  lookahead-cut       984446  tau/threshold-cut     26122641  kept cand by tau [2591850, 17865206]  orbits    10577859  [27.6s]
+level  7: parents    10577859  cand(Abar<=T_k)     531879751  max-contrib     171148413  lookahead-cut            0  tau/threshold-cut    121389340  kept cand by tau [6853513, 42905560]  orbits    35192903  [100.2s]
+level  8: parents    35192903  cand(Abar<=T_k)    1199935045  max-contrib     564115071  lookahead-cut    170369104  tau/threshold-cut    275138628  kept cand by tau [20505719, 98101620]  orbits    56218406  [280.1s]
+level  9: parents    56218406  cand(Abar<=T_k)     747578935  max-contrib     186239589  lookahead-cut     53956861  tau/threshold-cut    132280477  kept cand by tau [434, 1817]  orbits        1602  [283.3s]
+level 10: parents        1602  cand(Abar<=T_k)          3791  max-contrib          2004  lookahead-cut          375  tau/threshold-cut         1629  kept cand by tau [0, 0]  orbits           0  [0.0s]
+level 11: parents           0  cand(Abar<=T_k)             0  max-contrib             0  lookahead-cut            0  tau/threshold-cut            0  kept cand by tau [0, 0]  orbits           0  [0.0s]
+search wall time 692.1s
+SURVIVORS (orbits with Abar + 2 tau <= 223, tau <= 1): 0   (re-verified with direct PT test; inconsistent: 0)
+
+real	11m39.492s
+user	44m43.175s
+sys	0m21.589s

@@ -1,0 +1,30 @@
+n=3 (s=1, d=1): kills additive+diagonal: True; rank-one entries: True; orders tested 6 (all); singular images: 0
+n=5 (s=2, d=4): kills additive+diagonal: True; rank-one entries: True; orders tested 120 (all); singular images: 0
+n=7 (s=3, d=9): kills additive+diagonal: True; rank-one entries: True; orders tested 5040 (all); singular images: 0
+n=9 (s=4, d=16): kills additive+diagonal: True; rank-one entries: True; orders tested 300 (random); singular images: 0
+random drawing #0            m=3 n=3: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 2 >= 2: True; c(D)=3 >= d_m d_n=1
+random drawing #1            m=3 n=3: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 2 >= 2: True; c(D)=3 >= d_m d_n=1
+random drawing #2            m=3 n=3: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 2 >= 2: True; c(D)=3 >= d_m d_n=1
+Zarankiewicz axis drawing    m=3 n=3: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 2 >= 2: True; c(D)=1 >= d_m d_n=1; TIGHT: c(D)==d_m d_n True, sum rank==2c True, every rank==c_ik True
+random drawing #0            m=4 n=5: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 42 >= 16: True; c(D)=39 >= d_m d_n=8
+random drawing #1            m=4 n=5: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 30 >= 16: True; c(D)=37 >= d_m d_n=8
+random drawing #2            m=4 n=5: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 34 >= 16: True; c(D)=21 >= d_m d_n=8
+Zarankiewicz axis drawing    m=4 n=5: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 16 >= 16: True; c(D)=8 >= d_m d_n=8; TIGHT: c(D)==d_m d_n True, sum rank==2c True, every rank==c_ik True
+random drawing #0            m=5 n=5: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 68 >= 32: True; c(D)=60 >= d_m d_n=16
+random drawing #1            m=5 n=5: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 48 >= 32: True; c(D)=38 >= d_m d_n=16
+random drawing #2            m=5 n=5: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 60 >= 32: True; c(D)=46 >= d_m d_n=16
+Zarankiewicz axis drawing    m=5 n=5: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 32 >= 32: True; c(D)=16 >= d_m d_n=16; TIGHT: c(D)==d_m d_n True, sum rank==2c True, every rank==c_ik True
+random drawing #0            m=6 n=5: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 76 >= 48: True; c(D)=64 >= d_m d_n=24
+random drawing #1            m=6 n=5: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 84 >= 48: True; c(D)=96 >= d_m d_n=24
+random drawing #2            m=6 n=5: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 90 >= 48: True; c(D)=81 >= d_m d_n=24
+Zarankiewicz axis drawing    m=6 n=5: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 48 >= 48: True; c(D)=24 >= d_m d_n=24; TIGHT: c(D)==d_m d_n True, sum rank==2c True, every rank==c_ik True
+random drawing #0            m=5 n=7: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 140 >= 72: True; c(D)=120 >= d_m d_n=36
+random drawing #1            m=5 n=7: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 136 >= 72: True; c(D)=92 >= d_m d_n=36
+random drawing #2            m=5 n=7: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 104 >= 72: True; c(D)=86 >= d_m d_n=36
+Zarankiewicz axis drawing    m=5 n=7: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 72 >= 72: True; c(D)=36 >= d_m d_n=36; TIGHT: c(D)==d_m d_n True, sum rank==2c True, every rank==c_ik True
+random drawing #0            m=7 n=7: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 258 >= 162: True; c(D)=179 >= d_m d_n=81
+random drawing #1            m=7 n=7: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 278 >= 162: True; c(D)=217 >= d_m d_n=81
+random drawing #2            m=7 n=7: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 334 >= 162: True; c(D)=203 >= d_m d_n=81
+Zarankiewicz axis drawing    m=7 n=7: Lemma3.2 True; R_ik=X_i-Y_k True; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 162 >= 162: True; c(D)=81 >= d_m d_n=81; TIGHT: c(D)==d_m d_n True, sum rank==2c True, every rank==c_ik True
+control: same drawings with the crossing-sign convention flipped (Lemma 3.2 should then fail):
+flipped signs                m=5 n=5: Lemma3.2 False; R_ik=X_i-Y_k False; rank R_ii=d True; rank R_ik<=c_ik True; sum rank 48 >= 32: True; c(D)=34 >= d_m d_n=16

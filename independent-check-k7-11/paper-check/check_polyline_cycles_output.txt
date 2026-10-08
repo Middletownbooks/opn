@@ -1,0 +1,2 @@
+40 admissible random polyline drawings: Lemma 3.2 held on all: True
+  crossing points 4326, edge pairs crossing >= 2 times 1160, of which signed sum 0 (cancelling) 952, adjacent pairs that cross 999
